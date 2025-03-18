@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router'
-import LogOutButton from '../navBarElements/LogoutButton.jsx'
+import LogOutButton from '../navBarElements/LogOutButton'
 
 const AdminNavBar = () => {
     return (
@@ -15,23 +15,8 @@ const AdminNavBar = () => {
             <nav className='navBar'>
                 <ul className='navBarUl'>
                     <li>
-                        <NavLink to="/">Home</NavLink>
+                        <NavLink to="/admin">admin home</NavLink>
                     </li>
-                    <li>
-                        <NavLink to="/login">Login</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/register">Register</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/not-found">not-found</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/user/update-password">Update Password</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/user">userprofile</NavLink>
-                        </li>
                 </ul>
             </nav>
 

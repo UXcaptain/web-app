@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router";
+import apiClient from "../../config/API/axiosConfig.mjs";
+import { logError } from "../../config/logging/loggerFunctions.mjs";
 
 
 const LogOutButton = () => {
@@ -8,21 +10,12 @@ const LogOutButton = () => {
     const handleLogout = async () => {
     try {
         
-        const logoutRequest = await fetch('http://localhost:3000/api/v1/auth/logout', {
-            method: 'POST',
-            credentials: 'include',
-        })
-
-        const logoutResponse = await logoutRequest.json()
-
-        if (logoutResponse.success === true) {
-            console.log('Logout successful:', logoutResponse.data)
-            navigate('/')
-        }
+     await apiClient.post(`/api/v1/auth/logout`)
+        navigate('/')
 
     } catch (error) {
-        console.error('Logout failed', error)
-    }
+        logError('Error in logout functionality', error, 'N/A');
+        }
     
     }
 

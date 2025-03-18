@@ -1,5 +1,6 @@
-import axios from 'axios'
+import apiClient from '../../config/API/axiosConfig.mjs'
 import { useState } from 'react'
+import { logError } from '../../config/logging/loggerFunctions.mjs'
 const UpdatePasswordPage = () => {
 
     const [response, setResponse] = useState({
@@ -14,15 +15,16 @@ const UpdatePasswordPage = () => {
                 newPassword: e.target.newPassword.value,
             };
 
-            const response = await axios.patch('http://localhost:3000/api/v1/auth/updateUserPassword', passwordUpdateData, {
-                withCredentials: true,
-            })
+            const response = await apiClient.patch(`/api/v1/auth/updateUserPassword`, passwordUpdateData)
             setResponse({
                 success: true,
                 message: response.data.message
             })
 
         } catch (error) {
+
+            logError('Failed to update password', error);
+
             if (error.response && error.response.status === 401) {
                 setResponse({
                     success: false,

@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router'
-import LogOutButton from '../navBarElements/LogoutButton.jsx'
+import LogOutButton from '../navBarElements/LogOutButton.jsx'
+
 
 
 const UserNavBar = () => {

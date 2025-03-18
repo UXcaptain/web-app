@@ -1,0 +1,15 @@
+services:
+  reactjs:
+    build:
+      context: .
+    environment:
+      VITE_SERVER_API: http://localhost:3000
+    ports:
+      - 80:80
+    develop:
+      watch:
+        - path: .
+          action: rebuild #* Synchronize code changes and restart the server
+          target: /usr/src/app/
+
+
