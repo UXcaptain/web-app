@@ -1,14 +1,23 @@
 {
-  "name": "reactjs-template",
+  "name": "user-research-platform-frontend",
+  "engines": {
+    "node": "22.x"
+  },
+  "description": "Front-End using an Vite ReactJS app for User Research Platform",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "keywords": [],
+  "license": "Proprietary",
+  "author": "Sergio Navarro Redondo",
   "scripts": {
     "build": "vite build",
     "start:preview": "vite preview",
     "start:local": "vite",
     "test:ui": "npx playwright test --ui",
-    "test:noui": "npx playwright test"
+    "test:noui": "npx playwright test",
+    "docker:prod": "docker build --platform=linux/amd64 -t sergion14/uxmonkeys:front-latest . && docker push sergion14/uxmonkeys:front-latest",
+    "docker:dev": "docker build --platform=linux/amd64 -t sergion14/uxmonkeys:front-next . && docker push sergion14/uxmonkeys:front-next"
   },
   "dependencies": {
     "@mantine/core": "^7.17.1",
@@ -20,8 +29,7 @@
     "pino": "^9.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.3",
-    "vite": "^6.0.7"
+    "react-router": "^7.1.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
@@ -36,6 +44,10 @@
     "postcss": "^8.5.3",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
-    "vite": "^6.0.7"
-  }
+    "vite": "^6.2.3"
+  },
+  "repository": {
+        "type": "git",
+        "url": "git+https://github.com/UXmonkeys/web-app"
+    }
 }
