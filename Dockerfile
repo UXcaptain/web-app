@@ -12,8 +12,6 @@ WORKDIR /usr/src/app
 # Set environment variables during the build process
 ENV VITE_API_BASE_URL=http://localhost:3000
 
-
-
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
