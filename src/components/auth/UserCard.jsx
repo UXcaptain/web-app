@@ -6,8 +6,9 @@ const UserCard = ({user}) => {
             <p>Name: {user.email}</p>
             <p>Role: {user.role}</p>
             <p>created at: {user.created_at}</p>
-            <p>last updated at: {user.last_updated_at.toLocaleString('en-GB')}</p>
+            <p>last updated at: {user.updated_at}</p>
             <p>last login at: {user.last_login_at || 'never logged in'}</p>
+            <p>hello</p>
 
         </div>
     )
