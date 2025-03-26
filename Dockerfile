@@ -1,21 +1,23 @@
+# Use the latest Docker syntax parser
+# syntax=docker/dockerfile:1
+
 # Define build arguments for environment variables
 ARG NODE_VERSION=22.14.0
-ARG VITE_API_BASE_URL
-
 
 # First stage: Build the application
 FROM node:${NODE_VERSION}-alpine AS build
 
+# Set the baseUrl ARG in the build stage to compile it - Will be replaced by docker build command
+ARG VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
 # Set working directory for all build stages.
 WORKDIR /usr/src/app
-
-# Set environment variables during the build process
-ENV VITE_API_BASE_URL=http://localhost:3000
 
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
-    npm ci
+    npm ci --prefer-offline --no-audit --progress=false
+
 
 # Copy the rest of the source files into the image.
 COPY . .
@@ -25,10 +27,9 @@ RUN npm run build
 
 # SET NODE_ENV to production
 ENV NODE_ENV=production
-ENV VITE_APP_API_URL=https://api.example.com
 
 # Create a new stage for the production image
-FROM nginx:alpine
+FROM nginx:1.27.4-alpine
 
 # Copy the nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf

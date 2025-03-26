@@ -16,8 +16,8 @@
     "start:local": "vite",
     "test:ui": "npx playwright test --ui",
     "test:noui": "npx playwright test",
-    "docker:prod": "docker build --platform=linux/amd64 -t sergion14/uxmonkeys:front-latest . && docker push sergion14/uxmonkeys:front-latest",
-    "docker:dev": "docker build --platform=linux/amd64 -t sergion14/uxmonkeys:front-next . && docker push sergion14/uxmonkeys:front-next"
+    "docker:prod": "docker build --platform=linux/amd64 --build-arg VITE_API_BASE_URL=https://reluctant-andy-uxmonkeys-e6debd55.koyeb.app/ -t sergion14/uxmonkeys:front-latest . && docker push sergion14/uxmonkeys:front-latest",
+    "docker:dev": "docker build --platform=linux/amd64 --build-arg VITE_API_BASE_URL=https://primitive-natty-uxmonkeys-a1018d54.koyeb.app/ -t sergion14/uxmonkeys:front-next . && docker push sergion14/uxmonkeys:front-next"
   },
   "dependencies": {
     "@mantine/core": "^7.17.1",
