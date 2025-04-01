@@ -1,0 +1,31 @@
+# Use the latest Docker syntax parser
+# syntax=docker/dockerfile:1
+
+# Define build arguments for environment variables
+ARG NODE_VERSION=22.14.0
+
+# First stage: Build the application
+FROM node:${NODE_VERSION}-alpine AS build
+
+# Set the baseUrl ARG in the build stage to compile it - Will be replaced by docker build command
+ARG VITE_API_BASE_URL=${VITE_API_BASE_URL} 
+
+# CHANGE ENV TO ARG & REMOVE ARG IN DOCKER COMPOSE FILE
+
+# Set working directory for all build stages.
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy the rest of the source code
+COPY . .
+
+# Expose the development server port
+EXPOSE 3000
+
+# Start the development server
+CMD ["npm", "run", "start:local"]

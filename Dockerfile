@@ -8,7 +8,7 @@ ARG NODE_VERSION=22.14.0
 FROM node:${NODE_VERSION}-alpine AS build
 
 # Set the baseUrl ARG in the build stage to compile it - Will be replaced by docker build command
-ARG VITE_API_BASE_URL=${VITE_API_BASE_URL}
+ARG VITE_API_BASE_URL=${VITE_API_BASE_URL} 
 
 # Set working directory for all build stages.
 WORKDIR /usr/src/app
