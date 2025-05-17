@@ -18,8 +18,10 @@ import RecoverPasswordPage from './pages/auth/RecoverPasswordPage.jsx'
 import FAQs from './pages/index/FAQs.jsx'
 import AuthWrapper from './pages/auth/AuthWrapper.jsx'
 import UpdateRecoveredPasswordPage from './pages/auth/UpdateRecoveredPasswordPage.jsx'
+import CreateAnalysisPage from './pages/user/CreateAnalysisPage.jsx'
 import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css';
+import { ViewAnalysisPage } from './pages/user/ViewAnalysispage.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -42,6 +44,8 @@ createRoot(document.getElementById('root')).render(
           <Route index element={<UserHome />} />
           <Route path='user-profile' element={<UserProfile />} />
           <Route path="update-password" element={<UpdatePasswordPage />} />
+          <Route path="create-analysis" element={<CreateAnalysisPage />} />
+          <Route path="analysis/analysis-details/:id" element={<ViewAnalysisPage />} />
         </Route>
         
 
