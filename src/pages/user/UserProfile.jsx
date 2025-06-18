@@ -13,7 +13,7 @@ const UserProfile = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await apiClient.get(`/api/v1/user/profile`)
+                const response = await apiClient.get(`/api/v1/user/`)
 
                 setLoading(false);
                 setUser(response.data.user)
@@ -30,7 +30,7 @@ const UserProfile = () => {
 
         const deleteUser = async () => {
             try {
-                const response = await apiClient.delete(`/api/v1/user/delete`);
+                const response = await apiClient.delete(`/api/v1/user/`);
 
                 if (response.status === 200) {
                     navigate('/');

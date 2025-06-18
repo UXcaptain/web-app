@@ -16,7 +16,7 @@ export const ViewAnalysisPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await apiClient.get(`/api/v1/analysis/analysis-details/${id}`);
+                const response = await apiClient.get(`/api/v1/analysis/${id}`);
                 setAnalysisData(response.data.analysisData)
                 setLoading(false);
 
@@ -41,6 +41,7 @@ if (error) return (
     return (
         <>
         <div className="analysisData">
+        <h2>Analysis details</h2>
           <p>Title: {analysisData.name}</p>
           <p>url: {analysisData.url}</p>
           <p>participants number: {analysisData.max_number_of_participants}</p>
@@ -62,7 +63,7 @@ if (error) return (
         </div>
 
             <div className="participantsList">
-        <h1>All Participants</h1>
+        <h1>Participants: {analysisData.entries.length} / {analysisData.max_number_of_participants}</h1>
         {analysisData && analysisData.entries && analysisData.entries.length === 0 ? (
           <p>No participants found.</p>
         ) : (

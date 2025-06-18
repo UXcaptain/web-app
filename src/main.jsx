@@ -45,7 +45,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='user-profile' element={<UserProfile />} />
           <Route path="update-password" element={<UpdatePasswordPage />} />
           <Route path="create-analysis" element={<CreateAnalysisPage />} />
-          <Route path="analysis/analysis-details/:id" element={<ViewAnalysisPage />} />
+          <Route path="analysis/:id" element={<ViewAnalysisPage />} />
         </Route>
         
 
