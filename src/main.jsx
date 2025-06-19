@@ -22,6 +22,7 @@ import CreateAnalysisPage from './pages/user/CreateAnalysisPage.jsx'
 import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysispage.jsx'
+import UserBilling from './pages/user/userBilling.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -46,6 +47,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="update-password" element={<UpdatePasswordPage />} />
           <Route path="create-analysis" element={<CreateAnalysisPage />} />
           <Route path="analysis/:id" element={<ViewAnalysisPage />} />
+          <Route path="billing" element={<UserBilling />} />
         </Route>
         
 

@@ -56,6 +56,10 @@ const UserProfile = () => {
         <h2>Available actions</h2>
             <button  className='deleteUser' onClick={deleteUser}>Delete my account</button>
         </div>
+
+        <div className="subscriptionDetails">
+            
+        </div>
         </>
     )
 }
