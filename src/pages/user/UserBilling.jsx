@@ -12,7 +12,7 @@ const UserBilling = () => {
     useEffect(() => {
         const checkSubscription = async () => {
             try {
-                const response = await apiClient.get('/api/v1/stripe/check-subscription');
+                const response = await apiClient.get('/api/v1/billing/check-subscription');
                 setLoading(false)
                 return setSubscriptionData(response.data.subscriptionData);
             } catch (err) {
@@ -28,7 +28,7 @@ const UserBilling = () => {
 
         const handlePriceLink = async (plan) => {
             try {
-                const response = await apiClient.post(`/api/v1/stripe/stripe-checkout-session`, { 
+                const response = await apiClient.post(`/api/v1/billing/stripe-checkout-session`, { 
                     requestedBillingCycle: plan 
                 });
 
@@ -50,7 +50,7 @@ const UserBilling = () => {
         useEffect(() => {
             const createCustomerInStripe = async () => {
                 try {
-                    const response = await apiClient.post('/api/v1/stripe/create-stripe-customer-id');
+                    const response = await apiClient.post('/api/v1/billing/create-stripe-customer-id');
                     return setStripeCustomerId(response.data.customerId);
                 } catch (err) {
                     setError(err.message);
@@ -65,7 +65,7 @@ const UserBilling = () => {
 
         const handleBillingCustomerPortal = async () => {
             try {
-                const response = await apiClient.post(`/api/v1/stripe/stripe-customer-portal`);
+                const response = await apiClient.post(`/api/v1/billing/stripe-customer-portal`);
 
                 const { customerPortalUrl } = response.data;
 
