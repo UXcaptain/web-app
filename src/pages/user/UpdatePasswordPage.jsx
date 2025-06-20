@@ -1,6 +1,7 @@
 import apiClient from '../../config/API/axiosConfig.mjs'
 import { useState } from 'react'
 import { logError } from '../../config/logging/loggerFunctions.mjs'
+
 const UpdatePasswordPage = () => {
 
     const [response, setResponse] = useState({
@@ -79,7 +80,11 @@ const UpdatePasswordPage = () => {
 
                 <h1>Update Password</h1>
                 <form onSubmit={handleSubmit}>
+                <label htmlFor="currentPassword">current password</label>
+
                     <input type="password" name="currentPassword" placeholder="Current Password" defaultValue='password' /> 
+                <label htmlFor="newPassword">new password</label>
+                    
                     <input type="password" name="newPassword" placeholder="New Password" defaultValue='password' />
                     <button type="submit">Update Password</button>
                 </form>

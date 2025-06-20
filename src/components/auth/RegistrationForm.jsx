@@ -92,7 +92,7 @@ return (
                         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                           <form onSubmit={handleRegister}>
                             <TextInput name="username" label="username" placeholder="you@mantine.dev" required defaultValue="username@gmail.com" />
-                            <PasswordInput name="password" label="password" placeholder="Your password" required mt="md" defaultValue="password" />
+                            <PasswordInput name="password" label="password" placeholder="Your password" required mt="md" defaultValue="123456" />
 
                             <Button type="submit" fullWidth mt="xl">
                               Register

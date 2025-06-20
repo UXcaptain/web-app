@@ -31,7 +31,7 @@ import { useState } from 'react';
         }
 
         try {
-            const response = await apiClient.post(`/api/v1/auth/recoverPassword`, data);
+            const response = await apiClient.post(`/api/v1/auth/password-reset`, data);
             setRecoverPasswordResponse(response.data);
             setRecoverPasswordError(null);
 
