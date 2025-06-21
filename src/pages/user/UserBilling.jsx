@@ -12,7 +12,8 @@ const UserBilling = () => {
     useEffect(() => {
         const checkSubscription = async () => {
             try {
-                const response = await apiClient.get('/api/v1/billing/check-subscription');
+                const response = await apiClient.get('/api/v1/billing');
+
                 setLoading(false)
                 return setSubscriptionData(response.data.subscriptionData);
             } catch (err) {
@@ -26,11 +27,17 @@ const UserBilling = () => {
     }, [subscriptionData]);
 
 
-        const handlePriceLink = async (plan) => {
+        const handlePriceLink = async (planName, billingCycle) => {
+            
+            const data = {
+                planName: planName,
+                planBillingCycle: billingCycle, 
+
+            }
+            
             try {
-                const response = await apiClient.post(`/api/v1/billing/stripe-checkout-session`, { 
-                    requestedBillingCycle: plan 
-                });
+
+                const response = await apiClient.post(`/api/v1/billing/checkout-session`, data);
 
                 const { checkoutSessionUrl } = response.data;
 
@@ -50,9 +57,14 @@ const UserBilling = () => {
         useEffect(() => {
             const createCustomerInStripe = async () => {
                 try {
-                    const response = await apiClient.post('/api/v1/billing/create-stripe-customer-id');
+                    const response = await apiClient.post('/api/v1/billing');
                     return setStripeCustomerId(response.data.customerId);
                 } catch (err) {
+
+                    if (error.code === 400) {
+                        return setLoading(false)
+                    }
+
                     setError(err.message);
                 }
             };
@@ -65,7 +77,7 @@ const UserBilling = () => {
 
         const handleBillingCustomerPortal = async () => {
             try {
-                const response = await apiClient.post(`/api/v1/billing/stripe-customer-portal`);
+                const response = await apiClient.post(`/api/v1/billing/customer-portal`);
 
                 const { customerPortalUrl } = response.data;
 
@@ -100,15 +112,15 @@ const UserBilling = () => {
                 <div className="Plans">
                     <h2>Available Plans</h2>
                     <div className="monthlyPlan">
-                        <h1>monthly</h1>
+                        <h1>Free</h1>
                         <p>includes free stuff</p>
-                        <button onClick={() => {handlePriceLink('monthly') }}>pick monthly plan</button>
+                        <button onClick={() => {handlePriceLink('basic', 'monthly') }}>pick monthly plan</button>
                     </div>
 
                     <div className="annualPlan">
-                        <h1>annual</h1>
+                        <h1>Pro</h1>
                         <p>includes annual stuff</p>
-                        <button onClick={() => {handlePriceLink('annual') }}>pick annual plan</button>
+                        <button onClick={() => {handlePriceLink('basic', 'annual') }}>pick annual plan</button>
                     </div>
 
                     <div className="billingSection">

@@ -16,7 +16,7 @@ const UpdatePasswordPage = () => {
                 newPassword: e.target.newPassword.value,
             };
 
-            const response = await apiClient.patch(`/api/v1/auth/updateUserPassword`, passwordUpdateData)
+            const response = await apiClient.patch(`/api/v1/auth/update-user-password`, passwordUpdateData)
             setResponse({
                 success: true,
                 message: response.data.message
@@ -82,10 +82,10 @@ const UpdatePasswordPage = () => {
                 <form onSubmit={handleSubmit}>
                 <label htmlFor="currentPassword">current password</label>
 
-                    <input type="password" name="currentPassword" placeholder="Current Password" defaultValue='password' /> 
+                    <input type="password" name="currentPassword" placeholder="Current Password" defaultValue='123456' /> 
                 <label htmlFor="newPassword">new password</label>
                     
-                    <input type="password" name="newPassword" placeholder="New Password" defaultValue='password' />
+                    <input type="password" name="newPassword" placeholder="New Password" defaultValue='123456' />
                     <button type="submit">Update Password</button>
                 </form>
             </div>
