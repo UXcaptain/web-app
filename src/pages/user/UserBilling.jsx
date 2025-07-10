@@ -15,7 +15,11 @@ const UserBilling = () => {
                 const response = await apiClient.get('/api/v1/billing');
 
                 setLoading(false)
-                return setSubscriptionData(response.data.subscriptionData);
+
+                setStripeCustomerId(response.data.billingData.stripe_customer_id);
+
+
+                setSubscriptionData(response.data.billingData.Subscription[0]);
             } catch (err) {
                 setError(err.message);
             }
@@ -96,7 +100,7 @@ const UserBilling = () => {
     
     return (
         <div>
-            {(subscriptionData && subscriptionData.status === 'active') ? (
+            {(subscriptionData && subscriptionData.status === 'active' ) ? (
                 <>
                     <div className="currentPlan">
                         <p>current plan: {subscriptionData.plan_name}</p>

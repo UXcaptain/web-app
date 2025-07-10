@@ -15,7 +15,7 @@ const UserWrapper = () => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                await apiClient.get(`/api/v1/auth/check-session`);
+                await apiClient.get(`/api/v1/auth/session`);
                 
                 setLoading(false);
 
