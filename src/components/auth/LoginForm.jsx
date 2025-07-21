@@ -85,8 +85,8 @@ import {
         )}
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <form onSubmit={handleLogin}>
-            <TextInput name="username" label="username" placeholder="you@mantine.dev" required defaultValue="username2@gmail.com" />
-            <PasswordInput name="password" label="password" placeholder="Your password" required mt="md" defaultValue="password" />
+            <TextInput name="username" label="username" placeholder="you@mantine.dev" required defaultValue="username@gmail.com" />
+            <PasswordInput name="password" label="password" placeholder="Your password" required mt="md" defaultValue="123456" />
             <Group justify="space-between" mt="lg">
               <Checkbox name="rememberMe" label="Remember me" />
               <Anchor component={Link} to="/auth/recover-password" size="sm">

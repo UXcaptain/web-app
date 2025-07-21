@@ -4,7 +4,8 @@ import {
   IconLogout,
   IconKeyFilled,
   IconHomeFilled,
-  IconUserCircle
+  IconUserCircle,
+  IconCreditCardFilled
 } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from "react-router";
@@ -35,6 +36,7 @@ const UserNavBar = () => {
   { link: '/user', label: 'User Home', icon: IconHomeFilled },
   { link: '/user/update-password', label: 'Update password', icon: IconKeyFilled },
   { link: '/user/user-profile', label: 'User Profile', icon: IconUserCircle },
+  { link: '/user/billing', label: 'Billing', icon: IconCreditCardFilled },
 ];
 
   const links = data.map((item) => (

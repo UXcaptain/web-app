@@ -1,6 +1,7 @@
 import apiClient from '../../config/API/axiosConfig.mjs'
 import { useState } from 'react'
 import { logError } from '../../config/logging/loggerFunctions.mjs'
+
 const UpdatePasswordPage = () => {
 
     const [response, setResponse] = useState({
@@ -15,7 +16,7 @@ const UpdatePasswordPage = () => {
                 newPassword: e.target.newPassword.value,
             };
 
-            const response = await apiClient.patch(`/api/v1/auth/updateUserPassword`, passwordUpdateData)
+            const response = await apiClient.patch(`/api/v1/auth/update-user-password`, passwordUpdateData)
             setResponse({
                 success: true,
                 message: response.data.message
@@ -79,8 +80,12 @@ const UpdatePasswordPage = () => {
 
                 <h1>Update Password</h1>
                 <form onSubmit={handleSubmit}>
-                    <input type="password" name="currentPassword" placeholder="Current Password" defaultValue='password' /> 
-                    <input type="password" name="newPassword" placeholder="New Password" defaultValue='password' />
+                <label htmlFor="currentPassword">current password</label>
+
+                    <input type="password" name="currentPassword" placeholder="Current Password" defaultValue='123456' /> 
+                <label htmlFor="newPassword">new password</label>
+                    
+                    <input type="password" name="newPassword" placeholder="New Password" defaultValue='123456' />
                     <button type="submit">Update Password</button>
                 </form>
             </div>

@@ -5,7 +5,7 @@ import PageNotFound from './pages/index/404.jsx'
 import './index.css'
 import Login from './pages/auth/LoginPage.jsx'
 import Register from './pages/auth/RegisterPage.jsx'
-import UpdatePasswordPage from './pages/user/UpdatePasswordPage.jsx'
+import RestorePasswordPage from './pages/auth/RestorePasswordPage.jsx'
 import TerminosCondiciones from './pages/index/terminos-condiciones.jsx'
 import IndexWrapper from './pages/index/indexWrapper.jsx'
 import Index from './pages/index/index.jsx'
@@ -17,9 +17,12 @@ import UserHome from './pages/user/UserHome.jsx'
 import RecoverPasswordPage from './pages/auth/RecoverPasswordPage.jsx'
 import FAQs from './pages/index/FAQs.jsx'
 import AuthWrapper from './pages/auth/AuthWrapper.jsx'
-import UpdateRecoveredPasswordPage from './pages/auth/UpdateRecoveredPasswordPage.jsx'
+import CreateAnalysisPage from './pages/user/CreateAnalysisPage.jsx'
 import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css';
+import { ViewAnalysisPage } from './pages/user/ViewAnalysispage.jsx'
+import UserBilling from './pages/user/userBilling.jsx'
+import UpdatePasswordPage from './pages/user/UpdatePasswordPage.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -42,6 +45,9 @@ createRoot(document.getElementById('root')).render(
           <Route index element={<UserHome />} />
           <Route path='user-profile' element={<UserProfile />} />
           <Route path="update-password" element={<UpdatePasswordPage />} />
+          <Route path="create-analysis" element={<CreateAnalysisPage />} />
+          <Route path="analysis/:id" element={<ViewAnalysisPage />} />
+          <Route path="billing" element={<UserBilling />} />
         </Route>
         
 
@@ -50,7 +56,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path='recover-password' element={<RecoverPasswordPage />} />
-          <Route path='create-new-password' element={<UpdateRecoveredPasswordPage />} />
+          <Route path='restore-password' element={<RestorePasswordPage />} />
         </Route>
 
 
