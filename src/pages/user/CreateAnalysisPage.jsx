@@ -17,7 +17,7 @@ export const CreateAnalysisPage = () => {
             url,
             maxNumberOfParticipants,
             scenario,
-            tasks: [{taskType: "text", value: 'do this and that'}], // TODO - FIX task creation logic here
+            tasks: [{taskType: "text", taskContent: 'do this and that'}], // TODO - FIX task creation logic here
             device: 'computer',
             
             // tasks: tasks.reduce((acc, task, index) => {
@@ -27,7 +27,7 @@ export const CreateAnalysisPage = () => {
         }
         
         try {
-            const response = await apiClient.post('/api/v1/analysis/', analysisData);
+            const response = await apiClient.post('/api/v1/analysis', analysisData);
             return response.data;
         } catch (error) {
             console.error("Error creating analysis:", error);

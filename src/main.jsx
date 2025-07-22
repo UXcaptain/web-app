@@ -13,16 +13,17 @@ import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx'
 import AdminDashboardWrapper from './pages/admin/AdminDashboardWrapper.jsx'
 import UserProfile from './pages/user/UserProfile.jsx'
 import UserWrapper from './pages/user/UserWrapper.jsx'
-import UserHome from './pages/user/UserHome.jsx'
+import UserDashboard from './pages/user/UserDashboard.jsx'
 import RecoverPasswordPage from './pages/auth/RecoverPasswordPage.jsx'
 import FAQs from './pages/index/FAQs.jsx'
 import AuthWrapper from './pages/auth/AuthWrapper.jsx'
 import CreateAnalysisPage from './pages/user/CreateAnalysisPage.jsx'
 import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css';
-import { ViewAnalysisPage } from './pages/user/ViewAnalysispage.jsx'
+import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
 import UserBilling from './pages/user/userBilling.jsx'
 import UpdatePasswordPage from './pages/user/UpdatePasswordPage.jsx'
+import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
 
 
 createRoot(document.getElementById('root')).render(
@@ -38,17 +39,30 @@ createRoot(document.getElementById('root')).render(
 
         <Route path='/admin' element={<AdminDashboardWrapper />} >
           <Route index element={<AdminDashboardHome />} />
-          
         </Route>
 
         <Route path='/user' element={<UserWrapper />} >
-          <Route index element={<UserHome />} />
-          <Route path='user-profile' element={<UserProfile />} />
+          <Route index element={<UserDashboard />} />
+          <Route path='profile' element={<UserProfile />} />
           <Route path="update-password" element={<UpdatePasswordPage />} />
-          <Route path="create-analysis" element={<CreateAnalysisPage />} />
-          <Route path="analysis/:id" element={<ViewAnalysisPage />} />
           <Route path="billing" element={<UserBilling />} />
         </Route>
+
+        <Route path="/dashboard" element={<UserWrapper />}>
+          <Route index element={<UserDashboard />} />
+        </Route>
+
+        <Route path="/analysis" element={<UserWrapper />}>
+          <Route path="create" element={<CreateAnalysisPage />} />
+          <Route path=":id" element={<ViewAnalysisPage />} />
+        </Route>
+
+        <Route path="/entry" element={<UserWrapper />}>
+                <Route path=":id" element={<ViewAnalysisEntryPage />} />
+              </Route>
+
+          
+
         
 
         <Route path="/auth" element={<AuthWrapper />}>
