@@ -25,10 +25,21 @@ import UserBilling from './pages/user/userBilling.jsx'
 import UpdatePasswordPage from './pages/user/UpdatePasswordPage.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
 
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react'
+
+posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
+  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+  defaults: '2025-05-24',
+  debug: false,
+});
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <MantineProvider>
+    <PostHogProvider client={posthog}>
+
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<IndexWrapper />}>
@@ -78,6 +89,8 @@ createRoot(document.getElementById('root')).render(
       </Routes>
 
     </BrowserRouter>
+    </PostHogProvider>
+
     </MantineProvider>
   </StrictMode>,
 )

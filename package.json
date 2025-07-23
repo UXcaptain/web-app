@@ -27,6 +27,7 @@
     "axios": "^1.7.9",
     "js-cookie": "^3.0.5",
     "pino": "^9.6.0",
+    "posthog-js": "^1.257.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.1.3"

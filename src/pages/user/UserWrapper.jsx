@@ -4,21 +4,23 @@ import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import apiClient from "../../config/API/axiosConfig.mjs";
 import { logError } from "../../config/logging/loggerFunctions.mjs";
+import { usePostHog } from 'posthog-js/react'
 
 const UserWrapper = () => {
 
+    const posthog = usePostHog()
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [opened, { toggle }] = useDisclosure();
+    const [userId, setUserId] = useState(null);
 
     
     useEffect(() => {
-        const checkAuth = async () => {
+        const checkSession = async () => {
             try {
-                await apiClient.get(`/api/v1/auth/session`);
-                
+                const response = await apiClient.get(`/api/v1/auth/session`);
+                setUserId(response.data.user.id)
                 setLoading(false);
-
 
             } catch (error) {
                 logError('Failed to check session', error);
@@ -26,8 +28,17 @@ const UserWrapper = () => {
             }
         };
 
-        checkAuth();
+        checkSession();
     }, [navigate]);
+
+
+    useEffect( () => {
+
+      if (userId) {
+        posthog?.identify(userId, {
+        })
+      }
+    }, [userId])
 
 
   return (
