@@ -13,7 +13,7 @@ const UserProfile = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await apiClient.get(`/api/v1/user/`)
+                const response = await apiClient.get(`/api/v1/user`)
 
                 setLoading(false);
                 setUser(response.data.user)

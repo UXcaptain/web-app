@@ -24,18 +24,13 @@ const RestorePasswordPage = () => {
             
             if (checkPasswordResetTokenValidity.success === true) {
                 setPasswordResetTokenValidity(checkPasswordResetTokenValidity)
-
             }
-            
-            
             
         } catch (error) {
                 console.error('Error fetching analysis data:', error);
                 setError(error.message);
                 setLoading(false);   
         }
-
-
     }, [passwordResetToken])
 
     const updateRecoveredPassword = async (e) => {
@@ -70,10 +65,10 @@ const RestorePasswordPage = () => {
             <form onSubmit={updateRecoveredPassword}>
 
                 <label htmlFor="newPassword">new password</label>
-                <input type="password" name="newPassword" placeholder="Enter your new password" required  defaultValue='password1'/>
+                <input type="password" name="newPassword" placeholder="Enter your new password" required  defaultValue='123456'/>
                 
                 <label htmlFor="confirmNewPassword">new password</label>
-                <input type="password" name="confirmNewPassword" placeholder="Confirm your new password" required defaultValue='password1' />
+                <input type="password" name="confirmNewPassword" placeholder="Confirm your new password" required defaultValue='123456' />
                 <button type="submit">Update Password</button>
             </form>
         </div>
