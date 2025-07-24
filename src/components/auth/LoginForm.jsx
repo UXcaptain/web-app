@@ -44,7 +44,7 @@ import {
                 case "admin":
                     return navigate('/admin');
                 case "customer":
-                    return navigate('/user');
+                    return navigate('/dashboard');
                 default:
                     return navigate('/');
             };

@@ -33,9 +33,9 @@ const UserNavBar = () => {
   const [active, setActive] = useState('User Home');
 
   const data = [
-  { link: '/user', label: 'User Home', icon: IconHomeFilled },
+  { link: '/dashboard', label: 'User Home', icon: IconHomeFilled },
   { link: '/user/update-password', label: 'Update password', icon: IconKeyFilled },
-  { link: '/user/user-profile', label: 'User Profile', icon: IconUserCircle },
+  { link: '/user/profile', label: 'User Profile', icon: IconUserCircle },
   { link: '/user/billing', label: 'Billing', icon: IconCreditCardFilled },
 ];
 
@@ -49,7 +49,6 @@ const UserNavBar = () => {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
-
         {links}
       </div>
 

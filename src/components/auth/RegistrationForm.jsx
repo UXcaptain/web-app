@@ -24,7 +24,8 @@ const handleRegister = async (e) => {
 
     const data = {
         username: e.target.username.value,
-        password: e.target.password.value
+        password: e.target.password.value,
+        role: 'customer',
     }
     
     try {

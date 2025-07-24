@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { useParams } from 'react-router';
-import { useNavigate } from 'react-router';
+import { AnalysisEntriesTable } from './AnalysisEntriesTable';
 
 export const ViewAnalysisPage = () => {
   const [analysisData, setAnalysisData] = useState(null)
@@ -11,7 +11,6 @@ export const ViewAnalysisPage = () => {
 
     const { id } = useParams();
 
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -63,25 +62,11 @@ if (error) return (
         </div>
 
             <div className="participantsList">
-        <h1>Participants: {analysisData.entries.length} / {analysisData.max_number_of_participants}</h1>
+
         {analysisData && analysisData.entries && analysisData.entries.length === 0 ? (
           <p>No participants found.</p>
         ) : (
-          analysisData.entries.map((entry) => (
-                <div key={entry.id}>
-              <p>Name: {entry.id}</p>
-              <p>age: </p>
-              <p>gender: </p>
-             <p> country:    </p>
-
-              <p>Status: {entry.status}</p>
-              <p>{entry.url}</p>
-
-              <button onClick={() => entry?.id && navigate(`/user/analysis/${entry.id}`)}>View analysis</button> 
-
-
-                </div>
-          ))
+          <AnalysisEntriesTable participants={analysisData.AnalysisEntries} />
         )}
             </div>
         </>
