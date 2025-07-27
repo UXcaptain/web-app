@@ -1,5 +1,4 @@
 import { Table } from '@mantine/core';
-import { useNavigate } from "react-router";
 import apiClient from '../../config/API/axiosConfig.mjs';
 
 export const AnalysisEntriesTable = (props) => {

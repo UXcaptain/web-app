@@ -1,29 +1,118 @@
 import apiClient from "../../config/API/axiosConfig.mjs";
 import { useState } from 'react';
+import {
+  TextInput,
+  Textarea,
+  NumberInput,
+  Button,
+  Group,
+  Box,
+  Title,
+  Card,
+  Text,
+  Alert
+} from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 export const CreateAnalysisPage = () => {
 
-    const [name, setName] = useState('analysis name');
-    const [url, setUrl] = useState('https://www.youtube.com');
-    const [maxNumberOfParticipants, setmaxNumberOfParticipants] = useState(10);
+    const [name, setName] = useState(null);
+    const [url, setUrl] = useState(null);
+    const [maxNumberOfParticipants, setmaxNumberOfParticipants] = useState(5);
     const [tasks, setTasks] = useState([{ value: '' }]);
-    const [scenario, setScenario] = useState('imagine you want to buy a house and your cash pile is 200k')
+    const [scenario, setScenario] = useState(null);
+    const [errors, setErrors] = useState({});
+
+    const addTask = () => {
+        setTasks([...tasks, { value: '' }]);
+        // Clear task error if it was set
+        if (errors.tasks) {
+            setErrors(prev => ({ ...prev, tasks: '' }));
+        }
+    };
+
+    const removeTask = (index) => {
+        // Prevent removing all tasks - ensure at least one task exists
+        if (tasks.length <= 1) {
+            setErrors(prev => ({ ...prev, tasks: 'At least one task is required' }));
+            return;
+        }
+        
+        const newTasks = [...tasks];
+        newTasks.splice(index, 1);
+        setTasks(newTasks);
+        
+        // Clear task error if it was set
+        if (errors.tasks) {
+            setErrors(prev => ({ ...prev, tasks: '' }));
+        }
+    };
+
+    const handleTaskChange = (index, value) => {
+        const newTasks = [...tasks];
+        newTasks[index].value = value;
+        setTasks(newTasks);
+        
+        // Clear task error if it was set
+        if (errors.tasks) {
+            setErrors(prev => ({ ...prev, tasks: '' }));
+        }
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+        
+        // Validate name
+        if (!name || name.trim() === '') {
+            newErrors.name = 'Analysis name is required';
+        }
+        
+        // Validate URL
+        if (!url || url.trim() === '') {
+            newErrors.url = 'URL is required';
+        } else if (!/^https?:\/\/.+/i.test(url)) {
+            newErrors.url = 'Please enter a valid URL';
+        }
+        
+        // Validate maxNumberOfParticipants
+        if (!maxNumberOfParticipants || maxNumberOfParticipants < 1) {
+            newErrors.maxNumberOfParticipants = 'Number of participants must be at least 1';
+        }
+        
+        // Validate tasks
+        const nonEmptyTasks = tasks.filter(task => task.value.trim() !== '');
+        if (nonEmptyTasks.length === 0) {
+            newErrors.tasks = 'At least one task with content is required';
+        }
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
+        // Validate form
+        if (!validateForm()) {
+            return;
+        }
+        
+        // Filter out empty tasks
+        const nonEmptyTasks = tasks.filter(task => task.value.trim() !== '');
+        
+        // Format tasks for API
+        const formattedTasks = nonEmptyTasks.map(task => ({
+            taskType: "text",
+            taskContent: task.value
+        }));
 
         const analysisData = {
             name,
             url,
             maxNumberOfParticipants,
             scenario,
-            tasks: [{taskType: "text", taskContent: 'do this and that'}], // TODO - FIX task creation logic here
-            device: 'computer',
-            
-            // tasks: tasks.reduce((acc, task, index) => {
-            //     acc[`task${index + 1}`] = task.value;
-            //     return acc;
-            // }, {})
+            tasks: formattedTasks,
+            device: 'computer'
         }
         
         try {
@@ -36,60 +125,111 @@ export const CreateAnalysisPage = () => {
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', 'gap': '8px' }}>
-                <h2>Create Analysis</h2>
-                <label htmlFor="name">Analysis Name:</label>
-                <input
-                    type="text"
-                    id="name"
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    value={name}
-                />
+        <Box sx={{ maxWidth: 600 }} mx="auto" mt="xl">
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+                <Title order={2} mb="lg">Create Analysis</Title>
+                <form onSubmit={handleSubmit}>
+                    <TextInput
+                        label="Analysis Name"
+                        placeholder="Enter analysis name"
+                        value={name}
+                        onChange={(e) => {
+                            setName(e.target.value);
+                            if (errors.name) {
+                                setErrors(prev => ({ ...prev, name: '' }));
+                            }
+                        }}
+                        error={errors.name}
+                        required
+                        mb="md"
+                    />
 
-                <label htmlFor="url">Analysis URL:</label>
-                <textarea
-                    id="url"
-                    onChange={(e) => setUrl(e.target.value)}
-                    required
-                    value={url}
-                />
+                    <Textarea
+                        label="Analysis URL"
+                        placeholder="Enter URL for analysis"
+                        value={url}
+                        onChange={(e) => {
+                            setUrl(e.target.value);
+                            if (errors.url) {
+                                setErrors(prev => ({ ...prev, url: '' }));
+                            }
+                        }}
+                        error={errors.url}
+                        required
+                        mb="md"
+                    />
 
-                <label htmlFor="scenario">Scenario - please indicate the mindset the user should have when completing this test (Optional)</label>
-                <textarea 
-                name="scenario"
-                id="scenario"
-                onChange={(e) => setScenario(e.target.value)}
-                value={scenario}
-                >
+                    <Textarea
+                        label="Scenario - please indicate the mindset the user should have when completing this test (Optional)"
+                        placeholder="Enter scenario description"
+                        value={scenario}
+                        onChange={(e) => setScenario(e.target.value)}
+                        mb="md"
+                        minRows={3}
+                    />
 
-                </textarea>
+                    <NumberInput
+                        label="Number of Participants - Recommended: 5-10"
+                        value={maxNumberOfParticipants}
+                        onChange={(value) => {
+                            setmaxNumberOfParticipants(value);
+                            if (errors.maxNumberOfParticipants) {
+                                setErrors(prev => ({ ...prev, maxNumberOfParticipants: '' }));
+                            }
+                        }}
+                        error={errors.maxNumberOfParticipants}
+                        required
+                        min={1}
+                        mb="md"
+                    />
 
-                <label htmlFor="maxNumberOfParticipants">Number of Participants: - Recommended: 5-10</label>
-                <input
-                    type="number"
-                    id="maxNumberOfParticipants"
-                    onChange={(e) => setmaxNumberOfParticipants(e.target.value)}
-                    required
-                    value={maxNumberOfParticipants}
-                />
+                    <Box mb="md">
+                        <Group position="apart" mb="xs">
+                            <Text weight={500}>Tasks</Text>
+                            <Button onClick={addTask} variant="outline" size="sm">
+                                Add Task
+                            </Button>
+                        </Group>
+                        
+                        {errors.tasks && (
+                            <Alert icon={<IconAlertCircle size="1rem" />} title="Task Error" color="red" mb="sm">
+                                {errors.tasks}
+                            </Alert>
+                        )}
 
-                <div className="analysisTasks flex flex-col gap-4" style={{ display: 'flex', flexDirection: 'column', 'gap': '8px' }}>
-                    <label htmlFor="task1">question 1</label>
-                    <textarea className="task1"></textarea>
+                        {tasks.map((task, index) => (
+                            <Card key={index} shadow="none" padding="sm" radius="md" withBorder mb="sm">
+                                <Group position="apart" mb="xs">
+                                    <Text size="sm" weight={500}>Task {index + 1}</Text>
+                                    {tasks.length > 1 && (
+                                        <Button
+                                            onClick={() => removeTask(index)}
+                                            variant="subtle"
+                                            color="red"
+                                            size="xs"
+                                        >
+                                            Remove
+                                        </Button>
+                                    )}
+                                </Group>
+                                <Textarea
+                                    placeholder="Enter task description"
+                                    value={task.value}
+                                    onChange={(e) => handleTaskChange(index, e.target.value)}
+                                    minRows={2}
+                                />
+                            </Card>
+                        ))}
+                    </Box>
 
-                    <label htmlFor="task2">question 2</label>
-                    <textarea className="task2"></textarea>
-                    
-                    <label htmlFor="task3">question 3</label>
-                    <textarea className="task3"></textarea>
-                </div>
-                
-
-                <button type="submit">Create Analysis</button>
-            </form>
-        </>
+                    <Group position="right" mt="md">
+                        <Button type="submit">
+                            Create Analysis
+                        </Button>
+                    </Group>
+                </form>
+            </Card>
+        </Box>
     );
 };
 
