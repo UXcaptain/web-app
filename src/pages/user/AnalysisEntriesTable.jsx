@@ -1,5 +1,4 @@
 import { Table } from '@mantine/core';
-import { useNavigate } from "react-router";
 import apiClient from '../../config/API/axiosConfig.mjs';
 
 export const AnalysisEntriesTable = (props) => {
@@ -9,7 +8,7 @@ export const AnalysisEntriesTable = (props) => {
     const handleViewAnalysisEntry = async (analysisEntryId) => {
 
         try {
-            const analysisEntryUrl = await apiClient.get(`/api/v1/entry/${analysisEntryId}`);
+            const analysisEntryUrl = await apiClient.get(`/api/v1/analysisEntry/${analysisEntryId}`);
 
             const followableUrl = analysisEntryUrl.data.analysisEntryUrl
             window.open(followableUrl, '_blank')
@@ -23,18 +22,20 @@ export const AnalysisEntriesTable = (props) => {
 
     const rows = Array.isArray(participantsArray) && participantsArray.length > 0 ? participantsArray.map((item) => (
         <Table.Tr key={item.id}>
-            <Table.Td>{item.ParticipantsProfile.name}</Table.Td>
-            <Table.Td>{item.ParticipantsProfile.last_name}</Table.Td>
-            <Table.Td>{item.ParticipantsProfile.gender}</Table.Td>
-            <Table.Td>{item.ParticipantsProfile.country}</Table.Td>
+            {/* <Table.Td>{item.ParticipantsProfile.name || 'N/A'}</Table.Td>
+            <Table.Td>{item.ParticipantsProfile.last_name || 'N/A'}</Table.Td>
+            <Table.Td>{item.ParticipantsProfile.gender || 'N/A'}</Table.Td>
+            <Table.Td>{item.ParticipantsProfile.country || 'N/A'}</Table.Td> */}
 
             
-            {/* <Table.Td><button onClick={() => navigate(`/entry/${item.id}`)}>Play recording</button> </Table.Td> */}
+            {/* <Table.Td><button onClick={() => navigate(`/entry/${item.id}`)}>Play recording</button> </Table.Td> //* Unused but kept here because in the future we will have a dedicated video */} 
 
             <Table.Td><button onClick={() => handleViewAnalysisEntry(item.id)}> view analysis entry</button></Table.Td>
         
         </Table.Tr>
     )) : [];
+
+    
 
     return (
         <Table.ScrollContainer minWidth={800}>

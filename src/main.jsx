@@ -11,7 +11,7 @@ import IndexWrapper from './pages/index/indexWrapper.jsx'
 import Index from './pages/index/index.jsx'
 import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx'
 import AdminDashboardWrapper from './pages/admin/AdminDashboardWrapper.jsx'
-import UserProfile from './pages/user/UserProfile.jsx'
+import CustomerProfile from './pages/user/CustomerProfile.jsx'
 import UserWrapper from './pages/user/UserWrapper.jsx'
 import UserDashboard from './pages/user/UserDashboard.jsx'
 import RecoverPasswordPage from './pages/auth/RecoverPasswordPage.jsx'
@@ -22,7 +22,6 @@ import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
 import UserBilling from './pages/user/userBilling.jsx'
-import UpdatePasswordPage from './pages/user/UpdatePasswordPage.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
 
 import posthog from 'posthog-js';
@@ -54,8 +53,7 @@ createRoot(document.getElementById('root')).render(
 
         <Route path='/user' element={<UserWrapper />} >
           <Route index element={<UserDashboard />} />
-          <Route path='profile' element={<UserProfile />} />
-          <Route path="update-password" element={<UpdatePasswordPage />} />
+          <Route path='profile' element={<CustomerProfile />} />
           <Route path="billing" element={<UserBilling />} />
         </Route>
 

@@ -14,7 +14,7 @@ import {
   } from '@mantine/core';
   import classes from './AuthenticationTitle.module.css';
 
-const RegistrationForm = () => {
+const ParticipantRegistrationForm = () => {
 
 const [registerResponse, setRegisterResponse] = useState(null)
 const [registerError, setRegisterError] = useState(null)
@@ -25,7 +25,7 @@ const handleRegister = async (e) => {
     const data = {
         username: e.target.username.value,
         password: e.target.password.value,
-        role: 'customer',
+        role: 'participant',
     }
     
     try {
@@ -69,7 +69,7 @@ return (
     <>
                         <Container size={420} my={40}>
                         <Title ta="center" className={classes.title}>
-                          Welcome back!
+                          Welcome back Participant!
                         </Title>
                         <Text c="dimmed" size="sm" ta="center" mt={5}>
                           Already have an account?{' '}
@@ -92,7 +92,7 @@ return (
                         )}
                         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                           <form onSubmit={handleRegister}>
-                            <TextInput name="username" label="username" placeholder="you@mantine.dev" required defaultValue="username@gmail.com" />
+                            <TextInput name="username" label="username" placeholder="you@mantine.dev" required defaultValue="participant@gmail.com" />
                             <PasswordInput name="password" label="password" placeholder="Your password" required mt="md" defaultValue="123456" />
 
                             <Button type="submit" fullWidth mt="xl">
@@ -104,4 +104,4 @@ return (
                     </>
 )};
 
-export default RegistrationForm
+export default ParticipantRegistrationForm

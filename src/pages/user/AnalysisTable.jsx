@@ -1,5 +1,5 @@
 import apiClient from "../../config/API/axiosConfig.mjs";
-import { Anchor, Table } from '@mantine/core';
+import { Anchor, Table, Button } from '@mantine/core';
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 
@@ -32,15 +32,13 @@ export const AnalysisTable = () => {
     // Ensure analysesArray is an array before mapping
     const rows = Array.isArray(analysesArray) && analysesArray.length > 0 ? analysesArray.map((item) => (
         <Table.Tr key={item.id}>
-            <Table.Td>
-                <Anchor component="button" fz="sm">
-                    {item.name}
-                </Anchor>
-            </Table.Td>
+            <Table.Td>{item.name}</Table.Td>
             <Table.Td>{item.url}</Table.Td>
+            <Table.Td>{item.device}</Table.Td>
             <Table.Td>{item._count.AnalysisEntries} / {item.max_number_of_participants}</Table.Td>
+            <Table.Td>{item.status}</Table.Td>
             <Table.Td>{new Date(item.created_at).toLocaleDateString()}</Table.Td>
-            <Table.Td><button onClick={() => item?.id && navigate(`/analysis/${item.id}`)}>View Details</button></Table.Td>
+            <Table.Td><Button variant="subtle" onClick={() => item?.id && navigate(`/analysis/${item.id}`)}>View Details</Button></Table.Td>
         </Table.Tr>
     )) : [];
 
@@ -51,7 +49,9 @@ export const AnalysisTable = () => {
                     <Table.Tr>
                         <Table.Th>Analysis Name</Table.Th>
                         <Table.Th>URL</Table.Th>
+                        <Table.Th>Device</Table.Th>
                         <Table.Th>Participants</Table.Th>
+                        <Table.Th>Status</Table.Th>
                         <Table.Th>Date</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
