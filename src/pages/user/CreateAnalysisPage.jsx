@@ -18,6 +18,22 @@ export const CreateAnalysisPage = () => {
 
     const [name, setName] = useState(null);
     const [url, setUrl] = useState(null);
+    
+    // Function to normalize URL by adding https:// if missing
+    const normalizeUrl = (inputUrl) => {
+        if (!inputUrl) return '';
+        
+        // Trim whitespace
+        const trimmedUrl = inputUrl.trim();
+        
+        // Check if it already has a protocol
+        if (trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')) {
+            return trimmedUrl;
+        }
+        
+        // Add https:// if no protocol is present
+        return `https://${trimmedUrl}`;
+    };
     const [maxNumberOfParticipants, setmaxNumberOfParticipants] = useState(5);
     const [tasks, setTasks] = useState([{ value: '' }]);
     const [scenario, setScenario] = useState(null);
@@ -70,8 +86,9 @@ export const CreateAnalysisPage = () => {
         // Validate URL
         if (!url || url.trim() === '') {
             newErrors.url = 'URL is required';
-        } else if (!/^https?:\/\/.+/i.test(url)) {
-            newErrors.url = 'Please enter a valid URL';
+        } else if (!/^https?:\/\/(www\.)?([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}.*$/.test(url) &&
+                   !/^(www\.)?([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}.*$/.test(url)) {
+            newErrors.url = 'Please enter a valid URL with a proper domain structure';
         }
         
         // Validate maxNumberOfParticipants
@@ -108,7 +125,7 @@ export const CreateAnalysisPage = () => {
 
         const analysisData = {
             name,
-            url,
+            url: normalizeUrl(url),
             maxNumberOfParticipants,
             scenario,
             tasks: formattedTasks,

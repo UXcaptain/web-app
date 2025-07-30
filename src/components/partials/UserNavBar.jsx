@@ -2,7 +2,6 @@ import { NavLink } from 'react-router'
 import { useState } from 'react';
 import {
   IconLogout,
-  IconKeyFilled,
   IconHomeFilled,
   IconUserCircle,
   IconCreditCardFilled
@@ -34,7 +33,6 @@ const UserNavBar = () => {
 
   const data = [
   { link: '/dashboard', label: 'User Home', icon: IconHomeFilled },
-  { link: '/user/update-password', label: 'Update password', icon: IconKeyFilled },
   { link: '/user/profile', label: 'User Profile', icon: IconUserCircle },
   { link: '/user/billing', label: 'Billing', icon: IconCreditCardFilled },
 ];

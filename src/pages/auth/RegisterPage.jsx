@@ -1,9 +1,15 @@
-import RegistrationForm from '../../components/auth/RegistrationForm'
+import CustomerRegistrationForm from '../../components/auth/CustomerRegistrationForm'
+import ParticipantRegistrationForm from '../../components/auth/ParticipantRegistrationForm'
 
 const RegisterPage = () => {
 
     return (
-        <RegistrationForm />
+        <>
+        <CustomerRegistrationForm />
+
+        {/* <ParticipantRegistrationForm /> */}
+        </>
+
     )
 }
 
