@@ -15,21 +15,21 @@ const UserWrapper = () => {
     const [userId, setUserId] = useState(null);
 
     
-    useEffect(() => {
-        const checkSession = async () => {
-            try {
-                const response = await apiClient.get(`/api/v1/auth/session`);
-                setUserId(response.data.user.id)
-                setLoading(false);
+    // useEffect(() => {
+    //     const checkSession = async () => {
+    //         try {
+    //             const response = await apiClient.get(`/api/v1/auth/session`);
+    //             setUserId(response.data.user.id)
+    //             setLoading(false);
 
-            } catch (error) {
-                logError('Failed to check session', error);
-                navigate('/auth/login');
-            }
-        };
+    //         } catch (error) {
+    //             logError('Failed to check session', error);
+    //             navigate('/auth/login');
+    //         }
+    //     };
 
-        checkSession();
-    }, [navigate]);
+    //     checkSession();
+    // }, [navigate]);
 
 
     useEffect( () => {

@@ -1,5 +1,6 @@
 import apiClient from "../../config/API/axiosConfig.mjs";
-import { Anchor, Table, Button } from '@mantine/core';
+import { Table, Button, Text, Center, Loader, Alert } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 
@@ -13,10 +14,8 @@ export const AnalysisTable = () => {
         const fetchAnalysis = async () => {
             try {
                 const response = await apiClient.get(`/api/v1/analysis`);
-
-                        setAnalysesArray(response.data.analyses); // Access the analyses array directly
-                        setLoading(false);
-
+                setAnalysesArray(response.data.analyses);
+                setLoading(false);
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
@@ -26,25 +25,76 @@ export const AnalysisTable = () => {
         fetchAnalysis();
     }, []);
 
-    if (loading) return <div>Loading Analysis entries...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) {
+        return (
+            <Center py="xl">
+                <Loader />
+                <Text ml="sm">Loading analysis entries...</Text>
+            </Center>
+        );
+    }
 
-    // Ensure analysesArray is an array before mapping
-    const rows = Array.isArray(analysesArray) && analysesArray.length > 0 ? analysesArray.map((item) => (
+    if (error) {
+        return (
+            <Alert
+                icon={<IconAlertCircle size={16} />}
+                title="Error"
+                color="red"
+                variant="light"
+            >
+                {error}
+            </Alert>
+        );
+    }
+
+    // Handle empty state
+    if (!Array.isArray(analysesArray) || analysesArray.length === 0) {
+        return (
+            <Center py="xl">
+                <Text>No analysis entries found</Text>
+            </Center>
+        );
+    }
+
+    const rows = analysesArray.map((item) => (
         <Table.Tr key={item.id}>
-            <Table.Td>{item.name}</Table.Td>
-            <Table.Td>{item.url}</Table.Td>
+            <Table.Td>
+                <Text fw={500}>{item.name}</Text>
+            </Table.Td>
+            <Table.Td>
+                <Text c="dimmed" size="sm">{item.url}</Text>
+            </Table.Td>
             <Table.Td>{item.device}</Table.Td>
-            <Table.Td>{item._count.AnalysisEntries} / {item.max_number_of_participants}</Table.Td>
-            <Table.Td>{item.status}</Table.Td>
-            <Table.Td>{new Date(item.created_at).toLocaleDateString()}</Table.Td>
-            <Table.Td><Button variant="subtle" onClick={() => item?.id && navigate(`/analysis/${item.id}`)}>View Details</Button></Table.Td>
+            <Table.Td>
+                {item._count.AnalysisEntries} / {item.max_number_of_participants}
+            </Table.Td>
+            <Table.Td>
+                <Text c={item.status === 'active' ? 'green' : 'dimmed'}>
+                    {item.status}
+                </Text>
+            </Table.Td>
+            <Table.Td>
+                {new Date(item.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                })}
+            </Table.Td>
+            <Table.Td>
+                <Button
+                    variant="subtle"
+                    size="sm"
+                    onClick={() => item?.id && navigate(`/analysis/${item.id}`)}
+                >
+                    View Details
+                </Button>
+            </Table.Td>
         </Table.Tr>
-    )) : [];
+    ));
 
     return (
         <Table.ScrollContainer minWidth={800}>
-            <Table verticalSpacing="xs">
+            <Table verticalSpacing="sm" striped highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Analysis Name</Table.Th>
@@ -53,6 +103,7 @@ export const AnalysisTable = () => {
                         <Table.Th>Participants</Table.Th>
                         <Table.Th>Status</Table.Th>
                         <Table.Th>Date</Table.Th>
+                        <Table.Th>Actions</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>

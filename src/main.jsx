@@ -21,17 +21,17 @@ import CreateAnalysisPage from './pages/user/CreateAnalysisPage.jsx'
 import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
-import UserBilling from './pages/user/userBilling.jsx'
+import UserBilling from './pages/user/UserBilling.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
 
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
 
-posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
-  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
-  defaults: '2025-05-24',
-  debug: false,
-});
+// posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
+//   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+//   defaults: '2025-05-24',
+//   debug: false,
+// });
 
 
 createRoot(document.getElementById('root')).render(
