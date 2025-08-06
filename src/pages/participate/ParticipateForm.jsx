@@ -3,21 +3,25 @@ import {
   Button,
   Container,
   Paper,
-  Text,
   TextInput,
   Title,
   Alert,
-  List,
-  ThemeIcon
+  Text,
+  Card,
+  Stack,
 } from '@mantine/core';
+import { AnalysisStepNavigator } from "../../components/partials/AnalysisStepNavigator.jsx";
 import { IconAlertCircle, IconClipboardText, IconPlayerPlay } from '@tabler/icons-react';
 import apiClient from "../../config/API/axiosConfig.mjs";
+import Timer from "../../components/partials/Timer.jsx";
 
+// Timer logic moved to Timer component
 export const ParticipateForm = () => {
-    const [analysisId, setAnalysisId] = useState("");
+    const [analysisId, setAnalysisId] = useState("d336acb7-2c48-476d-9ba5-2bf5c51b2b79");
     const [analysisData, setAnalysisData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    // Timer logic moved to Timer component
 
     const handleParticipation = async (e) => {
         e.preventDefault();
@@ -50,11 +54,39 @@ export const ParticipateForm = () => {
         }
     };
 
+    const handleUpdateAnalysisEntry = async () => {
+        if (!analysisData || !analysisData.id) {
+            setError("No analysis data available to update");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(null);
+
+            const data = {
+                status: "completed",
+                notes: "Updated notes"
+            };
+
+            const response = await apiClient.patch(`/v1/analysis-entry/${analysisData.id}`, data);
+
+            if (response.data.success) {
+                setAnalysisData(response.data.analysisData);
+            } else {
+                setError(response.data.message || "Failed to update analysis entry");
+            }
+        } catch (error) {
+            setError(error.response?.data?.message || error.message || "An error occurred");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Container size="sm" my={40}>
             <Title ta="center" mb="xl">Participate in Analysis</Title>
-            
+                    
             <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                 <form onSubmit={handleParticipation}>
                     <TextInput
@@ -75,6 +107,19 @@ export const ParticipateForm = () => {
                     >
                         {loading ? "Processing..." : "Participate"}
                     </Button>
+                    
+                    {analysisData && (
+                        <Button
+                            type="button"
+                            fullWidth
+                            mt="xl"
+                            leftSection={<IconClipboardText size={14} />}
+                            loading={loading}
+                            onClick={handleUpdateAnalysisEntry}
+                        >
+                            {loading ? "Updating..." : "Update Analysis Entry"}
+                        </Button>
+                    )}
                 </form>
             </Paper>
             
@@ -90,44 +135,21 @@ export const ParticipateForm = () => {
             )}
             
             {analysisData && (
-                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-                    <Title order={3} mb="md">Analysis Data Retrieved</Title>
-                    
-                    <Text mt="md">
-                        <strong>Scenario:</strong> {analysisData.scenario}
-                    </Text>
-                    
-                    <Text mt="md">
-                        <strong>Analysis URL:</strong> {analysisData.analysisUrl}
-                    </Text>
-                    
-                    <Text mt="md">
-                        <strong>Presigned Upload URL:</strong> {analysisData.presignedUploadUrl}
-                    </Text>
-                    
-                    <Text mt="md" mb="sm">
-                        <strong>Tasks:</strong>
-                    </Text>
-                    
-                    <List
-                        spacing="sm"
-                        size="sm"
-                        icon={
-                            <ThemeIcon color="blue" size={20} radius="xl">
-                                <IconClipboardText size={12} />
-                            </ThemeIcon>
-                        }
-                    >
-                        {analysisData.tasks.map((task, index) => (
-                            <List.Item key={index}>
-                                <Text>
-                                    <strong>Type:</strong> {task.taskType},
-                                    <strong> Content:</strong> {task.taskContent}
-                                </Text>
-                            </List.Item>
-                        ))}
-                    </List>
-                </Paper>
+                <Card withBorder shadow="md" p="lg" mt="xl" radius="md">
+                    <Stack spacing="md">
+                        <Timer analysisData={analysisData} />
+                        <AnalysisStepNavigator
+                            steps={[
+                                { title: "Scenario", content: <Text>{analysisData.scenario}</Text> },
+                                { title: "URL", content: <Text>{analysisData.analysisUrl}</Text> },
+                                ...analysisData.tasks.map((task, index) => ({
+                                    title: `Task ${index + 1}`,
+                                    content: <Text>{task.taskContent}</Text>
+                                }))
+                            ]}
+                        />
+                    </Stack>
+                </Card>
             )}
         </Container>
     );

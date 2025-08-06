@@ -27,6 +27,7 @@ import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
 import { ParticipateForm } from './pages/participate/ParticipateForm.jsx'
+import { ParticipateWrapper } from './pages/participate/ParticipateWrapper.jsx'
 
 posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
   api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
@@ -72,9 +73,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path=":id" element={<ViewAnalysisEntryPage />} />
               </Route>
 
-        <Route path="/participate" element={<ParticipateForm />} />
-          
-
+        <Route path="/participate" element={<ParticipateWrapper />} />
         
 
         <Route path="/auth" element={<AuthWrapper />}>
