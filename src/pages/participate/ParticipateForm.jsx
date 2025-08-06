@@ -141,7 +141,19 @@ export const ParticipateForm = () => {
                         <AnalysisStepNavigator
                             steps={[
                                 { title: "Scenario", content: <Text>{analysisData.scenario}</Text> },
-                                { title: "URL", content: <Text>{analysisData.analysisUrl}</Text> },
+                                {
+                                  title: "URL",
+                                  content: (() => {
+                                    const raw = analysisData.analysisUrl || "";
+                                    const hasProtocol = /^https?:\/\//i.test(raw);
+                                    const href = hasProtocol ? raw : `https://${raw}`;
+                                    return (
+                                      <Text>
+                                        <a href={href} target="_blank" rel="noopener noreferrer">{raw}</a>
+                                      </Text>
+                                    );
+                                  })()
+                                },
                                 ...analysisData.tasks.map((task, index) => ({
                                     title: `Task ${index + 1}`,
                                     content: <Text>{task.taskContent}</Text>
