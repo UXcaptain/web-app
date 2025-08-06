@@ -156,7 +156,40 @@ export const ParticipateForm = () => {
                                 },
                                 ...analysisData.tasks.map((task, index) => ({
                                     title: `Task ${index + 1}`,
-                                    content: <Text>{task.taskContent}</Text>
+                                    content: (() => {
+                                      const content = String(task.taskContent ?? '');
+                                      // URL regex: matches http(s) and bare domains like example.com or sub.example.co.uk
+                                      const urlRegex = /(https?:\/\/[^\s]+|(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?:\/[^\s]*)?)/g;
+                                      
+                                      const parts = [];
+                                      let lastIndex = 0;
+                                      let match;
+                                      
+                                      while ((match = urlRegex.exec(content)) !== null) {
+                                        const urlText = match[0];
+                                        const start = match.index;
+                                        const end = start + urlText.length;
+                                        
+                                        if (start > lastIndex) {
+                                          parts.push(content.slice(lastIndex, start));
+                                        }
+                                        
+                                        const hasProtocol = /^https?:\/\//i.test(urlText);
+                                        const href = hasProtocol ? urlText : `https://${urlText}`;
+                                        
+                                        parts.push(
+                                          <a key={`${index}-link-${start}`} href={href} target="_blank" rel="noopener noreferrer">{urlText}</a>
+                                        );
+                                        
+                                        lastIndex = end;
+                                      }
+                                      
+                                      if (lastIndex < content.length) {
+                                        parts.push(content.slice(lastIndex));
+                                      }
+                                      
+                                      return <Text>{parts.length ? parts : content}</Text>;
+                                    })()
                                 }))
                             ]}
                         />
