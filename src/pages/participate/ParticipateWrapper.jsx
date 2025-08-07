@@ -211,6 +211,7 @@ const ParticipateContent = () => {
             <AnalysisStepNavigator
               steps={buildAnalysisSteps()}
               onExit={handleExitAnalysis}
+              analysisData={analysisData}
             />
           </Card>
         </>
