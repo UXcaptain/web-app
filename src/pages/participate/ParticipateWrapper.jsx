@@ -9,15 +9,25 @@ import apiClient from "../../config/API/axiosConfig.mjs";
 
 export const ParticipateWrapper = () => {
   const [analysisData, setAnalysisData] = useState(null);
+  const [analysisId, setAnalysisId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSecurityModal, setShowSecurityModal] = useState(false);
 
-  const handleSubmitId = async (analysisId) => {
-    if (!analysisId || !analysisId.trim()) {
+  const handleSubmitId = async (submittedAnalysisId) => {
+    if (!submittedAnalysisId || !submittedAnalysisId.trim()) {
       setError("Please enter an analysis ID");
       return;
     }
+
+    // Store the analysis ID and show security modal without making API call yet
+    setAnalysisId(submittedAnalysisId);
+    setShowSecurityModal(true);
+    setError(null);
+  };
+
+  const fetchAnalysisData = async () => {
+    if (!analysisId) return;
 
     try {
       setLoading(true);
@@ -27,7 +37,6 @@ export const ParticipateWrapper = () => {
 
       if (response?.data?.success) {
         setAnalysisData(response.data.analysisData);
-        setShowSecurityModal(true);
       } else {
         setError(response?.data?.message || "Failed to retrieve analysis data");
       }
@@ -40,10 +49,12 @@ export const ParticipateWrapper = () => {
 
   const handleAcceptSecurity = () => {
     setShowSecurityModal(false);
+    fetchAnalysisData();
   };
 
   const handleDeclineSecurity = () => {
     setShowSecurityModal(false);
+    setAnalysisId(null);
     setAnalysisData(null);
   };
 
@@ -51,7 +62,7 @@ export const ParticipateWrapper = () => {
     <Container size="sm" my={40}>
       <Title ta="center" mb="xl">Participate in Analysis</Title>
 
-      {!analysisData && (
+      {!analysisId && (
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <ParticipateForm onSubmitId={handleSubmitId} loading={loading} />
         </Paper>
