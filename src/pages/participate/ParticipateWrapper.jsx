@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
-import { Container, Title, Paper, Alert, Card, Stack, Group, Text, Button, rem } from "@mantine/core";
-import { IconAlertCircle, IconVideo } from "@tabler/icons-react";
+import { useState, useCallback, useEffect } from "react";
+import { Container, Title, Paper, Alert, Card, Stack, Group, Text, Button, Modal, rem } from "@mantine/core";
+import { IconAlertCircle, IconVideo, IconAlertTriangle } from "@tabler/icons-react";
 import { ParticipateForm } from "./ParticipateForm";
 import { SecurityModal } from "./SecurityModal";
 import Timer from "../../components/partials/Timer.jsx";
@@ -18,7 +18,8 @@ const ParticipateContent = () => {
   const [showSecurityModal, setShowSecurityModal] = useState(false);
   const [securityAccepted, setSecurityAccepted] = useState(false);
   const [showPermissionsOnly, setShowPermissionsOnly] = useState(false);
-  const { isRecording, stopAllStreams, hasPermissions } = useMediaPermissions();
+  const [showStoppedRecordingModal, setShowStoppedRecordingModal] = useState(false);
+  const { isRecording, stopAllStreams, hasPermissions, permissionStatus } = useMediaPermissions();
 
   const handleSubmitId = async (submittedAnalysisId) => {
     if (!submittedAnalysisId || !submittedAnalysisId.trim()) {
@@ -71,10 +72,15 @@ const ParticipateContent = () => {
     // Stop all media streams
     stopAllStreams();
     
-    // Reset state
+    // Reset ALL state to initial values
     setAnalysisData(null);
     setAnalysisId(null);
     setError(null);
+    setShowSecurityModal(false);
+    setSecurityAccepted(false);
+    setShowPermissionsOnly(false);
+    setShowStoppedRecordingModal(false);
+    setLoading(false);
     
     // Could also navigate away if needed
     // navigate('/');
@@ -90,6 +96,20 @@ const ParticipateContent = () => {
       setShowSecurityModal(true);
     }
   }, [securityAccepted]);
+
+  // Monitor permission status changes during analysis
+  useEffect(() => {
+    // If we're in the middle of an analysis and permissions are lost
+    if (securityAccepted && permissionStatus === 'denied' && analysisData) {
+      setShowStoppedRecordingModal(true);
+    }
+  }, [permissionStatus, securityAccepted, analysisData]);
+
+  const handleRecordingStoppedConfirm = useCallback(() => {
+    // User acknowledged the recording stopped - exit analysis
+    setShowStoppedRecordingModal(false);
+    handleExitAnalysis();
+  }, [handleExitAnalysis]);
 
   // Build the steps array WITHOUT permissions (since it's handled separately now)
   const buildAnalysisSteps = useCallback(() => {
@@ -242,6 +262,36 @@ const ParticipateContent = () => {
           )}
         </>
       )}
+
+      {/* Recording Stopped Warning Modal */}
+      <Modal
+        opened={showStoppedRecordingModal}
+        onClose={() => {}}
+        centered
+        size="md"
+        withCloseButton={false}
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+      >
+        <Stack align="center" spacing="md">
+          <IconAlertTriangle size={64} color="orange" />
+          <Text size="xl" fw={600}>Recording Stopped</Text>
+          <Text size="sm" c="dimmed" ta="center">
+            Screen sharing or microphone access has been stopped.
+            The analysis cannot continue without recording.
+          </Text>
+          <Text size="sm" c="dimmed" ta="center">
+            Your analysis will be cancelled and any recorded data will be discarded.
+          </Text>
+          <Button
+            color="red"
+            onClick={handleRecordingStoppedConfirm}
+            fullWidth
+          >
+            Exit Analysis
+          </Button>
+        </Stack>
+      </Modal>
     </Container>
   );
 };
