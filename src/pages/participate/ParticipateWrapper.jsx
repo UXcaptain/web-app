@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Container, Title, Paper, Alert, Card, Stack, Group, Text, rem } from "@mantine/core";
+import { Container, Title, Paper, Alert, Card, Stack, Group, Text, Button, rem } from "@mantine/core";
 import { IconAlertCircle, IconVideo } from "@tabler/icons-react";
 import { ParticipateForm } from "./ParticipateForm";
 import { SecurityModal } from "./SecurityModal";
@@ -16,7 +16,9 @@ const ParticipateContent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSecurityModal, setShowSecurityModal] = useState(false);
-  const { isRecording, stopAllStreams } = useMediaPermissions();
+  const [securityAccepted, setSecurityAccepted] = useState(false);
+  const [showPermissionsOnly, setShowPermissionsOnly] = useState(false);
+  const { isRecording, stopAllStreams, hasPermissions } = useMediaPermissions();
 
   const handleSubmitId = async (submittedAnalysisId) => {
     if (!submittedAnalysisId || !submittedAnalysisId.trim()) {
@@ -24,28 +26,29 @@ const ParticipateContent = () => {
       return;
     }
 
-    // Store the analysis ID and show security modal without making API call yet
-    setAnalysisId(submittedAnalysisId);
-    setShowSecurityModal(true);
-    setError(null);
-  };
-
-  const fetchAnalysisData = async () => {
-    if (!analysisId) return;
-
     try {
       setLoading(true);
       setError(null);
+      setAnalysisId(submittedAnalysisId);
 
-      const response = await apiClient.post("/api/v1/guestParticipant", { analysisId });
+      // First, check if analysis exists
+      const response = await apiClient.post("/api/v1/guestParticipant", { analysisId: submittedAnalysisId });
 
       if (response?.data?.success) {
         setAnalysisData(response.data.analysisData);
+        // Show permissions screen first
+        setShowPermissionsOnly(true);
       } else {
-        setError(response?.data?.message || "Failed to retrieve analysis data");
+        setError("Analysis not found. Please check your analysis ID and try again.");
+        setAnalysisId(null);
       }
     } catch (err) {
-      setError(err?.response?.data?.message || err?.message || "An error occurred");
+      if (err?.response?.status === 404) {
+        setError("Analysis not found. Please check your analysis ID and try again.");
+      } else {
+        setError(err?.response?.data?.message || "An error occurred while fetching the analysis");
+      }
+      setAnalysisId(null);
     } finally {
       setLoading(false);
     }
@@ -53,13 +56,15 @@ const ParticipateContent = () => {
 
   const handleAcceptSecurity = () => {
     setShowSecurityModal(false);
-    fetchAnalysisData();
+    setSecurityAccepted(true);
+    setShowPermissionsOnly(false);
   };
 
   const handleDeclineSecurity = () => {
     setShowSecurityModal(false);
-    setAnalysisId(null);
-    setAnalysisData(null);
+    setSecurityAccepted(false);
+    setShowPermissionsOnly(true);
+    // Don't clear analysis data, let user try again
   };
 
   const handleExitAnalysis = useCallback(() => {
@@ -76,34 +81,29 @@ const ParticipateContent = () => {
   }, [stopAllStreams]);
 
   const handlePermissionsGranted = useCallback(() => {
-    // Permissions have been granted, the Next button in the navigator will be enabled
-    console.log('Permissions granted, user can proceed to next step');
+    // Permissions have been granted, user can proceed
   }, []);
 
-  // Build the steps array with the permissions step first
+  const handlePermissionsNext = useCallback(() => {
+    // When user clicks next after granting permissions, show security modal
+    if (!securityAccepted) {
+      setShowSecurityModal(true);
+    }
+  }, [securityAccepted]);
+
+  // Build the steps array WITHOUT permissions (since it's handled separately now)
   const buildAnalysisSteps = useCallback(() => {
     if (!analysisData) return [];
 
     const steps = [];
 
-    // Step 1: Permissions Setup (mandatory first step)
-    steps.push({
-      title: "Setup Recording",
-      content: (
-        <MediaPermissionsStep 
-          onPermissionsGranted={handlePermissionsGranted}
-          onExit={handleExitAnalysis}
-        />
-      )
-    });
-
-    // Step 2: Scenario
+    // Step 1: Scenario (permissions already handled before this)
     steps.push({
       title: "Scenario",
       content: <Text>{analysisData.scenario}</Text>
     });
 
-    // Step 3: URL
+    // Step 2: URL
     steps.push({
       title: "URL",
       content: (() => {
@@ -118,7 +118,7 @@ const ParticipateContent = () => {
       })()
     });
 
-    // Step 4+: Tasks
+    // Step 3+: Tasks
     (analysisData.tasks || []).forEach((task, index) => {
       steps.push({
         title: `Task ${index + 1}`,
@@ -160,7 +160,7 @@ const ParticipateContent = () => {
     });
 
     return steps;
-  }, [analysisData, handlePermissionsGranted, handleExitAnalysis]);
+  }, [analysisData]);
 
   return (
     <Container size="sm" my={40}>
@@ -191,29 +191,55 @@ const ParticipateContent = () => {
 
       {analysisData && !showSecurityModal && (
         <>
-          {/* Timer Card - only show when recording is active */}
-          {isRecording && (
-            <Card withBorder shadow="md" p="lg" mt="xl" radius="md">
-              <Stack align="center" spacing="xs">
-                <Group gap="xs" align="center">
-                  <IconVideo size={20} color="red" />
-                  <Text c="red" fw={600}>Recording in progress</Text>
+          {/* Show only permissions step initially */}
+          {showPermissionsOnly && !securityAccepted && (
+            <Card withBorder shadow="md" p="lg" mt="md" radius="md">
+              <Stack spacing="md">
+                <Text size="lg" fw={500}>Setup Recording Permissions</Text>
+                <MediaPermissionsStep
+                  onPermissionsGranted={handlePermissionsGranted}
+                  onExit={handleExitAnalysis}
+                />
+                <Group justify="flex-end">
+                  <Button
+                    onClick={handlePermissionsNext}
+                    disabled={!hasPermissions()}
+                  >
+                    Next
+                  </Button>
                 </Group>
-                <div style={{ fontSize: rem(40), fontWeight: 700, textAlign: "center" }}>
-                  <Timer analysisData={analysisData} />
-                </div>
               </Stack>
             </Card>
           )}
 
-          {/* Analysis content Card with permissions step */}
-          <Card withBorder shadow="md" p="lg" mt="md" radius="md">
-            <AnalysisStepNavigator
-              steps={buildAnalysisSteps()}
-              onExit={handleExitAnalysis}
-              analysisData={analysisData}
-            />
-          </Card>
+          {/* Show full analysis steps after security is accepted */}
+          {securityAccepted && (
+            <>
+              {/* Timer Card - only show when recording is active */}
+              {isRecording && (
+                <Card withBorder shadow="md" p="lg" mt="xl" radius="md">
+                  <Stack align="center" spacing="xs">
+                    <Group gap="xs" align="center">
+                      <IconVideo size={20} color="red" />
+                      <Text c="red" fw={600}>Recording in progress</Text>
+                    </Group>
+                    <div style={{ fontSize: rem(40), fontWeight: 700, textAlign: "center" }}>
+                      <Timer analysisData={analysisData} />
+                    </div>
+                  </Stack>
+                </Card>
+              )}
+
+              {/* Analysis content Card */}
+              <Card withBorder shadow="md" p="lg" mt="md" radius="md">
+                <AnalysisStepNavigator
+                  steps={buildAnalysisSteps()}
+                  onExit={handleExitAnalysis}
+                  analysisData={analysisData}
+                />
+              </Card>
+            </>
+          )}
         </>
       )}
     </Container>
