@@ -19,6 +19,7 @@ export const MediaPermissionsProvider = ({ children }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('idle'); // idle, uploading, success, error
   const [uploadError, setUploadError] = useState('');
+  const [uploadProgress, setUploadProgress] = useState(0); // 0-100
   
   // Refs for MediaRecorder
   const mediaRecorderRef = useRef(null);
@@ -42,7 +43,6 @@ export const MediaPermissionsProvider = ({ children }) => {
       // Listen for stream end (user stops sharing)
       stream.getVideoTracks().forEach(track => {
         track.addEventListener('ended', () => {
-          console.log('Screen sharing stopped by user');
           handleStreamEnded('screen');
         });
       });
@@ -50,7 +50,6 @@ export const MediaPermissionsProvider = ({ children }) => {
       setScreenStream(stream);
       return stream;
     } catch (error) {
-      console.error('Screen permission error:', error);
       if (error.name === 'NotAllowedError') {
         setErrorMessage('Screen sharing permission was denied. Please allow screen sharing to continue.');
       } else if (error.name === 'NotFoundError') {
@@ -81,7 +80,6 @@ export const MediaPermissionsProvider = ({ children }) => {
       // Listen for stream end
       stream.getAudioTracks().forEach(track => {
         track.addEventListener('ended', () => {
-          console.log('Microphone access stopped');
           handleStreamEnded('audio');
         });
       });
@@ -89,7 +87,6 @@ export const MediaPermissionsProvider = ({ children }) => {
       setAudioStream(stream);
       return stream;
     } catch (error) {
-      console.error('Audio permission error:', error);
       if (error.name === 'NotAllowedError') {
         setErrorMessage('Microphone permission was denied. Please allow microphone access to continue.');
       } else if (error.name === 'NotFoundError') {
@@ -109,7 +106,6 @@ export const MediaPermissionsProvider = ({ children }) => {
     const audioToUse = audio || audioStream;
     
     if (!screenToUse || !audioToUse) {
-      console.error('Cannot start recording: streams not available');
       return false;
     }
 
@@ -147,12 +143,11 @@ export const MediaPermissionsProvider = ({ children }) => {
 
       // Handle recording stop
       mediaRecorder.onstop = () => {
-        console.log('Recording stopped, chunks collected:', recordedChunksRef.current.length);
+        // Recording stopped
       };
 
       // Handle errors
       mediaRecorder.onerror = (event) => {
-        console.error('MediaRecorder error:', event);
         setErrorMessage('Recording error: ' + event.error);
       };
 
@@ -161,10 +156,8 @@ export const MediaPermissionsProvider = ({ children }) => {
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
       
-      console.log('Recording started');
       return true;
     } catch (error) {
-      console.error('Failed to start recording:', error);
       setErrorMessage('Failed to start recording: ' + error.message);
       return false;
     }
@@ -174,7 +167,6 @@ export const MediaPermissionsProvider = ({ children }) => {
   const stopRecording = useCallback(() => {
     return new Promise((resolve) => {
       if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive') {
-        console.log('No active recording to stop');
         resolve(null);
         return;
       }
@@ -183,7 +175,6 @@ export const MediaPermissionsProvider = ({ children }) => {
       
       // Set up the onstop handler to resolve with the blob
       mediaRecorder.onstop = () => {
-        console.log('Creating blob from recorded chunks');
         const blob = new Blob(recordedChunksRef.current, {
           type: mediaRecorder.mimeType || 'video/webm'
         });
@@ -198,10 +189,9 @@ export const MediaPermissionsProvider = ({ children }) => {
     });
   }, []);
 
-  // Upload recording to AWS S3 using presigned URL
+  // Upload recording to AWS S3 using presigned URL with progress tracking
   const uploadRecording = useCallback(async (blob, presignedUrl) => {
     if (!blob || !presignedUrl) {
-      console.error('Missing blob or presigned URL for upload');
       setUploadError('Missing recording data or upload URL');
       return false;
     }
@@ -209,51 +199,68 @@ export const MediaPermissionsProvider = ({ children }) => {
     try {
       setUploadStatus('uploading');
       setUploadError('');
+      setUploadProgress(0);
       
-      console.log('Starting upload to S3:');
-      console.log('- Presigned URL:', presignedUrl);
-      console.log('- Blob size:', blob.size, 'bytes');
-      console.log('- Blob type:', blob.type || 'video/webm');
-      
-      // Upload to S3 using the presigned URL
-      // Note: S3 presigned URLs typically don't require additional headers for CORS
-      const response = await fetch(presignedUrl, {
-        method: 'PUT',
-        body: blob,
-        headers: {
-          'Content-Type': blob.type || 'video/webm',
-        },
-        // Add mode for CORS handling
-        mode: 'cors',
+      // Create XMLHttpRequest for progress tracking
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        
+        // Track upload progress
+        xhr.upload.addEventListener('progress', (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            setUploadProgress(percentComplete);
+          }
+        });
+        
+        // Handle completion
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200 || xhr.status === 204) {
+            setUploadStatus('success');
+            setUploadProgress(100);
+            resolve(true);
+          } else {
+            const errorMessage = `Upload failed with status ${xhr.status}`;
+            setUploadError(errorMessage);
+            setUploadStatus('error');
+            setUploadProgress(0);
+            resolve(false);
+          }
+        });
+        
+        // Handle errors
+        xhr.addEventListener('error', () => {
+          setUploadError('Network error: Unable to upload recording');
+          setUploadStatus('error');
+          setUploadProgress(0);
+          resolve(false);
+        });
+        
+        // Handle abort
+        xhr.addEventListener('abort', () => {
+          setUploadError('Upload cancelled');
+          setUploadStatus('error');
+          setUploadProgress(0);
+          resolve(false);
+        });
+        
+        // Open and send request
+        xhr.open('PUT', presignedUrl);
+        xhr.setRequestHeader('Content-Type', blob.type || 'video/webm');
+        xhr.send(blob);
       });
-
-      console.log('Upload response status:', response.status);
-      
-      // S3 typically returns 200 for successful PUT
-      if (!response.ok && response.status !== 200) {
-        const errorText = await response.text().catch(() => '');
-        throw new Error(`Upload failed with status ${response.status}: ${errorText}`);
-      }
-
-      console.log('Upload successful');
-      setUploadStatus('success');
-      return true;
     } catch (error) {
-      console.error('Upload error details:');
-      console.error('- Error type:', error.name);
-      console.error('- Error message:', error.message);
-      console.error('- Full error:', error);
-      
       // Provide more specific error messages
       let errorMessage = 'Failed to upload recording';
       if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-        errorMessage = 'Network error: Unable to connect to upload server. This may be a CORS issue.';
+        errorMessage = 'Network error: Unable to connect to upload server';
       } else if (error.message) {
         errorMessage = error.message;
       }
       
       setUploadError(errorMessage);
       setUploadStatus('error');
+      setUploadProgress(0);
       return false;
     }
   }, []);
@@ -325,7 +332,6 @@ export const MediaPermissionsProvider = ({ children }) => {
   // Start recording when both streams are available
   useEffect(() => {
     if (screenStream && audioStream && permissionStatus === 'granted' && !isRecording && !mediaRecorderRef.current) {
-      console.log('Both streams available, starting recording');
       startRecording(screenStream, audioStream);
     }
   }, [screenStream, audioStream, permissionStatus, isRecording]); // Remove startRecording from deps to avoid infinite loop
@@ -345,6 +351,7 @@ export const MediaPermissionsProvider = ({ children }) => {
     isRecording,
     uploadStatus,
     uploadError,
+    uploadProgress,
     requestPermissions,
     requestScreenPermission,
     requestAudioPermission,

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Group, Text, Box, Progress, Stack, Alert, Loader } from '@mantine/core';
-import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
+import { Button, Group, Text, Box, Progress, Stack, Alert, Loader, Modal, Center } from '@mantine/core';
+import { IconAlertCircle, IconCheck, IconUpload, IconCircleCheck } from '@tabler/icons-react';
 import { useMediaPermissions } from '../../contexts/MediaPermissionsContext';
 
 export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
@@ -11,12 +11,14 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
     stopRecording,
     uploadRecording,
     uploadStatus,
-    uploadError
+    uploadError,
+    uploadProgress
   } = useMediaPermissions();
   const [currentStep, setCurrentStep] = useState(0);
   const [canProceed, setCanProceed] = useState(false);
   const [isFinishing, setIsFinishing] = useState(false);
   const [finishError, setFinishError] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Check if we can proceed based on the current step
   useEffect(() => {
@@ -50,25 +52,21 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
       const presignedUrl = analysisData?.presignedUploadUrl;
       
       if (!presignedUrl) {
-        console.error('No presigned URL available - cannot complete analysis');
         setFinishError('Upload configuration missing. Please contact support.');
         setIsFinishing(false);
         return;
       }
       
       // Stop recording and get the blob
-      console.log('Stopping recording...');
       const recordingBlob = await stopRecording();
       
       if (!recordingBlob) {
-        console.error('No recording available');
         setFinishError('No recording found. Please ensure permissions were granted and try again.');
         setIsFinishing(false);
         return;
       }
       
       // Upload to AWS S3
-      console.log('Uploading recording to S3...');
       const uploadSuccess = await uploadRecording(recordingBlob, presignedUrl);
       
       if (!uploadSuccess) {
@@ -77,14 +75,18 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
         return;
       }
       
-      console.log('Recording uploaded successfully');
+      // Show success modal
+      setShowSuccessModal(true);
+      setIsFinishing(false);
       
-      // Call the original onExit handler only after successful upload
-      if (onExit) {
-        onExit();
-      }
+      // Auto-close after 3 seconds and exit
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        if (onExit) {
+          onExit();
+        }
+      }, 3000);
     } catch (error) {
-      console.error('Error finishing analysis:', error);
       setFinishError('An error occurred while finishing the analysis. Please try again.');
       setIsFinishing(false);
     }
@@ -116,17 +118,23 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
         <Box>{steps[currentStep]?.content || ''}</Box>
       </Box>
 
-      {/* Upload Status Alert */}
+      {/* Upload Progress */}
       {uploadStatus === 'uploading' && (
-        <Alert icon={<Loader size={16} />} color="blue">
-          Uploading recording to server...
-        </Alert>
-      )}
-      
-      {uploadStatus === 'success' && (
-        <Alert icon={<IconCheck size={16} />} color="green">
-          Recording uploaded successfully!
-        </Alert>
+        <Box>
+          <Alert icon={<IconUpload size={16} />} color="blue" mb="xs">
+            <Group justify="space-between">
+              <Text size="sm">Uploading recording to server...</Text>
+              <Text size="sm" fw={600}>{uploadProgress}%</Text>
+            </Group>
+          </Alert>
+          <Progress
+            value={uploadProgress}
+            size="lg"
+            radius="xl"
+            color="blue"
+            animated
+          />
+        </Box>
       )}
       
       {(uploadError || finishError) && (
@@ -172,6 +180,29 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
           )}
         </Group>
       </Group>
+      
+      {/* Success Modal */}
+      <Modal
+        opened={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        centered
+        size="sm"
+        withCloseButton={false}
+      >
+        <Center>
+          <Stack align="center" spacing="md">
+            <IconCircleCheck size={64} color="green" />
+            <Text size="xl" fw={600}>Success!</Text>
+            <Text size="sm" c="dimmed" ta="center">
+              Your recording has been uploaded successfully.
+              Thank you for participating in this analysis.
+            </Text>
+            <Text size="xs" c="dimmed">
+              Redirecting...
+            </Text>
+          </Stack>
+        </Center>
+      </Modal>
     </Stack>
   );
 };
