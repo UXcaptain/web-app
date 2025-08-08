@@ -6,6 +6,7 @@ import { SecurityModal } from "./SecurityModal";
 import Timer from "../../components/partials/Timer.jsx";
 import { AnalysisStepNavigator } from "../../components/partials/AnalysisStepNavigator.jsx";
 import { MediaPermissionsStep } from "../../components/partials/MediaPermissionsStep.jsx";
+import { Instructions } from "../../components/partials/Instructions.jsx";
 import { MediaPermissionsProvider, useMediaPermissions } from "../../contexts/MediaPermissionsContext";
 import apiClient from "../../config/API/axiosConfig.mjs";
 
@@ -187,9 +188,12 @@ const ParticipateContent = () => {
       <Title ta="center" mb="xl">Participate in Analysis</Title>
 
       {!analysisId && (
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-          <ParticipateForm onSubmitId={handleSubmitId} loading={loading} />
-        </Paper>
+        <>
+          <Instructions phase="setup" />
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <ParticipateForm onSubmitId={handleSubmitId} loading={loading} />
+          </Paper>
+        </>
       )}
 
       {error && (
@@ -237,17 +241,20 @@ const ParticipateContent = () => {
             <>
               {/* Timer Card - only show when recording is active */}
               {isRecording && (
-                <Card withBorder shadow="md" p="lg" mt="xl" radius="md">
-                  <Stack align="center" spacing="xs">
-                    <Group gap="xs" align="center">
-                      <IconVideo size={20} color="red" />
-                      <Text c="red" fw={600}>Recording in progress</Text>
-                    </Group>
-                    <div style={{ fontSize: rem(40), fontWeight: 700, textAlign: "center" }}>
-                      <Timer analysisData={analysisData} />
-                    </div>
-                  </Stack>
-                </Card>
+                <>
+                  <Instructions phase="analysis" />
+                  <Card withBorder shadow="md" p="lg" mt="xl" radius="md">
+                    <Stack align="center" spacing="xs">
+                      <Group gap="xs" align="center">
+                        <IconVideo size={20} color="red" />
+                        <Text c="red" fw={600}>Recording in progress</Text>
+                      </Group>
+                      <div style={{ fontSize: rem(40), fontWeight: 700, textAlign: "center" }}>
+                        <Timer analysisData={analysisData} />
+                      </div>
+                    </Stack>
+                  </Card>
+                </>
               )}
 
               {/* Analysis content Card */}
