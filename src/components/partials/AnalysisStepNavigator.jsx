@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Button, Group, Text, Box, Progress, Stack, Alert, Loader, Modal, Center } from '@mantine/core';
 import { IconAlertCircle, IconCheck, IconUpload, IconCircleCheck } from '@tabler/icons-react';
 import { useMediaPermissions } from '../../contexts/MediaPermissionsContext';
+import apiClient from '../../config/API/axiosConfig.mjs';
 
-export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
+export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analysisEntryId }) => {
   const {
     hasPermissions,
     permissionStatus,
@@ -71,6 +72,23 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData }) => {
       
       if (!uploadSuccess) {
         setFinishError('Failed to upload recording. Please try again.');
+        setIsFinishing(false);
+        return;
+      }
+
+      // After successful upload, PATCH analysis entry with analysisEntryId
+      const entryId = analysisEntryId
+      
+      if (!entryId) {
+        setFinishError('Missing analysis entry ID for updating entry.');
+        setIsFinishing(false);
+        return;
+      }
+
+      try {
+        await apiClient.patch(`/api/v1/analysisEntry/${encodeURIComponent(entryId)}`, {});
+      } catch (patchErr) {
+        setFinishError('Failed to update analysis entry after upload.');
         setIsFinishing(false);
         return;
       }
@@ -215,5 +233,6 @@ AnalysisStepNavigator.propTypes = {
     })
   ),
   onExit: PropTypes.func,
-  analysisData: PropTypes.object
+  analysisData: PropTypes.object,
+  analysisEntryId: PropTypes.string
 };

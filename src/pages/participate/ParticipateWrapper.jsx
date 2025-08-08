@@ -20,6 +20,7 @@ const ParticipateContent = () => {
   const [securityAccepted, setSecurityAccepted] = useState(false);
   const [showPermissionsOnly, setShowPermissionsOnly] = useState(false);
   const [showStoppedRecordingModal, setShowStoppedRecordingModal] = useState(false);
+  const [analysisEntryId, setAnalysisEntryId] = useState(null);
   const { isRecording, stopAllStreams, hasPermissions, permissionStatus } = useMediaPermissions();
 
   const handleSubmitId = async (submittedAnalysisId) => {
@@ -38,11 +39,13 @@ const ParticipateContent = () => {
 
       if (response?.data?.success) {
         setAnalysisData(response.data.analysisData);
+        setAnalysisEntryId(response.data.analysisEntryId);
         // Show permissions screen first
         setShowPermissionsOnly(true);
       } else {
         setError("Analysis not found. Please check your analysis ID and try again.");
         setAnalysisId(null);
+        setAnalysisEntryId(null);
       }
     } catch (err) {
       if (err?.response?.status === 404) {
@@ -51,6 +54,7 @@ const ParticipateContent = () => {
         setError(err?.response?.data?.message || "An error occurred while fetching the analysis");
       }
       setAnalysisId(null);
+      setAnalysisEntryId(null);
     } finally {
       setLoading(false);
     }
@@ -76,6 +80,7 @@ const ParticipateContent = () => {
     // Reset ALL state to initial values
     setAnalysisData(null);
     setAnalysisId(null);
+    setAnalysisEntryId(null);
     setError(null);
     setShowSecurityModal(false);
     setSecurityAccepted(false);
@@ -263,6 +268,7 @@ const ParticipateContent = () => {
                   steps={buildAnalysisSteps()}
                   onExit={handleExitAnalysis}
                   analysisData={analysisData}
+                  analysisEntryId={analysisEntryId}
                 />
               </Card>
             </>
