@@ -1,28 +1,21 @@
+import { Container, Title, Paper } from '@mantine/core';
 import UserFooter from "../../components/partials/UserFooter";
 import { AnalysisTable } from "./AnalysisTable";
 import { CreateNewAnalysisButton } from "./CreateNewAnalysisButton";
 
 const UserDashboard = () => {
-
-
-
     return (
-        <>
-            <div>
-                <h1>My Analysis</h1>
-                <CreateNewAnalysisButton />
+        <Container size="xl" py="xl">
+            <Title order={1} align="center" mb="xl">My Analysis</Title>
+            <CreateNewAnalysisButton mb="xl" />
 
-                <div className="table">
-                    <AnalysisTable />
-                </div>
+            <Paper shadow="xs" p="md" mb="xl">
+                <AnalysisTable />
+            </Paper>
 
-
-                <div className="footer">
-                    <UserFooter />
-                </div>
-            </div>
-        </>
+            <UserFooter />
+        </Container>
     );
-}
+};
 
 export default UserDashboard;
