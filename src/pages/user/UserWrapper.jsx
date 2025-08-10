@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import apiClient from "../../config/API/axiosConfig.mjs";
 import { logError } from "../../config/logging/loggerFunctions.mjs";
 import { usePostHog } from 'posthog-js/react'
+import { AppShell, Burger } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 const UserWrapper = () => {
 
@@ -64,7 +66,6 @@ const UserWrapper = () => {
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        {/* <UserNavBar />  */}
         <NavbarSimple />
       </AppShell.Navbar>
 
@@ -73,7 +74,9 @@ const UserWrapper = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <Outlet />
+        <>
+          <Outlet />
+        </>
       )}
       </AppShell.Main>
 
@@ -84,6 +87,6 @@ const UserWrapper = () => {
 
 export default UserWrapper;
 
-import { AppShell, Burger } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+
+
 

@@ -1,5 +1,4 @@
 import { Container, Title, Paper } from '@mantine/core';
-import UserFooter from "../../components/partials/UserFooter";
 import { AnalysisTable } from "./AnalysisTable";
 import { CreateNewAnalysisButton } from "./CreateNewAnalysisButton";
 
@@ -13,7 +12,6 @@ const UserDashboard = () => {
                 <AnalysisTable />
             </Paper>
 
-            <UserFooter />
         </Container>
     );
 };

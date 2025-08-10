@@ -268,11 +268,28 @@ export const CreateAnalysisPage = () => {
                 <Modal
                     opened={showModal}
                     onClose={() => setShowModal(false)}
-                    title={<Title order={3}>Success</Title>}
+                    title="Success"
                     centered
+                    size="md"
+                    styles={{
+                        modal: {
+                            backgroundColor: 'light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6))',
+                            borderRadius: 'var(--mantine-radius-md)',
+                            padding: 'var(--mantine-spacing-md)',
+                        },
+                        title: {
+                            fontSize: 'var(--mantine-font-size-lg)',
+                            fontWeight: 700,
+                            fontFamily: 'Greycliff CF, var(--mantine-font-family)',
+                            color: 'light-dark(var(--mantine-color-black), var(--mantine-color-white))',
+                        },
+                        body: {
+                            padding: 'var(--mantine-spacing-md)',
+                        },
+                    }}
                 >
-                    <Text size="md">{successMessage}</Text>
-                    <Text size="sm" mt="sm">Redirecting in {countdown} seconds...</Text>
+                    <Text size="md" style={{ color: 'light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1))' }}>{successMessage}</Text>
+                    <Text size="sm" mt="sm" style={{ color: 'light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2))' }}>Redirecting in {countdown} seconds...</Text>
                 </Modal>
             </Card>
         </Box>
