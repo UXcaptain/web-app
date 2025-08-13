@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import apiClient from '../../config/API/axiosConfig.mjs'
-import { Container, Stack, Card, Title, Text, Group, Button, Alert, Loader, Center, Badge } from '@mantine/core'
+import { Container, Stack, Card, Title, Text, Group, Button, Alert, Loader, Center, Badge, SimpleGrid } from '@mantine/core'
 
 const UserBilling = () => {
   const [stripeCustomerId, setStripeCustomerId] = useState(null)
@@ -13,16 +13,24 @@ const UserBilling = () => {
     const checkSubscription = async () => {
       try {
         const response = await apiClient.get('/api/v1/billing')
-        setSubscriptionData(response.data.billingData.Subscription[0])
-        setStripeCustomerId(response.data.billingData.stripe_customer_id)
-        setLoading(false)
+        setSubscriptionData(response.data.billingData?.Subscription?.[0] || null)
+        setStripeCustomerId(
+          response.data.billingData?.stripe_id ??
+          response.data.billingData?.stripe_customer_id ??
+          null
+        )
       } catch (err) {
         setError(err.message)
+      } finally {
+        setLoading(false)
       }
     }
 
     if (!subscriptionData && !stripeCustomerId) {
       checkSubscription()
+    } else {
+      // if we already have either, stop loading to render UI based on what we have
+      setLoading(false)
     }
   }, [subscriptionData, stripeCustomerId])
 
@@ -36,10 +44,16 @@ const UserBilling = () => {
   const createCustomerBillingId = async () => {
     try {
       const response = await apiClient.post('/api/v1/billing')
-      setStripeCustomerId(response.data.customerId)
-      setCustomerBillingIdCreated(true)
+      const cid =
+        response.data?.customerId ??
+        response.data?.billingData?.stripe_id ??
+        response.data?.stripeCustomerId ??
+        response.data?.stripe_id ??
+        null
+      setStripeCustomerId(cid)
+      setCustomerBillingIdCreated(Boolean(cid))
     } catch (err) {
-      // setError(err.message);
+      // silently ignore - will retry later
     }
   }
 
@@ -71,6 +85,18 @@ const UserBilling = () => {
     }
   }
 
+  // Derived billing state adapted to minimal API payload
+  // Treat presence of a Subscription id as "has an active subscription"
+  const hasSubscription = Boolean(subscriptionData?.id)
+  const isPaid = hasSubscription
+  // Billing cycle is unknown with the new payload; default to empty string
+  const paidCycle = ''
+  // Without plan interval info, these are always false
+  const isCurrentMonthly = false
+  const isCurrentAnnual = false
+  // No trial information provided in the new payload
+  const isTrialing = false
+
   if (loading) {
     return (
       <Center h={200}>
@@ -92,57 +118,86 @@ const UserBilling = () => {
 
   return (
     <Container size="sm">
-      {(subscriptionData && subscriptionData.status === 'active') ? (
-        <Stack gap="lg">
+      <Stack gap="lg">
+        {subscriptionData && isPaid && (
           <Card withBorder p="lg" radius="md">
-            <Title order={3}>Current plan</Title>
+            <Title order={3}>Current subscription</Title>
             <Group gap="sm" mt="sm">
               <Badge color="green">Active</Badge>
-              <Text fw={500}>{subscriptionData.plan_name}</Text>
+              <Text fw={500}>
+                Subscription ID: {subscriptionData.id}
+              </Text>
+              {paidCycle && (
+                <Badge variant="light" color="blue">{paidCycle}</Badge>
+              )}
             </Group>
           </Card>
+        )}
 
-          <Card withBorder p="lg" radius="md">
-            <Title order={3}>Billing</Title>
-            <Text c="dimmed" mt="xs">
-              Find your invoices and manage payment methods and subscription.
-            </Text>
-            <Group mt="md">
-              <Button onClick={handleBillingCustomerPortal}>Open customer portal</Button>
-            </Group>
-          </Card>
-        </Stack>
-      ) : (
-        <Stack gap="lg">
-          <Title order={2}>Available Plans</Title>
+        {/* Only keep indication that the free trial has ended */}
+        {!isTrialing && !isPaid && (
+          <Alert color="gray" variant="light" title="Trial ended">
+            Your free trial has ended. Choose a paid plan to continue.
+          </Alert>
+        )}
 
-          <Group align="stretch" gap="lg" grow>
-            <Card withBorder p="lg" radius="md">
-              <Title order={3}>Free</Title>
-              <Text c="dimmed" mt="xs">Includes free stuff</Text>
-              <Button mt="md" variant="light" onClick={() => handlePriceLink('basic', 'monthly')}>
-                Pick monthly plan
-              </Button>
-            </Card>
+        <Title order={2}>Pricing plans</Title>
 
-            <Card withBorder p="lg" radius="md">
-              <Title order={3}>Pro</Title>
-              <Text c="dimmed" mt="xs">Includes annual stuff</Text>
-              <Button mt="md" onClick={() => handlePriceLink('basic', 'annual')}>
-                Pick annual plan
-              </Button>
-            </Card>
-          </Group>
-
-          <Card withBorder p="lg" radius="md">
-            <Title order={3}>Billing</Title>
-            <Text c="dimmed" mt="xs">Find all your invoices and such</Text>
-            <Button mt="md" variant="outline" onClick={handleBillingCustomerPortal}>
-              Open customer portal
+        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+          <Card
+            withBorder
+            p="lg"
+            radius="md"
+            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
+          >
+            <Title order={3}>Pro Monthly</Title>
+            <Text fw={700} size="xl" mt="xs">€19/month</Text>
+            {/* hidden placeholder to keep cards identical in height distribution */}
+            <Text c="teal" size="sm" mt={4} style={{ visibility: 'hidden' }}>Save 17%</Text>
+            <Text c="dimmed" mt="xs">Best for flexibility. Billed monthly.</Text>
+            <Button
+              mt="auto"
+              fullWidth
+              variant={isCurrentMonthly ? 'filled' : 'outline'}
+              disabled={isCurrentMonthly}
+              onClick={() => !isCurrentMonthly && handlePriceLink('basic', 'monthly')}
+            >
+              {isCurrentMonthly ? 'Current plan' : 'Choose Monthly'}
             </Button>
           </Card>
-        </Stack>
-      )}
+
+          <Card
+            withBorder
+            p="lg"
+            radius="md"
+            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
+          >
+            <Title order={3}>Pro Annual</Title>
+            <Text fw={700} size="xl" mt="xs">€190/year</Text>
+            <Text c="teal" size="sm" mt={4}>Save 17%</Text>
+            <Text c="dimmed" mt="xs">Best value. Billed annually.</Text>
+            <Button
+              mt="auto"
+              fullWidth
+              variant={isCurrentAnnual ? 'filled' : 'outline'}
+              disabled={isCurrentAnnual}
+              onClick={() => !isCurrentAnnual && handlePriceLink('basic', 'annual')}
+            >
+              {isCurrentAnnual ? 'Current plan' : 'Choose Annual'}
+            </Button>
+          </Card>
+        </SimpleGrid>
+
+        <Card withBorder p="lg" radius="md">
+          <Title order={3}>Billing</Title>
+          <Text c="dimmed" mt="xs">
+            Find your invoices and manage payment methods and subscription.
+          </Text>
+          <Group mt="md">
+            <Button onClick={handleBillingCustomerPortal}>Open customer portal</Button>
+          </Group>
+        </Card>
+      </Stack>
     </Container>
   )
 }
