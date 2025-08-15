@@ -1,61 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import apiClient from '../../config/API/axiosConfig.mjs'
 import { Container, Stack, Card, Title, Text, Group, Button, Alert, Loader, Center, Badge, SimpleGrid } from '@mantine/core'
+import { useSubscription } from '../../contexts/SubscriptionContext.jsx'
 
 const UserBilling = () => {
-  const [stripeCustomerId, setStripeCustomerId] = useState(null)
-  const [error, setError] = useState(null)
-  const [subscriptionData, setSubscriptionData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [customerBillingIdCreated, setCustomerBillingIdCreated] = useState(false)
-
-  useEffect(() => {
-    const checkSubscription = async () => {
-      try {
-        const response = await apiClient.get('/api/v1/billing')
-        setSubscriptionData(response.data.billingData?.Subscription?.[0] || null)
-        setStripeCustomerId(
-          response.data.billingData?.stripe_id ??
-          response.data.billingData?.stripe_customer_id ??
-          null
-        )
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (!subscriptionData && !stripeCustomerId) {
-      checkSubscription()
-    } else {
-      // if we already have either, stop loading to render UI based on what we have
-      setLoading(false)
-    }
-  }, [subscriptionData, stripeCustomerId])
-
-  useEffect(() => {
-    // TODO -- fix retries to create stripeCustomerId even though it already exists
-    if (!customerBillingIdCreated && stripeCustomerId === null) {
-      createCustomerBillingId()
-    }
-  }, [stripeCustomerId, customerBillingIdCreated])
-
-  const createCustomerBillingId = async () => {
-    try {
-      const response = await apiClient.post('/api/v1/billing')
-      const cid =
-        response.data?.customerId ??
-        response.data?.billingData?.stripe_id ??
-        response.data?.stripeCustomerId ??
-        response.data?.stripe_id ??
-        null
-      setStripeCustomerId(cid)
-      setCustomerBillingIdCreated(Boolean(cid))
-    } catch (err) {
-      // silently ignore - will retry later
-    }
-  }
+  const { subscription, stripeCustomerId, loading, error, isPaid } = useSubscription()
+  const [actionError, setActionError] = useState(null)
 
   const handlePriceLink = async (planName, billingCycle) => {
     const data = {
@@ -64,37 +14,34 @@ const UserBilling = () => {
     }
 
     try {
+      setActionError(null)
       const response = await apiClient.post(`/api/v1/billing/checkout-session`, data)
       const { checkoutSessionUrl } = response.data
       window.open(checkoutSessionUrl, '_blank')
     } catch (err) {
       if (err.status === 400) {
-        return setError('User has an existing subscription, manage it on the portal')
+        return setActionError('User has an existing subscription, manage it on the portal')
       }
-      return setError(err.message)
+      return setActionError(err.message)
     }
   }
 
   const handleBillingCustomerPortal = async () => {
     try {
+      setActionError(null)
       const response = await apiClient.post(`/api/v1/billing/customer-portal`)
       const { customerPortalUrl } = response.data
       window.open(customerPortalUrl, '_blank')
-    } catch (error) {
-      setError(error.message)
+    } catch (err) {
+      setActionError(err.message)
     }
   }
 
-  // Derived billing state adapted to minimal API payload
-  // Treat presence of a Subscription id as "has an active subscription"
-  const hasSubscription = Boolean(subscriptionData?.id)
-  const isPaid = hasSubscription
-  // Billing cycle is unknown with the new payload; default to empty string
+  // Derived billing state (kept minimal due to API payload shape)
+  const hasSubscription = Boolean(subscription?.id)
   const paidCycle = ''
-  // Without plan interval info, these are always false
   const isCurrentMonthly = false
   const isCurrentAnnual = false
-  // No trial information provided in the new payload
   const isTrialing = false
 
   if (loading) {
@@ -108,10 +55,11 @@ const UserBilling = () => {
     )
   }
 
-  if (error) {
+  const combinedError = actionError || error
+  if (combinedError) {
     return (
       <Container size="sm">
-        <Alert color="red" title="Error">{error}</Alert>
+        <Alert color="red" title="Error">{combinedError}</Alert>
       </Container>
     )
   }
@@ -119,13 +67,13 @@ const UserBilling = () => {
   return (
     <Container size="sm">
       <Stack gap="lg">
-        {subscriptionData && isPaid && (
+        {subscription && isPaid && (
           <Card withBorder p="lg" radius="md">
             <Title order={3}>Current subscription</Title>
             <Group gap="sm" mt="sm">
               <Badge color="green">Active</Badge>
               <Text fw={500}>
-                Subscription ID: {subscriptionData.id}
+                Subscription ID: {subscription.id}
               </Text>
               {paidCycle && (
                 <Badge variant="light" color="blue">{paidCycle}</Badge>

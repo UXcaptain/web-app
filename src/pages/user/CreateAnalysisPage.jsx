@@ -15,7 +15,8 @@ import {
   Modal
 } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
-
+import { useSubscription } from '../../contexts/SubscriptionContext.jsx';
+ 
 export const CreateAnalysisPage = () => {
 
     const [name, setName] = useState('null');
@@ -24,6 +25,14 @@ export const CreateAnalysisPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [countdown, setCountdown] = useState(5);
     const navigate = useNavigate();
+
+    const { hasActiveSubscription, loading } = useSubscription();
+
+    useEffect(() => {
+        if (!loading && !hasActiveSubscription) {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [loading, hasActiveSubscription, navigate]);
 
     // Function to normalize URL by adding https:// if missing
     const normalizeUrl = (inputUrl) => {
@@ -161,6 +170,13 @@ export const CreateAnalysisPage = () => {
         }
     };
 
+    // Restrict access when there is no active subscription
+    if (loading) {
+        return null;
+    }
+    if (!hasActiveSubscription) {
+        return null;
+    }
     return (
         <Box sx={{ maxWidth: 600 }} mx="auto" mt="xl">
             <Card shadow="sm" padding="lg" radius="md" withBorder>
