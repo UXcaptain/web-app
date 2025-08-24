@@ -1,5 +1,6 @@
 import apiClient from "../../config/API/axiosConfig.mjs";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import {
   TextInput,
   Textarea,
@@ -10,33 +11,47 @@ import {
   Title,
   Card,
   Text,
-  Alert
+  Alert,
+  Modal
 } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
-
+import { useSubscription } from '../../contexts/SubscriptionContext.jsx';
+ 
 export const CreateAnalysisPage = () => {
 
-    const [name, setName] = useState(null);
-    const [url, setUrl] = useState(null);
-    
+    const [name, setName] = useState('null');
+    const [url, setUrl] = useState('youtube.com');
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [countdown, setCountdown] = useState(5);
+    const navigate = useNavigate();
+
+    const { hasActiveSubscription, loading } = useSubscription();
+
+    useEffect(() => {
+        if (!loading && !hasActiveSubscription) {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [loading, hasActiveSubscription, navigate]);
+
     // Function to normalize URL by adding https:// if missing
     const normalizeUrl = (inputUrl) => {
         if (!inputUrl) return '';
-        
+
         // Trim whitespace
         const trimmedUrl = inputUrl.trim();
-        
+
         // Check if it already has a protocol
         if (trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')) {
             return trimmedUrl;
         }
-        
+
         // Add https:// if no protocol is present
         return `https://${trimmedUrl}`;
     };
     const [maxNumberOfParticipants, setmaxNumberOfParticipants] = useState(5);
     const [tasks, setTasks] = useState([{ value: '' }]);
-    const [scenario, setScenario] = useState(null);
+    const [scenario, setScenario] = useState('null');
     const [errors, setErrors] = useState({});
 
     const addTask = () => {
@@ -131,9 +146,23 @@ export const CreateAnalysisPage = () => {
             tasks: formattedTasks,
             device: 'computer'
         }
-        
+
         try {
             const response = await apiClient.post('/api/v1/analysis', analysisData);
+            setSuccessMessage('Analysis created successfully!');
+            setShowModal(true);
+            setCountdown(5);
+            const timer = setInterval(() => {
+                setCountdown(prevCountdown => {
+                    if (prevCountdown <= 1) {
+                        clearInterval(timer);
+                        setShowModal(false);
+                        navigate('/dashboard');
+                        return 0;
+                    }
+                    return prevCountdown - 1;
+                });
+            }, 1000);
             return response.data;
         } catch (error) {
             console.error("Error creating analysis:", error);
@@ -141,6 +170,13 @@ export const CreateAnalysisPage = () => {
         }
     };
 
+    // Restrict access when there is no active subscription
+    if (loading) {
+        return null;
+    }
+    if (!hasActiveSubscription) {
+        return null;
+    }
     return (
         <Box sx={{ maxWidth: 600 }} mx="auto" mt="xl">
             <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -245,6 +281,32 @@ export const CreateAnalysisPage = () => {
                         </Button>
                     </Group>
                 </form>
+                <Modal
+                    opened={showModal}
+                    onClose={() => setShowModal(false)}
+                    title="Success"
+                    centered
+                    size="md"
+                    styles={{
+                        modal: {
+                            backgroundColor: 'light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6))',
+                            borderRadius: 'var(--mantine-radius-md)',
+                            padding: 'var(--mantine-spacing-md)',
+                        },
+                        title: {
+                            fontSize: 'var(--mantine-font-size-lg)',
+                            fontWeight: 700,
+                            fontFamily: 'Greycliff CF, var(--mantine-font-family)',
+                            color: 'light-dark(var(--mantine-color-black), var(--mantine-color-white))',
+                        },
+                        body: {
+                            padding: 'var(--mantine-spacing-md)',
+                        },
+                    }}
+                >
+                    <Text size="md" style={{ color: 'light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1))' }}>{successMessage}</Text>
+                    <Text size="sm" mt="sm" style={{ color: 'light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2))' }}>Redirecting in {countdown} seconds...</Text>
+                </Modal>
             </Card>
         </Box>
     );

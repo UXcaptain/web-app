@@ -29,7 +29,7 @@ const handleRegister = async (e) => {
     }
     
     try {
-        const registerResponse = await apiClient.post(`/api/v1/auth/register/local`, data)
+        const registerResponse = await apiClient.post(`/api/v1/auth/register/local/participant`, data)
         
         setRegisterResponse({
             success: true,

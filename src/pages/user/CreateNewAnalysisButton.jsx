@@ -1,13 +1,37 @@
 import { useNavigate } from "react-router";
-import { Button } from '@mantine/core';
-
+import { Button, Tooltip } from '@mantine/core';
+import { useSubscription } from '../../contexts/SubscriptionContext.jsx';
 
 export const CreateNewAnalysisButton = () => {
+  const navigate = useNavigate();
+  const { hasActiveSubscription, loading } = useSubscription();
 
-    const navigate = useNavigate();
-    return(
-        <Button onClick={() => navigate('/analysis/create')}>Create New Analysis</Button>
+  const disabled = !hasActiveSubscription && !loading;
 
-    )
+  const handleClick = () => {
+    if (!disabled) {
+      navigate('/analysis/create');
+    }
+  };
 
+  const tooltipLabel = 'An active subscription is required to create a new analysis. Visit Billing to choose a plan.';
+
+  return (
+    <Tooltip
+      withinPortal
+      withArrow
+      disabled={!disabled}
+      label={tooltipLabel}
+    >
+      <span style={{ display: 'inline-block' }}>
+        <Button
+          onClick={handleClick}
+          disabled={disabled}
+          loading={loading}
+        >
+          Create New Analysis
+        </Button>
+      </span>
+    </Tooltip>
+  );
 }
