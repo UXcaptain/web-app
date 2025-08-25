@@ -11,7 +11,7 @@
   "license": "Proprietary",
   "author": "Sergio Navarro Redondo",
   "scripts": {
-    "start": "node main.js",
+    "start": "node main.jsx",
     "build": "vite build",
     "start:preview": "vite preview",
     "start:local": "vite",
