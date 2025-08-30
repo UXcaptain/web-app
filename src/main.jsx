@@ -30,7 +30,7 @@ import { ParticipateForm } from './pages/participate/ParticipateForm.jsx'
 import { ParticipateWrapper } from './pages/participate/ParticipateWrapper.jsx'
 
 posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
-  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+  api_host: 'https://eu.i.posthog.com', //* Will always be europe
   defaults: '2025-05-24',
   debug: false,
 });
