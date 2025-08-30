@@ -31,3 +31,19 @@ jobs:
                 platforms: linux/amd64,linux/arm64
                 push: true
                 tags: sergion14/uxmonkeys:front-next
+
+        -
+                name: Build and deploy the application to Koyeb
+                uses: koyeb/action-git-deploy@v1
+                with:
+                    service-env: VITE_PUBLIC_POSTHOG_KEY=@VITE_PUBLIC_POSTHOG_KEY, VITE_API_BASE_URL=@VITE_API_BASE_URL 
+
+                    app-name: "server-next"
+                    service-instance-type: "eco-nano" #https://www.koyeb.com/docs/reference/instances
+                    service-name: "server-next"
+                    service-ports: "80:http"
+                    service-routes: "/:80"
+                    service-regions: "fra" # https://www.koyeb.com/docs/reference/regions
+                    docker: "sergion14/uxmonkeys:front-next"
+                    docker-private-registry-secret: "SNR" # MANAGED in https://app.koyeb.com/settings/registry-configuration
+                    
