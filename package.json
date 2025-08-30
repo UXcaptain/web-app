@@ -17,8 +17,7 @@
     "test:ui": "npx playwright test --ui",
     "test:noui": "npx playwright test",
     "docker:prod": "docker build --platform=linux/amd64 --build-arg XXXX BUILD ARGS XXXX -t sergion14/uxmonkeys:front-latest . && docker push sergion14/uxmonkeys:front-latest",
-    "docker:dev-local": "docker build --platform=linux/amd64 --build-arg VITE_API_BASE_URL=https://server-next-uxmonkeys-ef6304ee.koyeb.app -t sergion14/uxmonkeys:front-next .",
-    "docker:dev": "docker build --platform=linux/amd64 --build-arg VITE_API_BASE_URL=https://server-next-uxmonkeys-ef6304ee.koyeb.app --build-arg VITE_PUBLIC_POSTHOG_KEY=phc_rEM8kq6iDndSMMDYlYoVVb0iitdyUx1KOXaLVPIQR9q -t sergion14/uxmonkeys:front-next . && docker push sergion14/uxmonkeys:front-next"
+    "docker:dev": "docker build --platform=linux/amd64 -t sergion14/uxmonkeys:front-next . && docker push sergion14/uxmonkeys:front-next"
   },
   "dependencies": {
     "@mantine/core": "^8.2.1",
