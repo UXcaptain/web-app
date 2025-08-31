@@ -1,4 +1,4 @@
-const Index = () => {
+const Homepage = () => {
     return (
         <>
         <p className="h1">Welcome to The UX Research Platform</p>
@@ -17,4 +17,4 @@ const Index = () => {
     )
 }
 
-export default Index;
+export default Homepage;

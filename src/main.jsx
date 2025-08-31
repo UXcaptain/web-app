@@ -8,14 +8,14 @@ import Register from './pages/auth/RegisterPage.jsx'
 import RestorePasswordPage from './pages/auth/RestorePasswordPage.jsx'
 import TerminosCondiciones from './pages/index/terminos-condiciones.jsx'
 import IndexWrapper from './pages/index/IndexWrapper.jsx'
-import Index from './pages/index/Index.jsx'
+import Homepage from './pages/index/Homepage.jsx'
 import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx'
 import AdminDashboardWrapper from './pages/admin/AdminDashboardWrapper.jsx'
 import CustomerProfile from './pages/user/CustomerProfile.jsx'
 import UserWrapper from './pages/user/UserWrapper.jsx'
 import UserDashboard from './pages/user/UserDashboard.jsx'
 import RecoverPasswordPage from './pages/auth/RecoverPasswordPage.jsx'
-import FAQs from './pages/index/FAQs.jsx'
+import FAQ from './pages/index/waitlist/FAQ.jsx'
 import AuthWrapper from './pages/auth/AuthWrapper.jsx'
 import CreateAnalysisPage from './pages/user/CreateAnalysisPage.jsx'
 import { MantineProvider } from '@mantine/core'
@@ -49,7 +49,7 @@ createRoot(document.getElementById('root')).render(
 
           {/* <Route index element={<Index />} /> */}
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
-          <Route path='preguntas-frecuentes' element={<FAQs />} />
+          <Route path='preguntas-frecuentes' element={<FAQ />} />
         </Route>
 
         <Route path='/admin' element={<AdminDashboardWrapper />} >
