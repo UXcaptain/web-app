@@ -1,9 +1,17 @@
 const Index = () => {
     return (
         <>
-        <p className="h1">Welcome to expressJS template</p>
+        <p className="h1">Welcome to The UX Research Platform</p>
 
-        
+
+        {/* How does it work  */}
+
+        {/* Examples */}
+
+        {/* Features */}
+
+        {/* FAQ */}
+
       
         </>
     )
