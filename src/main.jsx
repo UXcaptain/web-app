@@ -7,8 +7,8 @@ import Login from './pages/auth/LoginPage.jsx'
 import Register from './pages/auth/RegisterPage.jsx'
 import RestorePasswordPage from './pages/auth/RestorePasswordPage.jsx'
 import TerminosCondiciones from './pages/index/terminos-condiciones.jsx'
-import IndexWrapper from './pages/index/indexWrapper.jsx'
-import Index from './pages/index/index.jsx'
+import IndexWrapper from './pages/index/IndexWrapper.jsx'
+import Index from './pages/index/Index.jsx'
 import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx'
 import AdminDashboardWrapper from './pages/admin/AdminDashboardWrapper.jsx'
 import CustomerProfile from './pages/user/CustomerProfile.jsx'
@@ -23,6 +23,7 @@ import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
 import UserBilling from './pages/user/UserBilling.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
+import { Waitlist } from './pages/index/Waitlist.jsx'
 
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
@@ -44,7 +45,9 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<IndexWrapper />}>
-          <Route index element={<Index />} />
+          <Route index element={<Waitlist />} />
+
+          {/* <Route index element={<Index />} /> */}
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
           <Route path='preguntas-frecuentes' element={<FAQs />} />
         </Route>
