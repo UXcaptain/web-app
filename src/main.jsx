@@ -27,7 +27,6 @@ import { Waitlist } from './pages/index/Waitlist.jsx'
 
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
-import { ParticipateForm } from './pages/participate/ParticipateForm.jsx'
 import { ParticipateWrapper } from './pages/participate/ParticipateWrapper.jsx'
 
 posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
@@ -47,7 +46,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<IndexWrapper />}>
           <Route index element={<Waitlist />} />
 
-          {/* <Route index element={<Index />} /> */}
+          {/* <Route index element={<Homepage />} /> */}
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
           <Route path='preguntas-frecuentes' element={<FAQ />} />
         </Route>
