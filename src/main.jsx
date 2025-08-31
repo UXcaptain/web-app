@@ -47,6 +47,9 @@ createRoot(document.getElementById('root')).render(
           <Route index element={<Waitlist />} />
 
           {/* <Route index element={<Homepage />} /> */}
+          
+          <Route path='home' element={<Homepage />} />
+
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
           <Route path='preguntas-frecuentes' element={<FAQ />} />
         </Route>

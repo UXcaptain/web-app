@@ -5,11 +5,11 @@ import { SiteFooter } from '../../components/partials/SiteFooter';
 const IndexWrapper = () => {
     return (
         <>
-          <SiteNavBar />
-          <div className='homepage'>
+          {/* <SiteNavBar /> */}
+
                 <Outlet />
-            </div>
-            <SiteFooter />
+
+            {/* <SiteFooter /> */}
         </>
       )
     };

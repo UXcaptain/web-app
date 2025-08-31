@@ -1,19 +1,13 @@
 const Homepage = () => {
     return (
-        <>
-        <p className="h1">Welcome to The UX Research Platform</p>
 
-
-        {/* How does it work  */}
-
-        {/* Examples */}
-
-        {/* Features */}
-
-        {/* FAQ */}
-
-      
-        </>
+        <div className="home-page">
+      <WaitlistHero />
+      <WaitlistSignupForm />
+      <WaitlistHowItWorks />
+      <WaitlistFeatures />
+      <WaitlistFAQ />
+    </div>
     )
 }
 
