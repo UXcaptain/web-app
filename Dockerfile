@@ -17,10 +17,7 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 
 
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm install
+RUN npm install
 
 
 # Copy the rest of the source files into the image.
