@@ -9,6 +9,7 @@ import { MediaPermissionsStep } from "../../components/partials/MediaPermissions
 import { Instructions } from "../../components/partials/Instructions.jsx";
 import { MediaPermissionsProvider, useMediaPermissions } from "../../contexts/MediaPermissionsContext";
 import apiClient from "../../config/API/axiosConfig.mjs";
+import { SiteFooter } from "../../components/partials/SiteFooter";
 
 // Inner component that uses the media permissions context
 const ParticipateContent = () => {
@@ -314,6 +315,7 @@ export const ParticipateWrapper = () => {
   return (
     <MediaPermissionsProvider>
       <ParticipateContent />
+      <SiteFooter />
     </MediaPermissionsProvider>
   );
 };

@@ -3,7 +3,6 @@ import WaitlistSignupForm from './waitlist/SignupForm.jsx';
 import WaitlistHowItWorks from './waitlist/HowItWorks.jsx';
 import WaitlistFeatures from './waitlist/Features.jsx';
 import WaitlistFAQ from './waitlist/FAQ.jsx';
-import WaitlistLocalFooter from './waitlist/LocalFooter.jsx';
 
 export const Waitlist = () => {
   return (
@@ -13,7 +12,6 @@ export const Waitlist = () => {
       <WaitlistHowItWorks />
       <WaitlistFeatures />
       <WaitlistFAQ />
-      <WaitlistLocalFooter />
     </div>
   );
 };

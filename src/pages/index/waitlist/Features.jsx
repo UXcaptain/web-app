@@ -9,7 +9,7 @@ const WaitlistFeatures = () => (
     <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="lg">
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconShare size={48} color="blue" />
+          <IconShare size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Reclutamiento sin fricción
@@ -21,7 +21,7 @@ const WaitlistFeatures = () => (
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconVideo size={48} color="blue" />
+          <IconVideo size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Grabaciones ricas
@@ -33,7 +33,7 @@ const WaitlistFeatures = () => (
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconChartBar size={48} color="blue" />
+          <IconChartBar size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Análisis asistido
@@ -45,7 +45,7 @@ const WaitlistFeatures = () => (
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconShieldLock size={48} color="blue" />
+          <IconShieldLock size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Privacidad y seguridad

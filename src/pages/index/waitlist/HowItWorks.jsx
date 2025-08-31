@@ -20,7 +20,7 @@ const WaitlistHowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconClipboardList size={56} color="blue" />
+          <IconClipboardList size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
           <Text fw={700} fz="lg">1. Crea un estudio</Text>
@@ -42,7 +42,7 @@ const WaitlistHowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconShare size={56} color="blue" />
+          <IconShare size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
           <Text fw={700} fz="lg">2. Recluta participantes</Text>
@@ -64,7 +64,7 @@ const WaitlistHowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconRecordMail size={56} color="blue" />
+          <IconRecordMail size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
           <Text fw={700} fz="lg">3. Comparte insights</Text>
