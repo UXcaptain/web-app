@@ -1,6 +1,6 @@
 name: Push to Docker Hub, build and deploy :next tag image to Docker Hub
 
-on:
+on: # TODO - CHANGE THIS TO MERGE
     pull_request:
         branches: [ "latest" ]
 
@@ -30,4 +30,4 @@ jobs:
                 context: .
                 platforms: linux/amd64,linux/arm64
                 push: true
-                tags: sergion14/uxmonkeys:front-latest
+                tags: sergion14/uxcaptain:front-latest

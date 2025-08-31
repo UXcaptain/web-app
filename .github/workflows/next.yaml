@@ -30,7 +30,7 @@ jobs:
                 context: .
                 platforms: linux/amd64,linux/arm64
                 push: true
-                tags: sergion14/uxmonkeys:front-next
+                tags: sergion14/uxcaptain:front-next
 
     koyeb-deploy:
         runs-on: ubuntu-latest
@@ -51,6 +51,6 @@ jobs:
                     service-ports: "80:http"
                     service-routes: "/:80"
                     service-regions: "fra" # https://www.koyeb.com/docs/reference/regions
-                    docker: "sergion14/uxmonkeys:front-next"
+                    docker: "sergion14/uxcaptain:front-next"
                     docker-private-registry-secret: "SNR" # MANAGED in https://app.koyeb.com/settings/registry-configuration
                 
