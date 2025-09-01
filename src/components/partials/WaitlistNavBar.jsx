@@ -10,7 +10,9 @@ const WaitlistNavBar = () => {
       </div>
       <nav className={styles.navLinks}>
         <RouterNavLink to="/" className={styles.link}>Home</RouterNavLink>
-        <RouterNavLink to="/terminos-condiciones" className={styles.link}>Términos y condiciones</RouterNavLink>
+        <RouterNavLink to="#how-it-works" className={styles.link}>How does it work?</RouterNavLink>
+        <RouterNavLink to="#features" className={styles.link}>Features</RouterNavLink>
+        <RouterNavLink to="#examples" className={styles.link}>Ejemplos</RouterNavLink>
         <RouterNavLink to="/preguntas-frecuentes" className={styles.link}>Preguntas frecuentes</RouterNavLink>
       </nav>
     </header>

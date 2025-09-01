@@ -2,7 +2,7 @@ import { Container, Title, SimpleGrid, Card, Stack, Text } from '@mantine/core';
 import { IconClipboardList, IconShare, IconRecordMail } from '@tabler/icons-react';
 
 const WaitlistHowItWorks = () => (
-  <Container size="lg" py="xl" id="como-funciona">
+  <Container size="lg" py="xl" id="how-it-works">
     <Title order={2} ta="center" mb="xl">
       Cómo funciona
     </Title>
