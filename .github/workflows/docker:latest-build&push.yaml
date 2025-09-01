@@ -40,12 +40,12 @@ jobs:
             group: "${{ github.ref_name }}"
             cancel-in-progress: true
         steps:
+            - 
+                name: Install and configure the Koyeb CLI
+                uses: koyeb-community/koyeb-actions@v2
+                with:
+                    api_token: "${{ secrets.KOYEB_API_TOKEN }}"
             # - No need for secrets on current implementation
-            #     name: Install and configure the Koyeb CLI
-            #     uses: koyeb-community/koyeb-actions@v2
-            #     with:
-            #         api_token: "${{ secrets.KOYEB_API_TOKEN }}"
-            # - 
             #     name: Create VITE_API_BASE_URL secret
             #     uses: koyeb/action-git-deploy/secret@v1
             #     with:
