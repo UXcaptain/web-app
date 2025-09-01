@@ -46,24 +46,18 @@ jobs:
                 uses: koyeb-community/koyeb-actions@v2
                 with:
                     api_token: "${{ secrets.KOYEB_API_TOKEN }}"
-            # - No need for secrets on current implementation
-            #     name: Create VITE_API_BASE_URL secret
-            #     uses: koyeb/action-git-deploy/secret@v1
-            #     with:
-            #         secret-name: NEXT_VITE_API_BASE_URL
-            #         secret-value: "${{ secrets.POSTHOG_API_KEY }}"
-            # - 
-            #     name: Create VITE_PUBLIC_POSTHOG_KEY secret
-            #     uses: koyeb/action-git-deploy/secret@v1
-            #     with:
-            #         secret-name: NEXT_VITE_PUBLIC_POSTHOG_KEY
-            #         secret-value: "${{ secrets.POSTHOG_API_KEY }}"
+            - 
+                name: Create VITE_PUBLIC_POSTHOG_KEY secret
+                uses: koyeb/action-git-deploy/secret@v1
+                with:
+                    secret-name: NEXT_VITE_PUBLIC_POSTHOG_KEY
+                    secret-value: "${{ secrets.VITE_PUBLIC_POSTHOG_KEY }}"
             -
                 name: Build and deploy the application to Koyeb
                 uses: koyeb/action-git-deploy@v1
                 with:
                     service-env: VITE_PUBLIC_POSTHOG_KEY="${{ vars.VITE_PUBLIC_POSTHOG_KEY }}",VITE_API_BASE_URL="${{ vars.VITE_API_BASE_URL }}"
-                    app-name: "webapp-next"
+                    app-name: "uxcaptain-next"
                     service-instance-type: "eco-nano" #https://www.koyeb.com/docs/reference/instances
                     service-name: "webapp-next"
                     service-ports: "80:http"
