@@ -6,8 +6,6 @@ const RegisterPage = () => {
     return (
         <>
         <CustomerRegistrationForm />
-
-        {/* <ParticipantRegistrationForm /> */}
         </>
 
     )

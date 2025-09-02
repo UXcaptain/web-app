@@ -1,112 +1,141 @@
-// import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from '@tabler/icons-react';
-// import { ActionIcon, Container, Group, Text } from '@mantine/core';
-// import { MantineLogo } from '@mantinex/mantine-logo';
-// import classes from './SiteFooter.module.css';
+import { Box, Container, SimpleGrid, Stack, Group, Divider, Image, Text, Anchor, ActionIcon } from '@mantine/core';
 
-// const SiteFooter = () => {
-//     return (
-//         <div className="footer">
+export const SiteFooter = () => {
+  const year = new Date().getFullYear();
 
-//     <nav className="container py-2 border-bottom footer">
+  const columns = [
+    {
+      title: 'Product',
+      links: [
+        { label: 'Features', href: '#' },
+        { label: 'Pricing', href: '#' },
+        { label: 'Changelog', href: '#' },
+        { label: 'Roadmap', href: '#' },
+      ],
+    },
+    {
+      title: 'Resources',
+      links: [
+        { label: 'Docs', href: '#' },
+        { label: 'Guides', href: '#' },
+        { label: 'Blog', href: '#' },
+        { label: 'Support', href: '#' },
+      ],
+    },
+    {
+      title: 'Company',
+      links: [
+        { label: 'About', href: '#' },
+        { label: 'Careers', href: '#' },
+        { label: 'Press', href: '#' },
+        { label: 'Contact', href: '#' },
+      ],
+    },
+    {
+      title: 'Legal',
+      links: [
+        { label: 'Privacy', href: '#' },
+        { label: 'Terms', href: '#' },
+        { label: 'Security', href: '#' },
+        { label: 'Cookies', href: '#' },
+      ],
+    },
+  ];
 
-//             <div className="">
-//                 <ul>
-//                 <li>
-//                     <NavLink to="/terminos-condiciones">Términos y condiciones</NavLink>
-//                 </li>
-//                     <li>Site-Footer</li>
-//                     <li>Item 3</li>
-//                     <li>Item 4</li>
-//                 </ul>
-//             </div>
+  return (
+    <Box component="footer" role="contentinfo" aria-label="Site footer" p="xl">
+      <Container size="xl">
+        <SimpleGrid
+          cols={5}
+          spacing="xl"
+          breakpoints={[
+            { maxWidth: 'lg', cols: 4, spacing: 'xl' },
+            { maxWidth: 'md', cols: 3, spacing: 'lg' },
+            { maxWidth: 'sm', cols: 1, spacing: 'md' },
+          ]}
+        >
+          <Stack gap="xs">
+            <Group gap="sm" align="center" wrap="nowrap">
+              <Image src="/vite.svg" alt="Company logo" w={36} h={36} />
+              <Text fw={700} fz="lg">
+                ProductName
+              </Text>
+            </Group>
+            <Text c="dimmed" fz="sm">
+              Making insights accessible with privacy-first analytics.
+            </Text>
+          </Stack>
 
-//             <div className="">
-//                 <ul>
-//                     <li>Item 5</li>
-//                     <li>Item 6</li>
-//                     <li>Item 7</li>
-//                     <li>Item 8</li>
-//                 </ul>
-//             </div>
-//             <div className="">
-//                 <ul>
-//                     <li>Item 9</li>
-//                     <li>Item 10</li>
-//                     <li>Item 11</li>
-//                     <li>Item 12</li>
-//                 </ul>
-//             </div>
-            
-//     </nav>
-// </div>
-//     )
-// }
+          {columns.map((col) => (
+            <Stack key={col.title} gap={6}>
+              <Text fw={700} fz="sm">
+                {col.title}
+              </Text>
+              {col.links.map((link) => (
+                <Anchor
+                  key={link.label}
+                  href={link.href}
+                  c="dimmed"
+                  size="sm"
+                  underline="hover"
+                >
+                  {link.label}
+                </Anchor>
+              ))}
+            </Stack>
+          ))}
+        </SimpleGrid>
 
-// export default SiteFooter;
+        <Divider my="lg" />
 
-// const data = [
-//   {
-//     title: 'About',
-//     links: [
-//       { label: 'Términos y condiciones', link: '/terminos-condiciones' },
-//       { label: 'Pricing', link: '#' },
-//       { label: 'Support', link: '#' },
-//       { label: 'Forums', link: '#' },
-//     ],
-//   },
-//   {
-//     title: 'Project',
-//     links: [
-//       { label: 'Contribute', link: '#' },
-//       { label: 'Media assets', link: '#' },
-//       { label: 'Changelog', link: '#' },
-//       { label: 'Releases', link: '#' },
-//     ],
-//   },
-//   {
-//     title: 'Community',
-//     links: [
-//       { label: 'Join Discord', link: '#' },
-//       { label: 'Follow on Twitter', link: '#' },
-//       { label: 'Email newsletter', link: '#' },
-//       { label: 'GitHub discussions', link: '#' },
-//     ],
-//   },
-// ];
+        <Group justify="space-between" wrap="wrap" gap="md">
+          <Text c="dimmed" fz="sm">
+            © {year} ProductName, Inc. All rights reserved.
+          </Text>
 
-// const SiteFooter = () => {
-       
-      
-//         return (
-//           <footer className={classes.footer}>
-//             <Container className={classes.inner}>
-//               <div className={classes.logo}>
-//                 {/* <MantineLogo size={30} /> */}
-//                 <Text size="xs" c="dimmed" className={classes.description}>
-//                   Build fully functional accessible web applications faster than ever
-//                 </Text>
-//               </div>
-//               <div className={classes.groups}>{groups}</div>
-//             </Container>
-//             <Container className={classes.afterFooter}>
-//               <Text c="dimmed" size="sm">
-//                 © 2020 mantine.dev. All rights reserved.
-//               </Text>
-      
-//               <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">
-//                 <ActionIcon size="lg" color="gray" variant="subtle">
-//                   <IconBrandTwitter size={18} stroke={1.5} />
-//                 </ActionIcon>
-//                 <ActionIcon size="lg" color="gray" variant="subtle">
-//                   <IconBrandYoutube size={18} stroke={1.5} />
-//                 </ActionIcon>
-//                 <ActionIcon size="lg" color="gray" variant="subtle">
-//                   <IconBrandInstagram size={18} stroke={1.5} />
-//                 </ActionIcon>
-//               </Group>
-//             </Container>
-//           </footer>
-//         );
-//       }
+          <Group gap="md" wrap="wrap">
+            <Anchor href="#" c="dimmed" size="sm" underline="hover">
+              Privacy policy
+            </Anchor>
+            <Anchor href="#" c="dimmed" size="sm" underline="hover">
+              Terms of service
+            </Anchor>
+            <Anchor href="#" c="dimmed" size="sm" underline="hover">
+              Cookie policy
+            </Anchor>
 
-// export default SiteFooter;
+            <Group gap="xs">
+              <ActionIcon
+                component="a"
+                href="#"
+                variant="subtle"
+                color="gray"
+                aria-label="Visit our GitHub"
+              >
+                <Text fz="xs">GH</Text>
+              </ActionIcon>
+              <ActionIcon
+                component="a"
+                href="#"
+                variant="subtle"
+                color="gray"
+                aria-label="Visit our LinkedIn"
+              >
+                <Text fz="xs">in</Text>
+              </ActionIcon>
+              <ActionIcon
+                component="a"
+                href="#"
+                variant="subtle"
+                color="gray"
+                aria-label="Visit our X profile"
+              >
+                <Text fz="xs">X</Text>
+              </ActionIcon>
+            </Group>
+          </Group>
+        </Group>
+      </Container>
+    </Box>
+  );
+}

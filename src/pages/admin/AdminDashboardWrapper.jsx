@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { useState, useEffect } from "react";
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { logError } from '../../config/logging/loggerFunctions.mjs';
+import { SiteFooter } from '../../components/partials/SiteFooter';
 
 export const AdminDashboardWrapper = () => {
     
@@ -43,6 +44,7 @@ export const AdminDashboardWrapper = () => {
             <div>
                 <Outlet />
             </div>
+            <SiteFooter />
         </div>
     )
 }

@@ -7,15 +7,15 @@ import Login from './pages/auth/LoginPage.jsx'
 import Register from './pages/auth/RegisterPage.jsx'
 import RestorePasswordPage from './pages/auth/RestorePasswordPage.jsx'
 import TerminosCondiciones from './pages/index/terminos-condiciones.jsx'
-import IndexWrapper from './pages/index/indexWrapper.jsx'
-import Index from './pages/index/index.jsx'
+import IndexWrapper from './pages/index/IndexWrapper.jsx'
+import Homepage from './pages/index/Homepage.jsx'
 import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx'
 import AdminDashboardWrapper from './pages/admin/AdminDashboardWrapper.jsx'
 import CustomerProfile from './pages/user/CustomerProfile.jsx'
 import UserWrapper from './pages/user/UserWrapper.jsx'
 import UserDashboard from './pages/user/UserDashboard.jsx'
 import RecoverPasswordPage from './pages/auth/RecoverPasswordPage.jsx'
-import FAQs from './pages/index/FAQs.jsx'
+import FAQ from './pages/index/waitlist/FAQ.jsx'
 import AuthWrapper from './pages/auth/AuthWrapper.jsx'
 import CreateAnalysisPage from './pages/user/CreateAnalysisPage.jsx'
 import { MantineProvider } from '@mantine/core'
@@ -23,14 +23,14 @@ import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
 import UserBilling from './pages/user/UserBilling.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
+import { Waitlist } from './pages/index/Waitlist.jsx'
 
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
-import { ParticipateForm } from './pages/participate/ParticipateForm.jsx'
 import { ParticipateWrapper } from './pages/participate/ParticipateWrapper.jsx'
 
 posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
-  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+  api_host: 'https://eu.i.posthog.com', //* Will always be europe
   defaults: '2025-05-24',
   debug: false,
 });
@@ -44,9 +44,14 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<IndexWrapper />}>
-          <Route index element={<Index />} />
+          <Route index element={<Waitlist />} />
+
+          {/* <Route index element={<Homepage />} /> */}
+          
+          <Route path='home' element={<Homepage />} />
+
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
-          <Route path='preguntas-frecuentes' element={<FAQs />} />
+          <Route path='preguntas-frecuentes' element={<FAQ />} />
         </Route>
 
         <Route path='/admin' element={<AdminDashboardWrapper />} >
