@@ -116,18 +116,29 @@ export const MediaPermissionsProvider = ({ children }) => {
         ...audioToUse.getAudioTracks()
       ]);
 
-      // Create MediaRecorder with appropriate options
-      const options = {
-        mimeType: 'video/webm;codecs=vp8,opus',
-        videoBitsPerSecond: 2500000, // 2.5 Mbps
-        audioBitsPerSecond: 128000   // 128 kbps
-      };
+      // Create MediaRecorder with WebM format options (preferred format)
+      const webmOptions = [
+        'video/webm;codecs=vp9,opus',    // VP9 + Opus (best quality)
+        'video/webm;codecs=vp8,opus',    // VP8 + Opus (good compatibility)
+        'video/webm;codecs=h264,opus',   // H.264 + Opus (fallback)
+        'video/webm'                     // Basic WebM (final fallback)
+      ];
 
-      // Check if the mimeType is supported
-      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-        // Fallback to a more basic format
-        options.mimeType = 'video/webm';
+      let selectedMimeType = 'video/webm'; // Default WebM format
+      
+      // Find the best supported WebM format
+      for (const mimeType of webmOptions) {
+        if (MediaRecorder.isTypeSupported(mimeType)) {
+          selectedMimeType = mimeType;
+          break;
+        }
       }
+
+      const options = {
+        mimeType: selectedMimeType,
+        videoBitsPerSecond: 1500000, // 1.5 Mbps (good for 1080p)
+        audioBitsPerSecond: 96000    // 96 kbps (sufficient audio quality)
+      };
 
       const mediaRecorder = new MediaRecorder(combinedStream, options);
       
@@ -175,8 +186,13 @@ export const MediaPermissionsProvider = ({ children }) => {
       
       // Set up the onstop handler to resolve with the blob
       mediaRecorder.onstop = () => {
+        // Ensure WebM format is always used
+        const mimeType = mediaRecorder.mimeType && mediaRecorder.mimeType.includes('webm')
+          ? mediaRecorder.mimeType
+          : 'video/webm';
+          
         const blob = new Blob(recordedChunksRef.current, {
-          type: mediaRecorder.mimeType || 'video/webm'
+          type: mimeType
         });
         recordedChunksRef.current = [];
         setIsRecording(false);
@@ -246,7 +262,11 @@ export const MediaPermissionsProvider = ({ children }) => {
         
         // Open and send request
         xhr.open('PUT', presignedUrl);
-        xhr.setRequestHeader('Content-Type', blob.type || 'video/webm');
+        // Ensure WebM content type is used
+        const contentType = blob.type && blob.type.includes('webm')
+          ? blob.type
+          : 'video/webm';
+        xhr.setRequestHeader('Content-Type', contentType);
         xhr.send(blob);
       });
     } catch (error) {
