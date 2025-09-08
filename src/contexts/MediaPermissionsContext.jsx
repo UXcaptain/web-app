@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 const MediaPermissionsContext = createContext(null);
 
@@ -225,23 +226,30 @@ export const MediaPermissionsProvider = ({ children }) => {
         xhr.upload.addEventListener('progress', (event) => {
           if (event.lengthComputable) {
             const percentComplete = Math.round((event.loaded / event.total) * 100);
+      // Use axios for the upload with progress tracking
+      const response = await axios.put(presignedUrl, blob, {
+        headers,
+        timeout: 0, // No timeout for large file uploads
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.lengthComputable) {
+            const percentComplete = Math.round((progressEvent.loaded / progressEvent.total) * 100);
             setUploadProgress(percentComplete);
           }
-        });
-        
-        // Handle completion
-        xhr.addEventListener('load', () => {
-          if (xhr.status === 200 || xhr.status === 204) {
-            setUploadStatus('success');
-            setUploadProgress(100);
-            resolve(true);
-          } else {
-            const errorMessage = `Upload failed with status ${xhr.status}`;
-            setUploadError(errorMessage);
-            setUploadStatus('error');
-            setUploadProgress(0);
-            resolve(false);
-          }
+        },
+      });
+
+      // Check if upload was successful
+      if (response.status === 200 || response.status === 204) {
+        setUploadStatus('success');
+        setUploadProgress(100);
+        return true;
+      } else {
+        const errorMessage = `We are very sorry - There has been an unexpected error with your upload - Our team has been notified and we will look into it - You can close the recording window now - ERRCODE: ${response.status}`;
+        setUploadError(errorMessage);
+        setUploadStatus('error');
+        setUploadProgress(0);
+        return false;
+      }
         });
         
         // Handle errors
@@ -272,7 +280,17 @@ export const MediaPermissionsProvider = ({ children }) => {
     } catch (error) {
       // Provide more specific error messages
       let errorMessage = 'Failed to upload recording';
-      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+      
+      if (axios.isCancel(error)) {
+        errorMessage = 'Upload cancelled';
+      } else if (error.code === 'ECONNABORTED') {
+        errorMessage = 'Upload timeout: The upload took too long to complete';
+      } else if (error.response) {
+        // Server responded with error status
+        const status = error.response.status;
+        errorMessage = `We are very sorry - There has been an unexpected error with your upload - Our team has been notified and we will look into it - You can close the recording window now - ERRCODE: ${status}`;
+      } else if (error.request) {
+        // Network error
         errorMessage = 'Network error: Unable to connect to upload server';
       } else if (error.message) {
         errorMessage = error.message;
