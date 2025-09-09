@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import apiClient from '../config/API/axiosConfig.mjs';
 
 const MediaPermissionsContext = createContext(null);
 
@@ -234,10 +235,15 @@ export const MediaPermissionsProvider = ({ children }) => {
     });
   }, [recordingMetadata]);
 
-  // Upload recording to AWS S3 using presigned URL with progress tracking and metadata
-  const uploadRecording = useCallback(async (blob, presignedUrl, metadata = {}) => {
-    if (!blob || !presignedUrl) {
-      setUploadError('Missing recording data or upload URL');
+  // Upload recording using presigned URL from /upload-url endpoint
+  const uploadRecording = useCallback(async (blob, metadata = {}, analysisId, analysisEntryId) => {
+    if (!blob) {
+      setUploadError('Missing recording data');
+      return false;
+    }
+
+    if (!analysisId || !analysisEntryId) {
+      setUploadError('Missing analysis ID or entry ID for upload');
       return false;
     }
 
@@ -246,65 +252,49 @@ export const MediaPermissionsProvider = ({ children }) => {
       setUploadError('');
       setUploadProgress(0);
       
-      // Ensure WebM content type is used
+      // Step 5: Get presigned URL from /upload-url endpoint
+      const uploadUrlResponse = await apiClient.post('/api/v1/analysisEntry/upload-url', {
+        analysisEntryId,
+        analysisId,
+        metadata: {
+          recordingDuration: completeMetadata.recordingDuration
+        }
+      });
+
+      if (!uploadUrlResponse.data?.analysisEntryPresignedUploadUrl) {
+        throw new Error('No presigned URL received from server');
+      }
+
+      const { analysisEntryPresignedUploadUrl } = uploadUrlResponse.data;
+      setUploadProgress(25);
+
+      // Upload to S3 using presigned URL
       const contentType = blob.type && blob.type.includes('webm')
         ? blob.type
         : 'video/webm';
 
-      // Prepare headers with metadata
-      const headers = {
-        'Content-Type': contentType,
-      };
-
-      // Add only recording duration as metadata header
-      if (metadata && metadata.recordingDuration) {
-        headers['x-amz-meta-recording-duration'] = metadata.recordingDuration.toString();
-      }
-
-      // Use axios for the upload with progress tracking
-      const response = await axios.put(presignedUrl, blob, {
-        headers,
-        timeout: 0, // No timeout for large file uploads
+      const uploadResponse = await axios.put(analysisEntryPresignedUploadUrl, blob, {
+        headers: {
+          'Content-Type': contentType,
+        },
         onUploadProgress: (progressEvent) => {
-          if (progressEvent.lengthComputable) {
-            const percentComplete = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-            setUploadProgress(percentComplete);
+          if (progressEvent.total) {
+            const progress = Math.round((progressEvent.loaded * 75) / progressEvent.total) + 25;
+            setUploadProgress(Math.min(progress, 100));
           }
         },
       });
 
-      // Check if upload was successful
-      if (response.status === 200 || response.status === 204) {
-        setUploadStatus('success');
-        setUploadProgress(100);
-        return true;
-      } else {
-        const errorMessage = `We are very sorry - There has been an unexpected error with your upload - Our team has been notified and we will look into it - You can close the recording window now - ERRCODE: ${response.status}`;
-        setUploadError(errorMessage);
-        setUploadStatus('error');
-        setUploadProgress(0);
-        return false;
+      if (uploadResponse.status !== 200) {
+        throw new Error(`Upload failed with status: ${uploadResponse.status}`);
       }
+
+      setUploadProgress(100);
+      setUploadStatus('success');
+      return true;
     } catch (error) {
-      // Provide more specific error messages
-      let errorMessage = 'Failed to upload recording';
-      
-      if (axios.isCancel(error)) {
-        errorMessage = 'Upload cancelled';
-      } else if (error.code === 'ECONNABORTED') {
-        errorMessage = 'Upload timeout: The upload took too long to complete';
-      } else if (error.response) {
-        // Server responded with error status
-        const status = error.response.status;
-        errorMessage = `We are very sorry - There has been an unexpected error with your upload - Our team has been notified and we will look into it - You can close the recording window now - ERRCODE: ${status}`;
-      } else if (error.request) {
-        // Network error
-        errorMessage = 'Network error: Unable to connect to upload server';
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-      
-      setUploadError(errorMessage);
+      const errorMessage = error.response?.data?.message || error.message || 'Upload failed';
+      setUploadError('Upload failed: ' + errorMessage);
       setUploadStatus('error');
       setUploadProgress(0);
       return false;
