@@ -58,17 +58,22 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
         return;
       }
       
-      // Stop recording and get the blob
-      const recordingBlob = await stopRecording();
+      // Stop recording and get the blob with metadata
+      const recordingData = await stopRecording();
       
-      if (!recordingBlob) {
+      if (!recordingData || !recordingData.blob) {
         setFinishError('No recording found. Please ensure permissions were granted and try again.');
         setIsFinishing(false);
         return;
       }
       
-      // Upload to AWS S3
-      const uploadSuccess = await uploadRecording(recordingBlob, presignedUrl);
+      // Prepare minimal metadata for upload - only recording duration
+      const uploadMetadata = {
+        recordingDuration: recordingData.metadata?.recordingDuration
+      };
+      
+      // Upload to AWS S3 with metadata
+      const uploadSuccess = await uploadRecording(recordingData.blob, presignedUrl, uploadMetadata);
       
       if (!uploadSuccess) {
         setFinishError('Failed to upload recording. Please try again.');

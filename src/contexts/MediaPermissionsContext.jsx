@@ -25,6 +25,10 @@ export const MediaPermissionsProvider = ({ children }) => {
   // Refs for MediaRecorder
   const mediaRecorderRef = useRef(null);
   const recordedChunksRef = useRef([]);
+  
+  // Recording metadata state
+  const [recordingMetadata, setRecordingMetadata] = useState({});
+  const recordingStartTimeRef = useRef(null);
 
   // Request screen sharing permission
   const requestScreenPermission = useCallback(async () => {
@@ -168,6 +172,17 @@ export const MediaPermissionsProvider = ({ children }) => {
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
       
+      // Record start time and collect metadata
+      const startTime = new Date().toISOString();
+      recordingStartTimeRef.current = startTime;
+      
+      // Collect minimal recording metadata - only what's needed for duration calculation
+      const metadata = {
+        recordingStartTime: startTime
+      };
+      
+      setRecordingMetadata(metadata);
+      
       return true;
     } catch (error) {
       setErrorMessage('Failed to start recording: ' + error.message);
@@ -175,18 +190,25 @@ export const MediaPermissionsProvider = ({ children }) => {
     }
   }, [screenStream, audioStream]);
 
-  // Stop recording and return the blob
+  // Stop recording and return the blob with metadata
   const stopRecording = useCallback(() => {
     return new Promise((resolve) => {
       if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive') {
-        resolve(null);
+        resolve({ blob: null, metadata: null });
         return;
       }
 
       const mediaRecorder = mediaRecorderRef.current;
       
-      // Set up the onstop handler to resolve with the blob
+      // Set up the onstop handler to resolve with the blob and metadata
       mediaRecorder.onstop = () => {
+        const endTime = new Date().toISOString();
+        const startTime = recordingStartTimeRef.current;
+        
+        // Calculate recording duration
+        const duration = startTime ?
+          Math.round((new Date(endTime) - new Date(startTime)) / 1000) : 0;
+        
         // Ensure WebM format is always used
         const mimeType = mediaRecorder.mimeType && mediaRecorder.mimeType.includes('webm')
           ? mediaRecorder.mimeType
@@ -195,19 +217,25 @@ export const MediaPermissionsProvider = ({ children }) => {
         const blob = new Blob(recordedChunksRef.current, {
           type: mimeType
         });
+        
+        // Complete metadata with only recording duration
+        const completeMetadata = {
+          recordingDuration: duration
+        };
+        
         recordedChunksRef.current = [];
         setIsRecording(false);
-        resolve(blob);
+        resolve({ blob, metadata: completeMetadata });
       };
 
       // Stop the recording
       mediaRecorder.stop();
       mediaRecorderRef.current = null;
     });
-  }, []);
+  }, [recordingMetadata]);
 
-  // Upload recording to AWS S3 using presigned URL with progress tracking
-  const uploadRecording = useCallback(async (blob, presignedUrl) => {
+  // Upload recording to AWS S3 using presigned URL with progress tracking and metadata
+  const uploadRecording = useCallback(async (blob, presignedUrl, metadata = {}) => {
     if (!blob || !presignedUrl) {
       setUploadError('Missing recording data or upload URL');
       return false;
@@ -218,14 +246,21 @@ export const MediaPermissionsProvider = ({ children }) => {
       setUploadError('');
       setUploadProgress(0);
       
-      // Create XMLHttpRequest for progress tracking
-      return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        
-        // Track upload progress
-        xhr.upload.addEventListener('progress', (event) => {
-          if (event.lengthComputable) {
-            const percentComplete = Math.round((event.loaded / event.total) * 100);
+      // Ensure WebM content type is used
+      const contentType = blob.type && blob.type.includes('webm')
+        ? blob.type
+        : 'video/webm';
+
+      // Prepare headers with metadata
+      const headers = {
+        'Content-Type': contentType,
+      };
+
+      // Add only recording duration as metadata header
+      if (metadata && metadata.recordingDuration) {
+        headers['x-amz-meta-recording-duration'] = metadata.recordingDuration.toString();
+      }
+
       // Use axios for the upload with progress tracking
       const response = await axios.put(presignedUrl, blob, {
         headers,
@@ -250,33 +285,6 @@ export const MediaPermissionsProvider = ({ children }) => {
         setUploadProgress(0);
         return false;
       }
-        });
-        
-        // Handle errors
-        xhr.addEventListener('error', () => {
-          setUploadError('Network error: Unable to upload recording');
-          setUploadStatus('error');
-          setUploadProgress(0);
-          resolve(false);
-        });
-        
-        // Handle abort
-        xhr.addEventListener('abort', () => {
-          setUploadError('Upload cancelled');
-          setUploadStatus('error');
-          setUploadProgress(0);
-          resolve(false);
-        });
-        
-        // Open and send request
-        xhr.open('PUT', presignedUrl);
-        // Ensure WebM content type is used
-        const contentType = blob.type && blob.type.includes('webm')
-          ? blob.type
-          : 'video/webm';
-        xhr.setRequestHeader('Content-Type', contentType);
-        xhr.send(blob);
-      });
     } catch (error) {
       // Provide more specific error messages
       let errorMessage = 'Failed to upload recording';
@@ -344,8 +352,8 @@ export const MediaPermissionsProvider = ({ children }) => {
 
   // Stop all streams and recording
   const stopAllStreams = useCallback(async () => {
-    // Stop recording first and get the blob
-    const blob = await stopRecording();
+    // Stop recording first and get the blob with metadata
+    const recordingData = await stopRecording();
     
     if (screenStream) {
       screenStream.getTracks().forEach(track => track.stop());
@@ -359,7 +367,11 @@ export const MediaPermissionsProvider = ({ children }) => {
     setIsRecording(false);
     setErrorMessage('');
     
-    return blob; // Return the recording blob
+    // Reset metadata
+    setRecordingMetadata({});
+    recordingStartTimeRef.current = null;
+    
+    return recordingData; // Return the recording data with metadata
   }, [screenStream, audioStream, stopRecording]);
 
   // Check if permissions are granted
@@ -390,6 +402,7 @@ export const MediaPermissionsProvider = ({ children }) => {
     uploadStatus,
     uploadError,
     uploadProgress,
+    recordingMetadata,
     requestPermissions,
     requestScreenPermission,
     requestAudioPermission,
