@@ -257,7 +257,7 @@ export const MediaPermissionsProvider = ({ children }) => {
         analysisEntryId,
         analysisId,
         metadata: {
-          recordingDuration: completeMetadata.recordingDuration
+          recordingDuration: metadata.recordingDuration
         }
       });
 
@@ -269,13 +269,11 @@ export const MediaPermissionsProvider = ({ children }) => {
       setUploadProgress(25);
 
       // Upload to S3 using presigned URL
-      const contentType = blob.type && blob.type.includes('webm')
-        ? blob.type
-        : 'video/webm';
-
+      // IMPORTANT: Content-Type must exactly match what was used to generate the presigned URL
+      // The backend generates presigned URLs with ContentType: 'video/webm'
       const uploadResponse = await axios.put(analysisEntryPresignedUploadUrl, blob, {
         headers: {
-          'Content-Type': contentType,
+          'Content-Type': 'video/webm',
         },
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {

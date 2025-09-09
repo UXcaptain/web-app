@@ -91,7 +91,7 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
       }
 
       try {
-        await apiClient.patch('/api/v1/analysis-entry', {
+        await apiClient.patch('/api/v1/analysisEntry', {
           analysisEntryId,
           analysisEntryStatus: 'submitted'
         });
