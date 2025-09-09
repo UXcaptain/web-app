@@ -176,7 +176,7 @@ export const MediaPermissionsProvider = ({ children }) => {
       const startTime = new Date().toISOString();
       recordingStartTimeRef.current = startTime;
       
-      // Collect minimal recording metadata - only what's needed for duration calculation
+      // Collect minimal recording metadata - only recording duration for upload
       const metadata = {
         recordingStartTime: startTime
       };
@@ -218,7 +218,7 @@ export const MediaPermissionsProvider = ({ children }) => {
           type: mimeType
         });
         
-        // Complete metadata with only recording duration
+        // Complete metadata with only recording duration for upload
         const completeMetadata = {
           recordingDuration: duration
         };
@@ -384,7 +384,7 @@ export const MediaPermissionsProvider = ({ children }) => {
     if (screenStream && audioStream && permissionStatus === 'granted' && !isRecording && !mediaRecorderRef.current) {
       startRecording(screenStream, audioStream);
     }
-  }, [screenStream, audioStream, permissionStatus, isRecording]); // Remove startRecording from deps to avoid infinite loop
+  }, [screenStream, audioStream, permissionStatus, isRecording, startRecording]);
 
   // Cleanup on unmount
   useEffect(() => {

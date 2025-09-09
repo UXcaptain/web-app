@@ -67,9 +67,16 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
         return;
       }
       
+      if (recordingData.blob.size === 0) {
+        setFinishError('Recording is empty. Please try recording again.');
+        setIsFinishing(false);
+        return;
+      }
+      
       // Prepare minimal metadata for upload - only recording duration
       const uploadMetadata = {
-        recordingDuration: recordingData.metadata?.recordingDuration
+        recordingDuration: recordingData.metadata?.recordingDuration,
+        contentType: recordingData.blob.type
       };
       
       // Upload to AWS S3 with metadata
