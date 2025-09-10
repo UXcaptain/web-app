@@ -142,7 +142,7 @@ export const MediaPermissionsProvider = ({ children }) => {
 
       const options = {
         mimeType: selectedMimeType,
-        videoBitsPerSecond: 1500000, // 1.5 Mbps (good for 1080p)
+        videoBitsPerSecond: 1000000, // 1 Mbps (for 720p)
         audioBitsPerSecond: 96000    // 96 kbps (sufficient audio quality)
       };
 
