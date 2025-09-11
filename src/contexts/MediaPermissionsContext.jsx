@@ -27,8 +27,6 @@ export const MediaPermissionsProvider = ({ children }) => {
   const mediaRecorderRef = useRef(null);
   const recordedChunksRef = useRef([]);
   
-  // Recording metadata state
-  const [recordingMetadata, setRecordingMetadata] = useState({});
   const recordingStartTimeRef = useRef(null);
 
   // Request screen sharing permission
@@ -122,24 +120,23 @@ export const MediaPermissionsProvider = ({ children }) => {
         ...audioToUse.getAudioTracks()
       ]);
 
-      // Create MediaRecorder with WebM format options (preferred format)
-      const webmOptions = [
-        'video/webm;codecs=vp9,opus',    // VP9 + Opus (best quality)
-        'video/webm;codecs=vp8,opus',    // VP8 + Opus (good compatibility)
-        'video/webm;codecs=h264,opus',   // H.264 + Opus (fallback)
-        'video/webm'                     // Basic WebM (final fallback)
+      // Create MediaRecorder with MP4 format options (preferred format)
+      const mp4Options = [
+        'video/mp4;codecs=avc1,mp4a.40.2', // H.264 + AAC (best compatibility)
+        'video/mp4;codecs=avc1',           // H.264 video only (fallback)
+        'video/mp4'                        // Basic MP4 (final fallback)
       ];
-
-      let selectedMimeType = 'video/webm'; // Default WebM format
+    
+      let selectedMimeType = 'video/mp4'; // Default MP4 format
       
-      // Find the best supported WebM format
-      for (const mimeType of webmOptions) {
+      // Find the best supported MP4 format
+      for (const mimeType of mp4Options) {
         if (MediaRecorder.isTypeSupported(mimeType)) {
           selectedMimeType = mimeType;
           break;
         }
       }
-
+    
       const options = {
         mimeType: selectedMimeType,
         videoBitsPerSecond: 1000000, // 1 Mbps (for 720p)
@@ -173,16 +170,9 @@ export const MediaPermissionsProvider = ({ children }) => {
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
       
-      // Record start time and collect metadata
+      // Record start time
       const startTime = new Date().toISOString();
       recordingStartTimeRef.current = startTime;
-      
-      // Collect minimal recording metadata - only recording duration for upload
-      const metadata = {
-        recordingStartTime: startTime
-      };
-      
-      setRecordingMetadata(metadata);
       
       return true;
     } catch (error) {
@@ -210,33 +200,28 @@ export const MediaPermissionsProvider = ({ children }) => {
         const duration = startTime ?
           Math.round((new Date(endTime) - new Date(startTime)) / 1000) : 0;
         
-        // Ensure WebM format is always used
-        const mimeType = mediaRecorder.mimeType && mediaRecorder.mimeType.includes('webm')
+        // Ensure MP4 format is always used
+        const mimeType = mediaRecorder.mimeType && mediaRecorder.mimeType.includes('mp4')
           ? mediaRecorder.mimeType
-          : 'video/webm';
+          : 'video/mp4';
           
         const blob = new Blob(recordedChunksRef.current, {
           type: mimeType
         });
         
-        // Complete metadata with only recording duration for upload
-        const completeMetadata = {
-          recordingDuration: duration
-        };
-        
         recordedChunksRef.current = [];
         setIsRecording(false);
-        resolve({ blob, metadata: completeMetadata });
+        resolve({ blob: blob, metadata: null });
       };
 
       // Stop the recording
       mediaRecorder.stop();
       mediaRecorderRef.current = null;
     });
-  }, [recordingMetadata]);
+  }, []);
 
   // Upload recording using presigned URL from /upload-url endpoint
-  const uploadRecording = useCallback(async (blob, metadata = {}, analysisId, analysisEntryId) => {
+  const uploadRecording = useCallback(async (blob, analysisId, analysisEntryId) => {
     if (!blob) {
       setUploadError('Missing recording data');
       return false;
@@ -246,7 +231,7 @@ export const MediaPermissionsProvider = ({ children }) => {
       setUploadError('Missing analysis ID or entry ID for upload');
       return false;
     }
-
+    
     try {
       setUploadStatus('uploading');
       setUploadError('');
@@ -255,10 +240,7 @@ export const MediaPermissionsProvider = ({ children }) => {
       // Step 5: Get presigned URL from /upload-url endpoint
       const uploadUrlResponse = await apiClient.post('/api/v1/analysisEntry/upload-url', {
         analysisEntryId,
-        analysisId,
-        metadata: {
-          recordingDuration: metadata.recordingDuration
-        }
+        analysisId
       });
 
       if (!uploadUrlResponse.data?.analysisEntryPresignedUploadUrl) {
@@ -270,10 +252,10 @@ export const MediaPermissionsProvider = ({ children }) => {
 
       // Upload to S3 using presigned URL
       // IMPORTANT: Content-Type must exactly match what was used to generate the presigned URL
-      // The backend generates presigned URLs with ContentType: 'video/webm'
+      // The backend generates presigned URLs with ContentType: 'video/mp4'
       const uploadResponse = await axios.put(analysisEntryPresignedUploadUrl, blob, {
         headers: {
-          'Content-Type': 'video/webm',
+          'Content-Type': 'video/mp4',
         },
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
@@ -355,11 +337,9 @@ export const MediaPermissionsProvider = ({ children }) => {
     setIsRecording(false);
     setErrorMessage('');
     
-    // Reset metadata
-    setRecordingMetadata({});
     recordingStartTimeRef.current = null;
     
-    return recordingData; // Return the recording data with metadata
+    return recordingData; // Return the recording data
   }, [screenStream, audioStream, stopRecording]);
 
   // Check if permissions are granted
@@ -390,7 +370,6 @@ export const MediaPermissionsProvider = ({ children }) => {
     uploadStatus,
     uploadError,
     uploadProgress,
-    recordingMetadata,
     requestPermissions,
     requestScreenPermission,
     requestAudioPermission,
