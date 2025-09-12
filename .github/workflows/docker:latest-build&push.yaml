@@ -2,11 +2,12 @@ name: Push to Docker Hub, build and deploy :next tag image to Docker Hub
 
 on:
     push:
-        branches: [ "DISABLED" ]
+        branches: [ "latest" ]
 
 jobs:
     docker-build-and-push:
         runs-on: ubuntu-latest
+        environment: latest
         steps:
         -
             name: Checkout
@@ -32,36 +33,36 @@ jobs:
                 push: true
                 tags: sergion14/uxcaptain:front-next
 
-    koyeb-deploy:
-        runs-on: ubuntu-latest
-        environment: latest
-        needs: docker-build-and-push
-        concurrency: 
-            group: "${{ github.ref_name }}"
-            cancel-in-progress: true
-        steps:
-            - 
-                name: Install and configure the Koyeb CLI
-                uses: koyeb-community/koyeb-actions@v2
-                with:
-                    api_token: "${{ secrets.KOYEB_API_TOKEN }}"
-            - 
-                name: Create VITE_PUBLIC_POSTHOG_KEY secret
-                uses: koyeb/action-git-deploy/secret@v1
-                with:
-                    secret-name: NEXT_VITE_PUBLIC_POSTHOG_KEY
-                    secret-value: "${{ secrets.VITE_PUBLIC_POSTHOG_KEY }}"
-            -
-                name: Build and deploy the application to Koyeb
-                uses: koyeb/action-git-deploy@v1
-                with:
-                    service-env: VITE_PUBLIC_POSTHOG_KEY="${{ vars.VITE_PUBLIC_POSTHOG_KEY }}", VITE_API_BASE_URL="${{ vars.VITE_API_BASE_URL }}"
-                    app-name: "webapp-latest"
-                    service-instance-type: "eco-nano" #https://www.koyeb.com/docs/reference/instances
-                    service-name: "webapp-latest"
-                    service-ports: "80:http"
-                    service-routes: "/:80"
-                    service-regions: "fra" # https://www.koyeb.com/docs/reference/regions
-                    docker: "sergion14/uxcaptain:front-latest"
-                    docker-private-registry-secret: "SNR" # MANAGED in https://app.koyeb.com/settings/registry-configuration
+    # koyeb-deploy:
+    #     runs-on: ubuntu-latest
+    #     environment: latest
+    #     needs: docker-build-and-push
+    #     concurrency: 
+    #         group: "${{ github.ref_name }}"
+    #         cancel-in-progress: true
+    #     steps:
+    #         - 
+    #             name: Install and configure the Koyeb CLI
+    #             uses: koyeb-community/koyeb-actions@v2
+    #             with:
+    #                 api_token: "${{ secrets.KOYEB_API_TOKEN }}"
+    #         - 
+    #             name: Create VITE_PUBLIC_POSTHOG_KEY secret
+    #             uses: koyeb/action-git-deploy/secret@v1
+    #             with:
+    #                 secret-name: NEXT_VITE_PUBLIC_POSTHOG_KEY
+    #                 secret-value: "${{ secrets.VITE_PUBLIC_POSTHOG_KEY }}"
+    #         -
+    #             name: Build and deploy the application to Koyeb
+    #             uses: koyeb/action-git-deploy@v1
+    #             with:
+    #                 service-env: VITE_PUBLIC_POSTHOG_KEY="${{ vars.VITE_PUBLIC_POSTHOG_KEY }}", VITE_API_BASE_URL="${{ vars.VITE_API_BASE_URL }}"
+    #                 app-name: "webapp-latest"
+    #                 service-instance-type: "eco-nano" #https://www.koyeb.com/docs/reference/instances
+    #                 service-name: "webapp-latest"
+    #                 service-ports: "80:http"
+    #                 service-routes: "/:80"
+    #                 service-regions: "fra" # https://www.koyeb.com/docs/reference/regions
+    #                 docker: "sergion14/uxcaptain:front-latest"
+    #                 docker-private-registry-secret: "SNR" # MANAGED in https://app.koyeb.com/settings/registry-configuration
                 
