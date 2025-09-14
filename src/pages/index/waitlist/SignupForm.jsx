@@ -57,7 +57,7 @@ const WaitlistSignupForm = () => {
       setSubmissionStatus({ loading: false, success: false, error: true });
       logError('Waitlist submission failed', error, {
         email: values.email,
-        endpoint: api/v1/waitlist,
+        endpoint: 'api/v1/waitlist',
       });
     }
   };

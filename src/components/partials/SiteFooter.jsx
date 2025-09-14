@@ -56,7 +56,7 @@ export const SiteFooter = () => {
         >
           <Stack gap="xs">
             <Group gap="sm" align="center" wrap="nowrap">
-              <Image src="/vite.svg" alt="Company logo" w={36} h={36} />
+              <Image src="/logo.svg" alt="Company logo" w={36} h={36} />
               <Text fw={700} fz="lg">
                 ProductName
               </Text>
