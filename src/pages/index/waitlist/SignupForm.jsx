@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from '@mantine/form';
-import axios from 'axios';
+import apiClient from '../../../config/API/axiosConfig.mjs';
 import {
   Container,
   Paper,
@@ -40,14 +40,10 @@ const WaitlistSignupForm = () => {
     setSubmissionStatus({ loading: true, success: false, error: false });
 
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_PUBLIC_WAITLIST_ENDPOINT,
+      const response = await apiClient.post(`api/v1/waitlist`,
         {
           email: values.email,
           consent: values.consent,
-          source: 'waitlist',
-          url: window.location.href,
-          createdAt: new Date().toISOString(),
         }
       );
 
@@ -61,7 +57,7 @@ const WaitlistSignupForm = () => {
       setSubmissionStatus({ loading: false, success: false, error: true });
       logError('Waitlist submission failed', error, {
         email: values.email,
-        endpoint: import.meta.env.VITE_PUBLIC_WAITLIST_ENDPOINT,
+        endpoint: api/v1/waitlist,
       });
     }
   };
