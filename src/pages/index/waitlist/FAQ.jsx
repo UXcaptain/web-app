@@ -1,5 +1,5 @@
 import { Container, Title, Accordion, Group, Anchor } from '@mantine/core';
-import { IconQuestionMark } from '@tabler/icons-react';
+import { IconHelpHexagon } from '@tabler/icons-react';
 
 const WaitlistFAQ = () => (
   <Container size="lg" py="xl">
@@ -8,7 +8,7 @@ const WaitlistFAQ = () => (
     </Title>
     <Accordion variant="separated">
       <Accordion.Item value="installation">
-        <Accordion.Control icon={<IconQuestionMark size={16} />}>
+        <Accordion.Control icon={<IconHelpHexagon size={16} />}>
           ¿Necesito instalar algo?
         </Accordion.Control>
         <Accordion.Panel>
@@ -17,7 +17,7 @@ const WaitlistFAQ = () => (
       </Accordion.Item>
 
       <Accordion.Item value="privacy">
-        <Accordion.Control icon={<IconQuestionMark size={16} />}>
+        <Accordion.Control icon={<IconHelpHexagon size={16} />}>
           ¿Cómo protegéis los datos?
         </Accordion.Control>
         <Accordion.Panel>
@@ -26,7 +26,7 @@ const WaitlistFAQ = () => (
       </Accordion.Item>
 
       <Accordion.Item value="team">
-        <Accordion.Control icon={<IconQuestionMark size={16} />}>
+        <Accordion.Control icon={<IconHelpHexagon size={16} />}>
           ¿Puedo invitar a mi equipo?
         </Accordion.Control>
         <Accordion.Panel>
@@ -35,7 +35,7 @@ const WaitlistFAQ = () => (
       </Accordion.Item>
 
       <Accordion.Item value="browsers">
-        <Accordion.Control icon={<IconQuestionMark size={16} />}>
+        <Accordion.Control icon={<IconHelpHexagon size={16} />}>
           ¿Qué navegadores soportáis?
         </Accordion.Control>
         <Accordion.Panel>
@@ -44,7 +44,7 @@ const WaitlistFAQ = () => (
       </Accordion.Item>
 
       <Accordion.Item value="availability">
-        <Accordion.Control icon={<IconQuestionMark size={16} />}>
+        <Accordion.Control icon={<IconHelpHexagon size={16} />}>
           ¿Cuándo estará disponible?
         </Accordion.Control>
         <Accordion.Panel>
