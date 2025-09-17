@@ -53,11 +53,11 @@ const WaitlistFAQ = () => (
       </Accordion.Item>
     </Accordion>
 
-    <Group justify="center" mt="xl">
+    {/* <Group justify="center" mt="xl">
       <Anchor href="/preguntas-frecuentes" size="sm">
         Ver todas las preguntas
       </Anchor>
-    </Group>
+    </Group> */}
   </Container>
 );
 
