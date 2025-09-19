@@ -1,5 +1,5 @@
 import { Container, Title, SimpleGrid, Card, Stack, Text } from '@mantine/core';
-import { IconClipboardList, IconShare, IconRecordMail } from '@tabler/icons-react';
+import { IconClipboardList, IconShare, IconRecordMail, IconTrendingUp , IconUser } from '@tabler/icons-react';
 
 const WaitlistHowItWorks = () => (
   <Container size="lg" py="xl" id="how-it-works">
@@ -23,9 +23,9 @@ const WaitlistHowItWorks = () => (
           <IconClipboardList size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
-          <Text fw={700} fz="lg">1. Crea un estudio</Text>
+          <Text fw={700} fz="lg">1. Crea tu análisis</Text>
           <Text c="dimmed" ta="center">
-            Define objetivos y tareas en minutos con nuestras plantillas.
+            Decide qué quieres analizar y crea tu análisis en menos de 5 minutos.
           </Text>
         </Stack>
       </Card>
@@ -42,12 +42,12 @@ const WaitlistHowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconShare size={56} color="#238BE6" />
+          <IconUser size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
           <Text fw={700} fz="lg">2. Recluta participantes</Text>
           <Text c="dimmed" ta="center">
-            Comparte un enlace y recluta donde ya están tus usuarios.
+            Comparte un enlace con tus clientes, en redes sociales, o incluso tu equipo interno.
           </Text>
         </Stack>
       </Card>
@@ -64,12 +64,12 @@ const WaitlistHowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconRecordMail size={56} color="#238BE6" />
+          <IconTrendingUp size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
-          <Text fw={700} fz="lg">3. Comparte insights</Text>
+          <Text fw={700} fz="lg">3. Mejora tus productos</Text>
           <Text c="dimmed" ta="center">
-            Acelera el análisis y comparte hallazgos con tu equipo.
+            Extrae insights, identifica pain points y mejora tus productos gracias al feedback claro y directo de usuarios reales.
           </Text>
         </Stack>
       </Card>
