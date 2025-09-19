@@ -12,7 +12,7 @@ export const Waitlist = () => {
       <WaitlistHero />
       <WaitlistSignupForm />
       <WaitlistHowItWorks />
-      <WaitlistFeatures />
+      {/* <WaitlistFeatures /> */}
       <WaitlistFAQ />
     </div>
   );
