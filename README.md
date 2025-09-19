@@ -23,7 +23,7 @@ The web app can be run either via:
 
 * `npm run start:local` would run the webapp as a standalone app but there is no .env file since we are using docker
 
-### HMR (Hot module replacement) in development
+### HMR (Hot module replacement) in development - WIP
 
 TODO -- Ideally there is hot module reload when running the webapp from docker compose
 
@@ -31,8 +31,8 @@ To use HMR, we are running the webapp service in Docker compose with vite build 
 
 ## Production & Dev deployments
 
-Deployments are triggered by pusing or merging to `next` and `latest` branches.
-On new code, Koyeb which will trigger build & deploy using the Dockerfile
+Deployments are triggered by pushing or merging to `next` and `latest` branches.
+When new code is pushed to either branch, Koyeb which will trigger build & deploy using the included Dockerfile
 
 [Koyeb](https://koyeb.com) - easy to configure & serverless infrastructure running on AWS under the hood
 
@@ -49,4 +49,4 @@ Direct access to services in Koyeb:
 * [Prod]() # COMPLETE
 * [Dev](https://app.koyeb.com/services/5f63a032-90e3-4aff-8b4a-b0a02ecf769b/settings)
 
-An list of env variables can be found in `.env.example` in the root directory
+An example list of env variables can be found in `.env.example` in the root directory
