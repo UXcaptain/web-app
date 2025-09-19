@@ -101,10 +101,11 @@ const WaitlistSignupForm = () => {
               <Checkbox
                 label={
                   <>
-                    Acepto los{' '}
+                    Acepto recibir comunicaciones comerciales
+                    {/* Acepto los{' '}
                     <Anchor href="/terminos-condiciones" target="_blank">
                       términos y condiciones
-                    </Anchor>
+                    </Anchor> */}
                   </>
                 }
                 {...form.getInputProps('consent')}
