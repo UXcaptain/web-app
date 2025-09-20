@@ -49,7 +49,7 @@ const WaitlistFAQ = () => (
           ¿Cómo recluto participantes a los participantes?
         </Accordion.Control>
         <Accordion.Panel>
-         ¡Tu decides! - Puedes invitar a a tus tests a quien quieras, tus clientes, en redes sociales, o incluso tu equipo interno - Simplemente comparte el enlace de tu análisis con ellos 
+         ¡Tu decides! - Puedes invitar a tus análisis a quien quieras, tus clientes, en redes sociales, o incluso tu equipo interno - Simplemente comparte el enlace de tu análisis con ellos 
         </Accordion.Panel>
       </Accordion.Item>
 
