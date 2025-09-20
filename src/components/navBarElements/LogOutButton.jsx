@@ -1,28 +1,25 @@
 import { useNavigate } from "react-router";
+import apiClient from "../../config/API/axiosConfig.mjs";
+import { logError } from "../../config/logging/loggerFunctions.mjs";
+import { usePostHog } from 'posthog-js/react'
 
 
 const LogOutButton = () => {
 
+    const posthog = usePostHog()
     const navigate = useNavigate();
 
     const handleLogout = async () => {
     try {
         
-        const logoutRequest = await fetch('http://localhost:3000/api/v1/auth/logout', {
-            method: 'POST',
-            credentials: 'include',
-        })
+     await apiClient.post(`/api/v1/auth/logout`)
+        navigate('/')
 
-        const logoutResponse = await logoutRequest.json()
-
-        if (logoutResponse.success === true) {
-            console.log('Logout successful:', logoutResponse.data)
-            navigate('/')
-        }
+        posthog.reset(); //! FIX
 
     } catch (error) {
-        console.error('Logout failed', error)
-    }
+        logError('Error in logout functionality', error, 'N/A');
+        }
     
     }
 

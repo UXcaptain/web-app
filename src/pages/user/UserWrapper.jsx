@@ -1,17 +1,94 @@
 import { Outlet } from "react-router";
-import UserNavBar from "../../components/partials/UserNavBar";
-import UserFooter from "../../components/partials/UserFooter";
+import  NavbarSimple  from "../../components/partials/UserNavBar";
+import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import apiClient from "../../config/API/axiosConfig.mjs";
+import { logError } from "../../config/logging/loggerFunctions.mjs";
+import { usePostHog } from 'posthog-js/react'
+import { AppShell, Burger } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { SubscriptionProvider } from "../../contexts/SubscriptionContext.jsx";
+import TrialEndedBanner from "../../components/partials/TrialEndedBanner.jsx";
+import { SiteFooter } from "../../components/partials/SiteFooter";
 
 const UserWrapper = () => {
 
-    return (
-        <div>
-            <UserNavBar /> {/* Add UserNavBar component here */}
-            <h1>This is the user profile wrapper, which contains different outlets</h1>
-            <Outlet />
-            <UserFooter />
-        </div>
-    )
+    const posthog = usePostHog()
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const [opened, { toggle }] = useDisclosure();
+    const [userId, setUserId] = useState(null);
+
+    
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const response = await apiClient.get(`/api/v1/auth/session`);
+                setUserId(response.data.user.id)
+                setLoading(false);
+
+            } catch (error) {
+                logError('Failed to check session', error);
+                navigate('/auth/login');
+            }
+        };
+
+        checkSession();
+    }, [navigate]);
+
+
+    useEffect( () => {
+
+      if (userId) {
+        posthog?.identify(userId, {
+        })
+      }
+    }, [userId])
+
+
+  return (
+    <SubscriptionProvider>
+      <AppShell
+        header={{ height: 60 }}
+        navbar={{
+          width: 300,
+          breakpoint: 'sm',
+          collapsed: { mobile: !opened },
+        }}
+        padding="md"
+      >
+        <AppShell.Header>
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="sm"
+            size="sm"
+          />
+        </AppShell.Header>
+
+        <AppShell.Navbar p="md">
+          <NavbarSimple />
+        </AppShell.Navbar>
+
+        <AppShell.Main>
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <>
+              <TrialEndedBanner />
+              <Outlet />
+            </>
+          )}
+        </AppShell.Main>
+        <SiteFooter />
+      </AppShell>
+    </SubscriptionProvider>
+  );
+
 }
 
 export default UserWrapper;
+
+
+
+
