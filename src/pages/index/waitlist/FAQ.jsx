@@ -13,16 +13,16 @@ const WaitlistFAQ = () => (
           ¿Cuándo estará disponible?
         </Accordion.Control>
         <Accordion.Panel>
-          ¡Pronto! Actualmente estamos en fase beta - Si quieres ser de los primeros en probar la herramienta, únete al waitlist. 
+          ¡Pronto! Actualmente estamos en fase beta - Apúntate y se de los primeros en probar la herramienta.
         </Accordion.Panel>
       </Accordion.Item>
 
       <Accordion.Item value="analysis-time">
         <Accordion.Control icon={<IconHelpHexagon size={16} />}>
-          ¿Cuánto se tarda en preparar un análisis?
+          ¿Cuánto tardaré en preparar un análisis?
         </Accordion.Control>
         <Accordion.Panel>
-          El tiempo de preparación de un análisis depende del alcance del estudio y la complejidad de los datos que se desean recolectar. Generalmente, puede tardar desde unas pocas horas para un análisis básico hasta varios días si se requiere configurar preguntas personalizadas, reclutamiento de participantes y revisión de vídeos.
+          Es muy sencillo - En menos de 5 minutos puedes crear tantas preguntas como quieras y lanzar tu análisis.
         </Accordion.Panel>
       </Accordion.Item>
 
@@ -77,6 +77,15 @@ const WaitlistFAQ = () => (
         </Accordion.Control>
         <Accordion.Panel>
           Lamentablemente, no - Estamos trabajando en una aplicación móvil para que pronto puedas probar tus aplicaciones móviles.
+        </Accordion.Panel>
+      </Accordion.Item>
+
+      <Accordion.Item value="more-questions">
+        <Accordion.Control icon={<IconHelpHexagon size={16} />}>
+          Tengo más preguntas ¿Os puedo contactar?
+        </Accordion.Control>
+        <Accordion.Panel>
+          ¡Claro! - Únete a nuestro <Anchor href="https://join.slack.com/t/uxcaptainespacio/shared_invite/zt-3c8lqp7nb-0OORUPkQ20A2oiquV13kUQ?utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Slack</Anchor>, <Anchor href="https://discord.gg/VcwNV9rjpy">Discord</Anchor> o por <Anchor href="https://api.whatsapp.com/send?phone=34679146035&text=%C2%A1Hola!%20Me%20encantar%C3%ADa%20probar%20la%20beta%20de%20UXcaptain&utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Whatsapp</Anchor>. Estaremos encantados de ayudarte
         </Accordion.Panel>
       </Accordion.Item>
 
