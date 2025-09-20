@@ -8,11 +8,11 @@ import WaitlistNavBar from '../../components/partials/WaitlistNavBar.jsx';
 export const Waitlist = () => {
   return (
     <div className="waitlist-page">
-      <WaitlistNavBar />
+      {/* <WaitlistNavBar /> */}
       <WaitlistHero />
       <WaitlistSignupForm />
       <WaitlistHowItWorks />
-      <WaitlistFeatures />
+      {/* <WaitlistFeatures /> */}
       <WaitlistFAQ />
     </div>
   );

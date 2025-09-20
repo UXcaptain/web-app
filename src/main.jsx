@@ -43,10 +43,13 @@ createRoot(document.getElementById('root')).render(
 
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<IndexWrapper />}>
-          <Route index element={<Waitlist />} />
 
-          {/* <Route index element={<Homepage />} /> */}
+        <Route path="/waitlist" element={<Waitlist />} /> //* DELETE after launch
+
+        <Route path="/" element={<Waitlist />}> //* DELETE after launch
+        {/* <Route path="/" element={<Waitlist />}> */} //* UNCOMMENT after launch
+
+          <Route index element={<Homepage />} />
           
           <Route path='home' element={<Homepage />} />
 
@@ -77,6 +80,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/entry" element={<UserWrapper />}>
                 <Route path=":id" element={<ViewAnalysisEntryPage />} />
               </Route>
+
 
         <Route path="/participate" element={<ParticipateWrapper />} />
         

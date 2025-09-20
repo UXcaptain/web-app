@@ -5,7 +5,7 @@ import { IconAlertCircle, IconCheck, IconUpload, IconCircleCheck } from '@tabler
 import { useMediaPermissions } from '../../contexts/MediaPermissionsContext';
 import apiClient from '../../config/API/axiosConfig.mjs';
 
-export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analysisEntryId }) => {
+export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analysisEntryId, analysisId }) => {
   const {
     hasPermissions,
     permissionStatus,
@@ -49,26 +49,33 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
       setIsFinishing(true);
       setFinishError('');
       
-      // Check for presigned URL first - system should not work without it
-      const presignedUrl = analysisData?.presignedUploadUrl;
+      // Stop recording and get the blob with metadata
+      const recordingData = await stopRecording();
       
-      if (!presignedUrl) {
-        setFinishError('Upload configuration missing. Please contact support.');
-        setIsFinishing(false);
-        return;
-      }
-      
-      // Stop recording and get the blob
-      const recordingBlob = await stopRecording();
-      
-      if (!recordingBlob) {
+      if (!recordingData || !recordingData.blob) {
         setFinishError('No recording found. Please ensure permissions were granted and try again.');
         setIsFinishing(false);
         return;
       }
       
-      // Upload to AWS S3
-      const uploadSuccess = await uploadRecording(recordingBlob, presignedUrl);
+      if (recordingData.blob.size === 0) {
+        setFinishError('Recording is empty. Please try recording again.');
+        setIsFinishing(false);
+        return;
+      }
+      
+      // Prepare minimal metadata for upload - only recording duration
+      const uploadMetadata = {
+        recordingDuration: recordingData.metadata?.recordingDuration
+      };
+      
+      // Step 5: Upload recording using presigned URL
+      const uploadSuccess = await uploadRecording(
+        recordingData.blob,
+        uploadMetadata,
+        analysisId,
+        analysisEntryId
+      );
       
       if (!uploadSuccess) {
         setFinishError('Failed to upload recording. Please try again.');
@@ -76,17 +83,18 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
         return;
       }
 
-      // After successful upload, PATCH analysis entry with analysisEntryId
-      const entryId = analysisEntryId
-      
-      if (!entryId) {
+      // Step 6: PATCH analysis entry to mark as submitted
+      if (!analysisEntryId) {
         setFinishError('Missing analysis entry ID for updating entry.');
         setIsFinishing(false);
         return;
       }
 
       try {
-        await apiClient.patch(`/api/v1/analysisEntry/${encodeURIComponent(entryId)}`, {});
+        await apiClient.patch('/api/v1/analysisEntry', {
+          analysisEntryId,
+          analysisEntryStatus: 'submitted'
+        });
       } catch (patchErr) {
         setFinishError('Failed to update analysis entry after upload.');
         setIsFinishing(false);
@@ -234,5 +242,6 @@ AnalysisStepNavigator.propTypes = {
   ),
   onExit: PropTypes.func,
   analysisData: PropTypes.object,
-  analysisEntryId: PropTypes.string
+  analysisEntryId: PropTypes.string,
+  analysisId: PropTypes.string
 };

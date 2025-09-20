@@ -7,7 +7,7 @@ const AdminNavBar = () => {
 
             <div className="logoContainer">
                 <NavLink to="/">
-                    <img src="/images/logo.png" alt="logo" />
+                    <img src="/logo.svg" alt="logo" />
                 </NavLink>
             </div>
 
