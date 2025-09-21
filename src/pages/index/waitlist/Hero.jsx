@@ -5,10 +5,10 @@ const WaitlistHero = () => (
   <Container size="lg" py="xl">
     <Stack align="center" gap="xl">
       <Title order={1} ta="center">
-        Investiga con usuarios reales, en minutos
+        Feedback de calidad, en minutos
       </Title>
       <Text size="lg" ta="center" c="dimmed">
-        Reúne feedback de calidad sin fricción. Diseña tareas, comparte un enlace y recibe sesiones grabadas con insights accionables.
+        Recibe videos de usuarios reales interactuando con tus productos mientras comparten su feedback, identifica pain points y mejora tus productos
       </Text>
       
     </Stack>
