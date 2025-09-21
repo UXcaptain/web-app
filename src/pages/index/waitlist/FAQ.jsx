@@ -22,7 +22,7 @@ const WaitlistFAQ = () => (
           ¿Cuánto tardaré en preparar un análisis?
         </Accordion.Control>
         <Accordion.Panel>
-          Es muy sencillo - En menos de 5 minutos puedes crear tantas preguntas como quieras y lanzar tu análisis.
+          Es muy sencillo - En menos de 5 minutos puedes añadir tantas preguntas como quieras y lanzar tu análisis.
         </Accordion.Panel>
       </Accordion.Item>
 
@@ -40,7 +40,7 @@ const WaitlistFAQ = () => (
           ¿Qué recibiré?
         </Accordion.Control>
         <Accordion.Panel>
-          Recibirás una grabación de pantalla con audio y video por cada participante, en el que podrás observar cómo completan las tareas que has definido mientras comentan su feedback y pensamientos en voz alta.
+          Recibirás una grabación de pantalla con audio y video por cada participante, en el que podrás observar cómo completan las tareas que has definido mientras comparten su feedback y pensamientos en voz alta.
         </Accordion.Panel>
       </Accordion.Item>
 
@@ -49,7 +49,7 @@ const WaitlistFAQ = () => (
           ¿Cómo recluto participantes a los participantes?
         </Accordion.Control>
         <Accordion.Panel>
-         ¡Tu decides! - Puedes invitar a tus análisis a quien quieras, tus clientes, en redes sociales, o incluso tu equipo interno - Simplemente comparte el enlace de tu análisis con ellos 
+         ¡Tu decides! - Puedes invitar a tus análisis a quien quieras, tus clientes, en redes sociales, o incluso tu equipo interno - Simplemente comparte el enlace de tu análisis con ellos. 
         </Accordion.Panel>
       </Accordion.Item>
 
@@ -76,7 +76,7 @@ const WaitlistFAQ = () => (
           ¿Puedo probar mi aplicación móvil?
         </Accordion.Control>
         <Accordion.Panel>
-          Lamentablemente, no - Estamos trabajando en una aplicación móvil para que pronto puedas probar tus aplicaciones móviles.
+          Lamentablemente, aún no - Estamos trabajando en una aplicación móvil para que pronto puedas probar tus aplicaciones móviles.
         </Accordion.Panel>
       </Accordion.Item>
 
@@ -85,7 +85,7 @@ const WaitlistFAQ = () => (
           Tengo más preguntas ¿Os puedo contactar?
         </Accordion.Control>
         <Accordion.Panel>
-          ¡Claro! - Únete a nuestro <Anchor href="https://join.slack.com/t/uxcaptainespacio/shared_invite/zt-3c8lqp7nb-0OORUPkQ20A2oiquV13kUQ?utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Slack</Anchor>, <Anchor href="https://discord.gg/VcwNV9rjpy">Discord</Anchor> o por <Anchor href="https://api.whatsapp.com/send?phone=34679146035&text=%C2%A1Hola!%20Me%20encantar%C3%ADa%20probar%20la%20beta%20de%20UXcaptain&utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Whatsapp</Anchor>. Estaremos encantados de ayudarte
+          ¡Claro! - Únete a nuestro <Anchor href="https://join.slack.com/t/uxcaptainespacio/shared_invite/zt-3c8lqp7nb-0OORUPkQ20A2oiquV13kUQ?utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Slack</Anchor>, <Anchor href="https://discord.gg/VcwNV9rjpy">Discord</Anchor> o por <Anchor href="https://api.whatsapp.com/send?phone=34679146035&text=%C2%A1Hola!%20Me%20encantar%C3%ADa%20probar%20la%20beta%20de%20UXcaptain&utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Whatsapp</Anchor>. Estaremos encantados de hablar contigo
         </Accordion.Panel>
       </Accordion.Item>
 
