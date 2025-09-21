@@ -8,7 +8,7 @@ const WaitlistHero = () => (
         Feedback de calidad, en minutos
       </Title>
       <Text size="lg" ta="center" c="dimmed">
-        Recibe videos de usuarios reales interactuando con tus productos, identifica pain points y mejora tus productos
+        Recibe videos de usuarios reales interactuando con tus productos mientras comparten su feedback, identifica pain points y mejora tus productos
       </Text>
       
     </Stack>
