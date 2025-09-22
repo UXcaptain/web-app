@@ -1,8 +1,10 @@
-import { Table, Button, Text, Center } from '@mantine/core';
+import { Table, Button, Text, Center, Stack, Container, ThemeIcon, Title } from '@mantine/core';
+import { IconTableOff, IconUsers } from '@tabler/icons-react';
+import { CopyInviteLinkButton } from '../../components/partials/CopyInviteLinkButton';
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { useState } from 'react';
 
-export const AnalysisEntriesTable = ({ AnalysisEntries = [] }) => {
+export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
     const [loadingEntries, setLoadingEntries] = useState({});
 
     const handleViewAnalysisEntry = async (analysisEntryId) => {
@@ -24,9 +26,27 @@ export const AnalysisEntriesTable = ({ AnalysisEntries = [] }) => {
     // Handle empty state
     if (!Array.isArray(AnalysisEntries) || AnalysisEntries.length === 0) {
         return (
-            <Center py="xl">
-                <Text>¡Vaya! Aún nadie ha participado en tu análisis.</Text>
-            </Center>
+            <Container py="xl" size="sm">
+                <Center>
+                    <Stack align="center" spacing="lg">
+                        <ThemeIcon size={80} radius="xl" variant="light" color="blue">
+                            <IconUsers size={40} />
+                        </ThemeIcon>
+                        <Title order={2} ta="center">Aún no hay participantes</Title>
+                        <Text color="dimmed" ta="center" size="lg">
+                            ¡Vaya! Aún nadie ha participado en tu análisis.
+                        </Text>
+                        <Text color="dimmed" ta="center" size="sm">
+                            Comparte tu análisis para comenzar a recibir participaciones.
+                        </Text>
+                        <CopyInviteLinkButton
+                            analysisId={analysisId}
+                            size="md"
+                            mt="md"
+                        />
+                    </Stack>
+                </Center>
+            </Container>
         );
     }
 

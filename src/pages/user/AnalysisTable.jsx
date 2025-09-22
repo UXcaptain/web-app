@@ -3,6 +3,7 @@ import { Table, Button, Text, Center, Loader, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
+import { CopyInviteLinkButton } from "../../components/partials/CopyInviteLinkButton";
 
 export const AnalysisTable = () => {
     const [analysesArray, setAnalysesArray] = useState(null);
@@ -57,16 +58,6 @@ export const AnalysisTable = () => {
     }
 
 
-    const copyInviteLink = async (analysisId, event) => {
-        const inviteLink = `${import.meta.env.VITE_SITE_BASE_URL}/participate/${analysisId}`;
-        try {
-            await navigator.clipboard.writeText(inviteLink);
-            // Change the button text directly
-            event.target.textContent = '¡Enlace copiado!';
-        } catch (err) {
-            console.error('Failed to copy invite link:', err);
-        }
-    };
 
     const rows = analysesArray.map((item) => (
         <Table.Tr key={item.id}>
@@ -100,14 +91,11 @@ export const AnalysisTable = () => {
                 >
                     Ver detalles
                 </Button>
-                <Button
-                    variant="light"
+                <CopyInviteLinkButton
+                    analysisId={item.id}
                     size="sm"
                     ml="xs"
-                    onClick={(e) => copyInviteLink(item.id, e)}
-                >
-                    Copiar enlace de invitación
-                </Button>
+                />
             </Table.Td>
         </Table.Tr>
     ));
