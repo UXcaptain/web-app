@@ -49,9 +49,9 @@ if (error) return (
 
     return (
       <Container>
-        <Title order={2}>Resumen del análisis</Title>
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Stack>
+            <Text><strong>Id:</strong> {analysisData.id}</Text>
             <Text><strong>Titulo:</strong> {analysisData.name}</Text>
             <Text><strong>URL:</strong> <Anchor href={analysisData.url} target="_blank">{analysisData.url}</Anchor></Text>
             <Text><strong>Participantes:</strong> {analysisData.max_number_of_participants}</Text>
