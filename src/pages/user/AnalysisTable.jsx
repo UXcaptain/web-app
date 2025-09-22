@@ -51,17 +51,18 @@ export const AnalysisTable = () => {
     if (!Array.isArray(analysesArray) || analysesArray.length === 0) {
         return (
             <Center py="xl">
-                <Text>No analysis entries found</Text>
+                <Text>No se han encontrado análisis</Text>
             </Center>
         );
     }
 
 
-    const copyInviteLink = async (analysisId) => {
+    const copyInviteLink = async (analysisId, event) => {
         const inviteLink = `${import.meta.env.VITE_SITE_BASE_URL}/participate/${analysisId}`;
         try {
             await navigator.clipboard.writeText(inviteLink);
-            // You might want to add a toast notification here
+            // Change the button text directly
+            event.target.textContent = '¡Enlace copiado!';
         } catch (err) {
             console.error('Failed to copy invite link:', err);
         }
@@ -85,7 +86,7 @@ export const AnalysisTable = () => {
                 </Text>
             </Table.Td>
             <Table.Td>
-                {new Date(item.created_at).toLocaleDateString('en-US', {
+                {new Date(item.created_at).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric'
@@ -97,15 +98,15 @@ export const AnalysisTable = () => {
                     size="sm"
                     onClick={() => item?.id && navigate(`/analysis/${item.id}`)}
                 >
-                    View Details
+                    Ver detalles
                 </Button>
                 <Button
                     variant="light"
                     size="sm"
                     ml="xs"
-                    onClick={() => copyInviteLink(item.id)}
+                    onClick={(e) => copyInviteLink(item.id, e)}
                 >
-                    Copy Invite Link
+                    Copiar enlace de invitación
                 </Button>
             </Table.Td>
         </Table.Tr>
@@ -116,13 +117,13 @@ export const AnalysisTable = () => {
             <Table verticalSpacing="sm" striped highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th>Analysis Name</Table.Th>
+                        <Table.Th>Título</Table.Th>
                         <Table.Th>URL</Table.Th>
-                        <Table.Th>Device</Table.Th>
-                        <Table.Th>Participants</Table.Th>
-                        <Table.Th>Status</Table.Th>
-                        <Table.Th>Date</Table.Th>
-                        <Table.Th>Actions</Table.Th>
+                        <Table.Th>Dispositivo</Table.Th>
+                        <Table.Th>Participantes</Table.Th>
+                        <Table.Th>Estado</Table.Th>
+                        <Table.Th>Fecha</Table.Th>
+                        <Table.Th>Acciones</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>
