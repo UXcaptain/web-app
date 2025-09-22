@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useParams } from "react-router";
 import { Container, Title, Paper, Alert, Card, Stack, Group, Text, Button, Modal, rem, Loader } from "@mantine/core";
 import { IconAlertCircle, IconVideo, IconAlertTriangle } from "@tabler/icons-react";
 import { ParticipateForm } from "./ParticipateForm";
@@ -13,21 +14,24 @@ import { SiteFooter } from "../../components/partials/SiteFooter";
 
 // Inner component that uses the media permissions context
 const ParticipateContent = () => {
+  // Get analysis ID from URL parameters
+  const { id: urlAnalysisId } = useParams();
+
   // Core state
   const [analysisData, setAnalysisData] = useState(null);
   const [analysisId, setAnalysisId] = useState(null);
   const [analysisEntryId, setAnalysisEntryId] = useState(null);
   const [error, setError] = useState(null);
-  
+
   // Loading states for different steps
   const [validationLoading, setValidationLoading] = useState(false);
   const [dataFetchLoading, setDataFetchLoading] = useState(false);
-  
+
   // Workflow step states
   const [currentStep, setCurrentStep] = useState('input'); // input, permissions, security, analysis
   const [showSecurityModal, setShowSecurityModal] = useState(false);
   const [showStoppedRecordingModal, setShowStoppedRecordingModal] = useState(false);
-  
+
   const { isRecording, stopAllStreams, hasPermissions, permissionStatus } = useMediaPermissions();
 
   // Step 1: Validate analysis ID
@@ -136,6 +140,7 @@ const ParticipateContent = () => {
     }
   }, [permissionStatus, currentStep, analysisData]);
 
+
   const handleRecordingStoppedConfirm = useCallback(() => {
     // User acknowledged the recording stopped - exit analysis
     setShowStoppedRecordingModal(false);
@@ -222,7 +227,11 @@ const ParticipateContent = () => {
         <>
           <Instructions phase="setup" />
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <ParticipateForm onSubmitId={handleSubmitId} loading={validationLoading} />
+            <ParticipateForm
+              onSubmitId={handleSubmitId}
+              loading={validationLoading}
+              defaultValue={urlAnalysisId || ""}
+            />
           </Paper>
         </>
       )}
