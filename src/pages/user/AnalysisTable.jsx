@@ -56,6 +56,17 @@ export const AnalysisTable = () => {
         );
     }
 
+
+    const copyInviteLink = async (analysisId) => {
+        const inviteLink = `${import.meta.env.VITE_SITE_BASE_URL}/participate/${analysisId}`;
+        try {
+            await navigator.clipboard.writeText(inviteLink);
+            // You might want to add a toast notification here
+        } catch (err) {
+            console.error('Failed to copy invite link:', err);
+        }
+    };
+
     const rows = analysesArray.map((item) => (
         <Table.Tr key={item.id}>
             <Table.Td>
@@ -87,6 +98,14 @@ export const AnalysisTable = () => {
                     onClick={() => item?.id && navigate(`/analysis/${item.id}`)}
                 >
                     View Details
+                </Button>
+                <Button
+                    variant="light"
+                    size="sm"
+                    ml="xs"
+                    onClick={() => copyInviteLink(item.id)}
+                >
+                    Copy Invite Link
                 </Button>
             </Table.Td>
         </Table.Tr>
