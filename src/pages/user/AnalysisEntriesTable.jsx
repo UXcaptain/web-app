@@ -25,7 +25,7 @@ export const AnalysisEntriesTable = ({ participants = [] }) => {
     if (!Array.isArray(participants) || participants.length === 0) {
         return (
             <Center py="xl">
-                <Text>No analysis entries found</Text>
+                <Text>¡Vaya! Aún nadie ha participado en tu análisis.</Text>
             </Center>
         );
     }
@@ -45,7 +45,7 @@ export const AnalysisEntriesTable = ({ participants = [] }) => {
                     loading={loadingEntries[item.id]}
                     onClick={() => handleViewAnalysisEntry(item.id)}
                 >
-                    View Analysis Entry
+                    Ver grabación
                 </Button>
             </Table.Td>
         </Table.Tr>

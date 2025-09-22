@@ -29,7 +29,7 @@ export const CreateNewAnalysisButton = () => {
           disabled={disabled}
           loading={loading}
         >
-          Create New Analysis
+          Crear nuevo análisis
         </Button>
       </span>
     </Tooltip>

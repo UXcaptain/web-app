@@ -30,45 +30,35 @@ export const ViewAnalysisPage = () => {
 
 
 if (loading) return (
-  <div>Loading Analysis Data...</div>
+  <div>Cargando datos del análisis...</div>
 )
 
 if (error) return (
-  <div>Error fetching analysis data: {error}</div>
+  <div>Ha habido un error: {error}</div>
 )
 
     return (
         <>
         <div className="analysisData">
-        <h2>Analysis details</h2>
-          <p>Title: {analysisData.name}</p>
-          <p>url: {analysisData.url}</p>
-          <p>participants number: {analysisData.max_number_of_participants}</p>
-
-          <p>Created At: {analysisData.created_at}</p>
-          <p>Tasks:</p>
+        <h2>Resumen del análisis</h2>
+          <p><b>Titulo:</b> {analysisData.name}</p>
+          <p><b>url:</b> {analysisData.url}</p>
+          <p><b>Participantes:</b> {analysisData.max_number_of_participants}</p>
+          <p><b>Fecha de creación</b> {analysisData.created_at}</p>
+          <p><b>Tareas:</b></p>
           <ul>
-            { analysisData && analysisData.tasks && <p>Tasks: {analysisData.tasks.length} tasks</p>}
 
             { analysisData && analysisData.tasks &&  analysisData.tasks.map((task) => (
               <div key={task.id} className="taskDetails">
               <p className="taskType">{task.taskType}</p>
-              <p className="taskType">{task.taskContent}</p>
+              <p className="taskContent">{task.taskContent}</p>
               </div>
             ))}
           </ul>
-          <p></p>
-          <p></p>
         </div>
 
-            <div className="participantsList">
 
-        {analysisData && analysisData.entries && analysisData.entries.length === 0 ? (
-          <p>No participants found.</p>
-        ) : (
           <AnalysisEntriesTable participants={analysisData.AnalysisEntries} />
-        )}
-            </div>
         </>
     );
 };
