@@ -63,10 +63,8 @@ const CustomerProfile = () => {
             <CustomerCard user={user} />
             
             <PasswordUpdateForm />
-
             
-            
-            <AccountActionsForm />
+            {/* <AccountActionsForm /> */}
             
         </Box>
     )

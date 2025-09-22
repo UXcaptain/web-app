@@ -62,7 +62,7 @@ const PasswordUpdateForm = () => {
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder mt="lg">
-            <Text size="lg" weight={600} mb="md">Update Password</Text>
+            <Text size="lg" weight={600} mb="md">Cambiar contraseña</Text>
             
             {response && (
                 <Box mb="md">
@@ -88,19 +88,19 @@ const PasswordUpdateForm = () => {
             
             <form onSubmit={handleSubmit}>
                 <TextInput
-                    label="Current Password"
+                    label="Contraseña actual"
                     name="currentPassword"
                     type="password"
-                    placeholder="Enter current password"
+                    placeholder="Introduce tu contraseña actual"
                     required
                     mb="md"
                 />
                 
                 <TextInput
-                    label="New Password"
+                    label="Nueva contraseña"
                     name="newPassword"
                     type="password"
-                    placeholder="Enter new password"
+                    placeholder="Introduce tu nueva contraseña"
                     required
                     mb="md"
                 />
@@ -110,7 +110,7 @@ const PasswordUpdateForm = () => {
                     loading={loading}
                     fullWidth
                 >
-                    Update Password
+                    Cambiar contraseña
                 </Button>
             </form>
         </Card>
