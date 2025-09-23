@@ -2,71 +2,91 @@ import { useState, useEffect } from 'react';
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { useParams } from 'react-router';
 import { AnalysisEntriesTable } from './AnalysisEntriesTable';
-import { Container, Title, Text, Loader, Alert, Stack, List, ListItem, Card, Anchor } from '@mantine/core';
+import { Container, Title, Text, Loader, Alert, Stack, List, ListItem, Card, Anchor, Divider, Grid, Badge, Group } from '@mantine/core';
+import { CopyInviteLinkButton } from '../../components/partials/CopyInviteLinkButton';
 
 export const ViewAnalysisPage = () => {
   const [analysisData, setAnalysisData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null);
 
+  const { id } = useParams();
 
-    const { id } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiClient.get(`/api/v1/analysis/${id}`);
+        setAnalysisData(response.data.analysisData)
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching analysis data:', error);
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
 
+  if (loading) return (
+    <Container>
+      <Stack align="center">
+        <Loader size="xl" />
+        <Text>Cargando datos del análisis...</Text>
+      </Stack>
+    </Container>
+  )
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await apiClient.get(`/api/v1/analysis/${id}`);
-                setAnalysisData(response.data.analysisData)
-                setLoading(false);
+  if (error) return (
+    <Container>
+      <Alert color="red" title="Error">
+        {error}
+      </Alert>
+    </Container>
+  )
 
-            } catch (error) {
-                console.error('Error fetching analysis data:', error);
-                setError(error.message);
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [id]);
+  // Calculate statistics
+  const participantCount = analysisData.AnalysisEntries?.length || 0;
+  const maxParticipants = analysisData.max_number_of_participants || 0;
 
-
-if (loading) return (
-  <Container>
-    <Stack align="center">
-      <Loader size="xl" />
-      <Text>Cargando datos del análisis...</Text>
-    </Stack>
-  </Container>
-)
-
-if (error) return (
-  <Container>
-    <Alert color="red" title="Error">
-      {error}
-    </Alert>
-  </Container>
-)
-
-    return (
-      <Container>
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Stack>
-            <Text><strong>Id:</strong> {analysisData.id}</Text>
-            <Text><strong>Titulo:</strong> {analysisData.name}</Text>
-            <Text><strong>URL:</strong> <Anchor href={analysisData.url} target="_blank">{analysisData.url}</Anchor></Text>
-            <Text><strong>Participantes:</strong> {analysisData.max_number_of_participants}</Text>
-            <Text><strong>Fecha de creación:</strong> {new Date(analysisData.created_at).toLocaleDateString('es-ES')}</Text>
-            <Text><strong>Tareas:</strong></Text>
-            <List type="ordered">
-              {analysisData.tasks.map((task) => (
-                <ListItem key={task.id}>
-                  <Text>{task.taskContent}</Text>
-                </ListItem>
-              ))}
-            </List>
-          </Stack>
-        </Card>
-        <AnalysisEntriesTable AnalysisEntries={analysisData.AnalysisEntries} />
-      </Container>
-    );
+  return (
+    <Container size="lg">
+      <Title order={2} mb="md">Análisis: {analysisData.name}</Title>
+      
+      <Card shadow="sm" padding="sm" radius="md" withBorder mb="lg">
+        <Stack spacing="xs">
+          <Text size="sm"><strong>ID:</strong> {analysisData.id}</Text>
+          <Text size="sm"><strong>URL:</strong> <Anchor href={analysisData.url} target="_blank" size="sm">{analysisData.url}</Anchor></Text>
+          <Text size="sm"><strong>Dispositivo:</strong> <Badge color={analysisData.device === 'computer' ? 'blue' : 'green'} size="sm">{analysisData.device === 'computer' ? 'Ordenador' : 'Móvil'}</Badge></Text>
+          <Text size="sm"><strong>Fecha de Creación:</strong> {new Date(analysisData.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</Text>
+          
+          {analysisData.scenario && (
+            <Text size="sm"><strong>Escenario:</strong> {analysisData.scenario}</Text>
+          )}
+          
+          <Divider my="xs" />
+          
+          <Group position="apart">
+            <Text size="sm"><strong>Participantes:</strong> {participantCount} de {maxParticipants}</Text>
+            <CopyInviteLinkButton analysisId={id} size="xs" />
+          </Group>
+        </Stack>
+      </Card>
+      
+      <Card shadow="sm" padding="sm" radius="md" withBorder mb="lg">
+        <Text size="md" fw={700} mb="xs">Tareas</Text>
+        <List type="ordered" spacing="xs" size="sm">
+          {analysisData.tasks.map((task, index) => (
+            <ListItem key={index} py="xs">
+              <Text size="sm">{task.taskContent}</Text>
+            </ListItem>
+          ))}
+        </List>
+      </Card>
+      
+      <Card shadow="sm" padding="sm" radius="md" withBorder>
+        <Text size="md" fw={700} mb="xs">Participaciones</Text>
+        <AnalysisEntriesTable AnalysisEntries={analysisData.AnalysisEntries} analysisId={id} />
+      </Card>
+    </Container>
+  );
 };
