@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import apiClient from '../../config/API/axiosConfig.mjs'
-import { Container, Stack, Card, Title, Text, Group, Button, Alert, Loader, Center, Badge, SimpleGrid } from '@mantine/core'
+import { Container, Stack, Card, Title, Text, Group, Button, Alert, Loader, Center, Badge, SimpleGrid, List } from '@mantine/core'
 import { useSubscription } from '../../contexts/SubscriptionContext.jsx'
 
 const UserBilling = () => {
@@ -20,8 +20,8 @@ const UserBilling = () => {
       window.open(checkoutSessionUrl, '_blank')
     } catch (err) {
       if (err.status === 400) {
-        return setActionError('User has an existing subscription, manage it on the portal')
-      }
+              return setActionError('El usuario ya tiene una suscripción existente, gestiónala en el portal')
+            }
       return setActionError(err.message)
     }
   }
@@ -38,18 +38,17 @@ const UserBilling = () => {
   }
 
   // Derived billing state (kept minimal due to API payload shape)
-  const hasSubscription = Boolean(subscription?.id)
-  const paidCycle = ''
-  const isCurrentMonthly = false
-  const isCurrentAnnual = false
-  const isTrialing = false
+    const hasSubscription = Boolean(subscription?.id)
+    const paidCycle = ''
+    const isCurrentMonthly = false
+    const isTrialing = false
 
   if (loading) {
     return (
       <Center h={200}>
         <Stack gap="xs" align="center">
           <Loader />
-          <Text c="dimmed" size="sm">Loading billing information...</Text>
+                    <Text c="dimmed" size="sm">Cargando información de facturación...</Text>
         </Stack>
       </Center>
     )
@@ -68,13 +67,13 @@ const UserBilling = () => {
     <Container size="sm">
       <Stack gap="lg">
         {subscription && isPaid && (
-          <Card withBorder p="lg" radius="md">
-            <Title order={3}>Current subscription</Title>
+                  <Card withBorder p="lg" radius="md">
+                    <Title order={3}>Suscripción actual</Title>
             <Group gap="sm" mt="sm">
-              <Badge color="green">Active</Badge>
-              <Text fw={500}>
-                Subscription ID: {subscription.id}
-              </Text>
+              <Badge color="green">Activo</Badge>
+                            <Text fw={500}>
+                              ID de suscripción: {subscription.id}
+                            </Text>
               {paidCycle && (
                 <Badge variant="light" color="blue">{paidCycle}</Badge>
               )}
@@ -83,67 +82,49 @@ const UserBilling = () => {
         )}
 
         {/* Only keep indication that the free trial has ended */}
-        {!isTrialing && !isPaid && (
-          <Alert color="gray" variant="light" title="Trial ended">
-            Your free trial has ended. Choose a paid plan to continue.
-          </Alert>
-        )}
+                {!isTrialing && !isPaid && (
+                  <Alert color="gray" variant="light" title="Prueba finalizada">
+                    Tu prueba gratuita ha finalizado. Elige un plan de pago para continuar.
+                  </Alert>
+                )}
 
-        <Title order={2}>Pricing plans</Title>
+        <Title order={2}>Planes de precios</Title>
 
-        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-          <Card
-            withBorder
-            p="lg"
-            radius="md"
-            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
-          >
-            <Title order={3}>Pro Monthly</Title>
-            <Text fw={700} size="xl" mt="xs">€19/month</Text>
-            {/* hidden placeholder to keep cards identical in height distribution */}
-            <Text c="teal" size="sm" mt={4} style={{ visibility: 'hidden' }}>Save 17%</Text>
-            <Text c="dimmed" mt="xs">Best for flexibility. Billed monthly.</Text>
-            <Button
-              mt="auto"
-              fullWidth
-              variant={isCurrentMonthly ? 'filled' : 'outline'}
-              disabled={isCurrentMonthly}
-              onClick={() => !isCurrentMonthly && handlePriceLink('basic', 'monthly')}
-            >
-              {isCurrentMonthly ? 'Current plan' : 'Choose Monthly'}
-            </Button>
-          </Card>
-
-          <Card
-            withBorder
-            p="lg"
-            radius="md"
-            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
-          >
-            <Title order={3}>Pro Annual</Title>
-            <Text fw={700} size="xl" mt="xs">€190/year</Text>
-            <Text c="teal" size="sm" mt={4}>Save 17%</Text>
-            <Text c="dimmed" mt="xs">Best value. Billed annually.</Text>
-            <Button
-              mt="auto"
-              fullWidth
-              variant={isCurrentAnnual ? 'filled' : 'outline'}
-              disabled={isCurrentAnnual}
-              onClick={() => !isCurrentAnnual && handlePriceLink('basic', 'annual')}
-            >
-              {isCurrentAnnual ? 'Current plan' : 'Choose Annual'}
-            </Button>
-          </Card>
-        </SimpleGrid>
+        <SimpleGrid cols={1} spacing="lg">
+                          <Card
+                            withBorder
+                            p="lg"
+                            radius="md"
+                            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
+                          >
+                            <Title order={3}>Suscripción Mensual</Title>
+                                        <Group align="center" mt="xs">
+                                          <Text fw={700} size="xl">€29/mes</Text>
+                                          <Text size="sm" c="dimmed">IVA incluido</Text>
+                                        </Group>
+                                        {/* hidden placeholder to keep cards identical in height distribution */}
+                                                    <Text c="teal" size="sm" mt={4} style={{ visibility: 'hidden' }}>Ahorra 17%</Text>
+                                                    <Text c="dimmed" mt="xs">Utiliza la plataforma sin límites.</Text>
+                                                    <Button
+                              mt="auto"
+                              fullWidth
+                              variant={isCurrentMonthly ? 'filled' : 'outline'}
+                              disabled={isCurrentMonthly}
+                              onClick={() => !isCurrentMonthly && handlePriceLink('basic', 'monthly')}
+                            >
+                              {isCurrentMonthly ? 'Plan actual' : 'Elegir Mensual'}
+                            </Button>
+                          </Card>
+                        </SimpleGrid>
 
         <Card withBorder p="lg" radius="md">
-          <Title order={3}>Billing</Title>
-          <Text c="dimmed" mt="xs">
-            Find your invoices and manage payment methods and subscription.
-          </Text>
+                  <Title order={3}>Historial de facturas</Title>
+                  <Text c="dimmed" mt="xs">
+                    Encuentra tus facturas y gestiona los métodos de pago y la suscripción.
+                  </Text>
           <Group mt="md">
-            <Button onClick={handleBillingCustomerPortal}>Open customer portal</Button>
-          </Group>
+                      <Button onClick={handleBillingCustomerPortal}>Abrir portal del cliente</Button>
+                    </Group>
         </Card>
       </Stack>
     </Container>
