@@ -13,20 +13,6 @@ const AuthNavBar = () => {
                 </NavLink>
             </div>
 
-        
-            <nav className='navBar'>
-                <ul className='navBarUl'>
-                    <li>
-                        <LogInLink />
-                    </li>
-                    <li>
-                        <RegisterLink />
-                    </li>
-                    <li>
-                        <ForgotPasswordLink />
-                        </li>
-                </ul>
-            </nav>
         </div>
     );
 };
