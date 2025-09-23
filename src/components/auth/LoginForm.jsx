@@ -54,12 +54,12 @@ export function LoginForm() {
       else if (error.response?.status === 401) {
         setLoginResponse({
           type: 'error',
-          message: 'The combination of email and password is incorrect'
+          message: 'La combinación de email y contraseña es incorrecta'
         });
       } else {
         setLoginResponse({
           type: 'error',
-          message: 'Internal error, please try again later'
+          message: 'Error interno, por favor inténtalo de nuevo más tarde'
         });
       }
     }
@@ -68,23 +68,23 @@ export function LoginForm() {
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
-        Welcome back!
+        ¡Bienvenido de nuevo!
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Do not have an account yet?{' '}
+        ¿Aún no tienes una cuenta?{' '}
         <Anchor component={Link} to="/auth/register" size="sm">
-          Create account
+          Crear cuenta
         </Anchor>
       </Text>
       
       {participantMessage && (
         <Alert
           icon={<IconAlertCircle size={16} />}
-          title="Participant Login"
+          title="Inicio de sesión de participante"
           color="yellow"
           mt={20}
         >
-          Participant login is not available yet. Please contact support for more information.
+          El inicio de sesión de participante aún no está disponible. Por favor, contacta con soporte para más información.
         </Alert>
       )}
       
@@ -102,26 +102,24 @@ export function LoginForm() {
         <form onSubmit={handleLogin}>
           <TextInput
             name="username"
-            label="Username"
-            defaultValue="customer@gmail.com"
-            placeholder="your@email.com"
+            label="Nombre de usuario"
+            placeholder="tu@email.com"
             required
           />
           <PasswordInput
             name="password"
-            label="Password"
-            defaultValue='123456'
-            placeholder="Your password"
+            label="Contraseña"
+            placeholder="Tu contraseña"
             required
             mt="md"
           />
           <Group justify="space-between" mt="lg">
             <Anchor component={Link} to="/auth/recover-password" size="sm">
-              Forgot password?
+              ¿Olvidaste tu contraseña?
             </Anchor>
           </Group>
           <Button type="submit" fullWidth mt="xl">
-            Sign in
+            Iniciar sesión
           </Button>
         </form>
       </Paper>
