@@ -4,14 +4,16 @@ import WaitlistHowItWorks from './waitlist/HowItWorks.jsx';
 import Features from './waitlist/Features.jsx';
 import WaitlistFAQ from './waitlist/FAQ.jsx';
 import WaitlistNavBar from '../../components/partials/WaitlistNavBar.jsx';
+import RecordingExample from '../../components/RecordingExample.jsx';
 
 const Homepage = () => {
     return (
 
         <div className="home-page">
       <MainHero />
-      {/* <WaitlistSignupForm /> */}
+
       <WaitlistHowItWorks />
+      <RecordingExample />
       <Features />
       <WaitlistFAQ />
     </div>
