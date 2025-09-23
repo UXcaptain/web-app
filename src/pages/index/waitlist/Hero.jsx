@@ -1,5 +1,6 @@
 import { Container, Stack, Title, Text, Group, Button } from '@mantine/core';
-import { IconUserPlus, IconBulb } from '@tabler/icons-react';
+import RegisterButton from '../../../components/navBarElements/RegisterButton';
+
 
 const MainHero = () => (
   <Container size="lg" py="xl">
@@ -10,7 +11,9 @@ const MainHero = () => (
       <Text size="lg" ta="center" c="dimmed">
         Recibe videos de usuarios reales interactuando con tus productos mientras comparten su feedback, identifica pain points y mejora tus productos
       </Text>
-      
+      <Group>
+        <RegisterButton />
+      </Group>
     </Stack>
   </Container>
 );
