@@ -54,7 +54,7 @@ const UserNavBar = () => {
 
         <a className={classes.link} onClick={handleLogout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
+          <span>Cerrar sesión</span>
         </a>
       </div>
     </nav>
