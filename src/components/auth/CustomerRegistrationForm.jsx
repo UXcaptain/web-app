@@ -45,14 +45,14 @@ const handleRegister = async (e) => {
         if (err.status === 409) {
             return setRegisterError({
                 success: false,
-                message: 'Username already exists'
+                message: 'El nombre de usuario ya existe'
             })
         }
 
         if (err.status === 422) {
             return setRegisterError({
                 success: false,
-                message: 'Please provide a valid email and password'
+                message: 'Por favor, proporcione un correo electrónico y contraseña válidos'
             })
         }
 
@@ -60,7 +60,7 @@ const handleRegister = async (e) => {
 
         return setRegisterError({
             success: false,
-            message: 'Internal error, please try again in a few minutes'
+            message: 'Error interno, por favor intente nuevamente en unos minutos'
         })
     }
 }
@@ -69,12 +69,12 @@ return (
     <>
                         <Container size={420} my={40}>
                         <Title ta="center" className={classes.title}>
-                          Welcome back Customer!
+                          ¡Hola!
                         </Title>
                         <Text c="dimmed" size="sm" ta="center" mt={5}>
-                          Already have an account?{' '}
+                          ¿Ya tienes una cuenta?{' '}
                           <Anchor component={Link} to="/auth/login" size="sm">
-                            Log in
+                            Iniciar sesión
                           </Anchor>
 
                         </Text>
@@ -92,11 +92,11 @@ return (
                         )}
                         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                           <form onSubmit={handleRegister}>
-                            <TextInput name="username" label="username" placeholder="you@mantine.dev" required defaultValue="customer@gmail.com" />
-                            <PasswordInput name="password" label="password" placeholder="Your password" required mt="md" defaultValue="123456" />
+                            <TextInput name="username" label="Correo electrónico" placeholder="tu@ejemplo.com" required  />
+                            <PasswordInput name="password" label="Contraseña" placeholder="Tu contraseña" required mt="md" />
 
                             <Button type="submit" fullWidth mt="xl">
-                              Register
+                              Registrarse
                             </Button>
                           </form>
                         </Paper>

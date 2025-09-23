@@ -102,7 +102,7 @@ export function LoginForm() {
         <form onSubmit={handleLogin}>
           <TextInput
             name="username"
-            label="Nombre de usuario"
+            label="Correo electrónico"
             placeholder="tu@email.com"
             required
           />
