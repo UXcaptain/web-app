@@ -37,8 +37,8 @@ import { useState } from 'react';
 
         } catch (error) {
 
-            setRecoverPasswordError({ success: false, message: "Error recovering password." });
-            console.error("Error recovering password:", error);
+            setRecoverPasswordError({ success: false, message: "Error al recuperar la contraseña." });
+            console.error("Error al recuperar la contraseña:", error);
             setRecoverPasswordResponse(null);
         }
     } 
@@ -50,15 +50,15 @@ import { useState } from 'react';
         
 
       <Title className={classes.title} ta="center">
-        Forgot your password?
+        ¿Has olvidado tu contraseña?
       </Title>
       <Text c="dimmed" fz="sm" ta="center">
-        Enter your email to get a reset link
+        Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña
       </Text>
 
       {recoverPasswordResponse && (
                           <Paper shadow="xs" p={10} mt={20} radius="sm" style={{ backgroundColor: '#ccffcc' }}>
-                            {recoverPasswordResponse.message}
+                            Pronto recibirás un enlace para restablecer tu contraseña
                           </Paper>
                         )}
 
@@ -70,16 +70,16 @@ import { useState } from 'react';
 
       <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
         <form onSubmit={recoverPasswordRequest} method="post">
-        <TextInput name="email" label="Your email" placeholder="me@mantine.dev" required />
+        <TextInput name="email" label="Correo electrónico" placeholder="tu@email.com" required />
         <Group justify="space-between" mt="lg" className={classes.controls}>
           <Anchor c="dimmed" component={Link} to="/auth/login" size="sm" className={classes.control}>
             <Center inline>
               <IconArrowLeft size={12} stroke={1.5} />
-              <Box ml={5}>Back to the login page</Box>
+              <Box ml={5}>Volver a la página de inicio de sesión</Box>
             </Center>
                 
           </Anchor>
-          <Button type="submit" className={classes.control}>Reset password</Button>
+          <Button type="submit" className={classes.control}>Restablecer contraseña</Button>
         </Group>
         </form>
       </Paper>
