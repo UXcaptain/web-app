@@ -69,7 +69,7 @@ return (
     <>
                         <Container size={420} my={40}>
                         <Title ta="center" className={classes.title}>
-                          ¡Hola!
+                          ¡Estamos encantados de verte por aqui!
                         </Title>
                         <Text c="dimmed" size="sm" ta="center" mt={5}>
                           ¿Ya tienes una cuenta?{' '}
