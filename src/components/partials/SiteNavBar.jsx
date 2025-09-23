@@ -28,8 +28,8 @@ const SiteNavBar = () => {
             </nav>
 
 
-            <div className='buttonWrapper'>
-            <LogInLink />
+                <LogInButton />
+                <RegisterButton />
             <RegisterLink /> {/* Added RegisterLink component here */}
             </div>
         </div>

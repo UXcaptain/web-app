@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router'
 import ForgotPasswordLink from '../navBarElements/ForgotPasswordLink';
-import RegisterLink from '../navBarElements/RegisterLink';
-import LogInLink from '../navBarElements/LogInLink';
+import RegisterButton from '../navBarElements/RegisterButton';
+import LogInButton from '../navBarElements/LogInButton';
 
 const AuthNavBar = () => {
     return (
