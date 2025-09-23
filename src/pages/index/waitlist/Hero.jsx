@@ -1,7 +1,7 @@
 import { Container, Stack, Title, Text, Group, Button } from '@mantine/core';
 import { IconUserPlus, IconBulb } from '@tabler/icons-react';
 
-const WaitlistHero = () => (
+const MainHero = () => (
   <Container size="lg" py="xl">
     <Stack align="center" gap="xl">
       <Title order={1} ta="center">
@@ -15,4 +15,4 @@ const WaitlistHero = () => (
   </Container>
 );
 
-export default WaitlistHero;
+export default MainHero;
