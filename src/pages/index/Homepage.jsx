@@ -5,12 +5,14 @@ import Features from './waitlist/Features.jsx';
 import WaitlistFAQ from './waitlist/FAQ.jsx';
 import WaitlistNavBar from '../../components/partials/WaitlistNavBar.jsx';
 import RecordingExample from '../../components/RecordingExample.jsx';
+import CompaniesLogoStrip from './waitlist/CompaniesLogoStrip.jsx';
 
 const Homepage = () => {
     return (
 
         <div className="home-page">
       <MainHero />
+      <CompaniesLogoStrip />
 
       <WaitlistHowItWorks />
       <RecordingExample />
