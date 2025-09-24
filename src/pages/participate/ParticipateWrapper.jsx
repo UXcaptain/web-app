@@ -1,16 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
 import { useParams } from "react-router";
-import { Container, Title, Paper, Alert, Card, Stack, Group, Text, Button, Modal, rem, Loader } from "@mantine/core";
-import { IconAlertCircle, IconVideo, IconAlertTriangle } from "@tabler/icons-react";
-import { ParticipateForm } from "./ParticipateForm";
-import { SecurityModal } from "./SecurityModal";
-import Timer from "../../components/partials/Timer.jsx";
-import { AnalysisStepNavigator } from "../../components/partials/AnalysisStepNavigator.jsx";
-import { MediaPermissionsStep } from "../../components/partials/MediaPermissionsStep.jsx";
-import { Instructions } from "../../components/partials/Instructions.jsx";
+import { Container, Title, Alert, Modal, Text, Button } from "@mantine/core";
+import { IconAlertCircle, IconAlertTriangle } from "@tabler/icons-react";
 import { MediaPermissionsProvider, useMediaPermissions } from "../../contexts/MediaPermissionsContext";
-import apiClient from "../../config/API/axiosConfig.mjs";
 import { SiteFooter } from "../../components/partials/SiteFooter";
+import { ParticipateStepRouter } from "./ParticipateStepRouter";
+import apiClient from "../../config/API/axiosConfig.mjs";
 
 // Inner component that uses the media permissions context
 const ParticipateContent = () => {
@@ -221,95 +216,37 @@ const ParticipateContent = () => {
   return (
     <Container size="sm" my={40}>
       <Title ta="center" mb="xl">Participate in Analysis</Title>
-
-      {/* Step 1: Input Analysis ID */}
-      {currentStep === 'input' && (
-        <>
-          <Instructions phase="setup" />
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <ParticipateForm
-              onSubmitId={handleSubmitId}
-              loading={validationLoading}
-              defaultValue={urlAnalysisId || ""}
-            />
-          </Paper>
-        </>
-      )}
-
-      {/* Step 2: Permissions Setup */}
-      {currentStep === 'permissions' && (
-        <Card withBorder shadow="md" p="lg" mt="md" radius="md">
-          <Stack spacing="md">
-            <Text size="lg" fw={500}>Setup Recording Permissions</Text>
-            <MediaPermissionsStep
-              onPermissionsGranted={handlePermissionsGranted}
-              onExit={handleExitAnalysis}
-            />
-            <Group justify="flex-end">
-              <Button
-                onClick={handlePermissionsNext}
-                disabled={!hasPermissions()}
-              >
-                Next
-              </Button>
-            </Group>
-          </Stack>
-        </Card>
-      )}
-
-      {/* Step 3: Security Modal */}
-      <SecurityModal
-        opened={showSecurityModal}
-        onAccept={handleAcceptSecurity}
-        onDecline={handleDeclineSecurity}
+      
+      <ParticipateStepRouter
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        analysisData={analysisData}
+        analysisId={analysisId}
+        analysisEntryId={analysisEntryId}
+        error={error}
+        setError={setError}
+        validationLoading={validationLoading}
+        dataFetchLoading={dataFetchLoading}
+        showSecurityModal={showSecurityModal}
+        setShowSecurityModal={setShowSecurityModal}
+        showStoppedRecordingModal={showStoppedRecordingModal}
+        setShowStoppedRecordingModal={setShowStoppedRecordingModal}
+        handleSubmitId={handleSubmitId}
+        handleAcceptSecurity={handleAcceptSecurity}
+        handleDeclineSecurity={handleDeclineSecurity}
+        handleExitAnalysis={handleExitAnalysis}
+        handlePermissionsNext={handlePermissionsNext}
+        handlePermissionsGranted={handlePermissionsGranted}
+        handleRecordingStoppedConfirm={handleRecordingStoppedConfirm}
+        buildAnalysisSteps={buildAnalysisSteps}
+        urlAnalysisId={urlAnalysisId}
+        isRecording={isRecording}
+        hasPermissions={hasPermissions}
+        permissionStatus={permissionStatus}
       />
-
-      {/* Loading state for data fetching */}
-      {dataFetchLoading && (
-        <Card withBorder shadow="md" p="lg" mt="md" radius="md">
-          <Stack align="center" spacing="md">
-            <Loader size="lg" />
-            <Text>Loading analysis data...</Text>
-          </Stack>
-        </Card>
-      )}
-
-      {/* Step 4-6: Analysis Recording and Upload */}
-      {currentStep === 'analysis' && analysisData && (
-        <>
-          {/* Timer Card - only show when recording is active */}
-          {isRecording && (
-            <>
-              <Instructions phase="analysis" />
-              <Card withBorder shadow="md" p="lg" mt="xl" radius="md">
-                <Stack align="center" spacing="xs">
-                  <Group gap="xs" align="center">
-                    <IconVideo size={20} color="red" />
-                    <Text c="red" fw={600}>Recording in progress</Text>
-                  </Group>
-                  <div style={{ fontSize: rem(40), fontWeight: 700, textAlign: "center" }}>
-                    <Timer analysisData={analysisData} />
-                  </div>
-                </Stack>
-              </Card>
-            </>
-          )}
-
-          {/* Analysis content Card */}
-          <Card withBorder shadow="md" p="lg" mt="md" radius="md">
-            <AnalysisStepNavigator
-              steps={buildAnalysisSteps()}
-              onExit={handleExitAnalysis}
-              analysisData={analysisData}
-              analysisEntryId={analysisEntryId}
-              analysisId={analysisId}
-            />
-          </Card>
-        </>
-      )}
-
-      {/* Error Display */}
-      {error && (
+      
+      {/* Error Display for input step */}
+      {error && currentStep === 'input' && (
         <Alert
           icon={<IconAlertCircle size={16} />}
           title="Error"
@@ -319,36 +256,6 @@ const ParticipateContent = () => {
           {error}
         </Alert>
       )}
-
-      {/* Recording Stopped Warning Modal */}
-      <Modal
-        opened={showStoppedRecordingModal}
-        onClose={() => {}}
-        centered
-        size="md"
-        withCloseButton={false}
-        closeOnClickOutside={false}
-        closeOnEscape={false}
-      >
-        <Stack align="center" spacing="md">
-          <IconAlertTriangle size={64} color="orange" />
-          <Text size="xl" fw={600}>Recording Stopped</Text>
-          <Text size="sm" c="dimmed" ta="center">
-            Screen sharing or microphone access has been stopped.
-            The analysis cannot continue without recording.
-          </Text>
-          <Text size="sm" c="dimmed" ta="center">
-            Your analysis will be cancelled and any recorded data will be discarded.
-          </Text>
-          <Button
-            color="red"
-            onClick={handleRecordingStoppedConfirm}
-            fullWidth
-          >
-            Exit Analysis
-          </Button>
-        </Stack>
-      </Modal>
     </Container>
   );
 };
