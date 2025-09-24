@@ -9,7 +9,7 @@ const RegisterButton = () => {
             variant="default"
             size="sm"
         >
-            Empezar prueba gratuita (7 días)
+            Registrate gratis
         </Button>
     );
 }
