@@ -3,34 +3,34 @@ import PropTypes from "prop-types";
 
 export const SecurityModal = ({ opened, onAccept, onDecline }) => {
   return (
-    <Modal opened={opened} onClose={onDecline} title="Security Confirmation" size="md">
+    <Modal opened={opened} onClose={onDecline} title="Confirmación de Seguridad" size="md">
       <Stack spacing="md">
         <Text>
-          You are about to participate in a recorded analysis session. Please note:
+          Estás a punto de participar en una sesión de análisis grabada. Ten en cuenta:
         </Text>
         <Text size="sm">
-          • Your screen and audio will be recorded during this session
+          • Tu pantalla y audio serán grabados durante esta sesión
         </Text>
         <Text size="sm">
-          • The recording will be used for research purposes only
+          • La grabación se utilizará únicamente con fines de investigación
         </Text>
         <Text size="sm">
-          • Your personal information will be kept confidential
+          • Tu información personal se mantendrá confidencial
         </Text>
         <Text size="sm">
-          • You can stop the recording at any time by closing this window
+          • Puedes detener la grabación en cualquier momento cerrando esta ventana
         </Text>
-        
+
         <Text mt="md" weight={500}>
-          Do you accept these terms and wish to proceed?
+          ¿Aceptas estos términos y deseas continuar?
         </Text>
         
         <Stack direction="row" spacing="sm" mt="md">
           <Button onClick={onAccept} color="green">
-            Accept & Proceed
+            Aceptar y Continuar
           </Button>
           <Button onClick={onDecline} variant="outline" color="red">
-            Decline
+            Rechazar
           </Button>
         </Stack>
       </Stack>

@@ -32,7 +32,7 @@ const ParticipateContent = () => {
   // Step 1: Validate analysis ID
   const handleSubmitId = async (submittedAnalysisId) => {
     if (!submittedAnalysisId || !submittedAnalysisId.trim()) {
-      setError("Please enter an analysis ID");
+      setError("Por favor, introduce un ID de análisis");
       return;
     }
 
@@ -50,16 +50,16 @@ const ParticipateContent = () => {
         // Move to permissions step
         setCurrentStep('permissions');
       } else {
-        setError("Analysis not found or no spots available. Please check your analysis ID and try again.");
+        setError("Análisis no encontrado o no hay plazas disponibles. Por favor, verifica tu ID de análisis e inténtalo de nuevo.");
         setAnalysisId(null);
       }
     } catch (err) {
       if (err?.response?.status === 404) {
-        setError("Analysis not found. Please check your analysis ID and try again.");
+        setError("Análisis no encontrado. Por favor, verifica tu ID de análisis e inténtalo de nuevo.");
       } else if (err?.response?.status === 400) {
-        setError("No spots available for this analysis.");
+        setError("No hay plazas disponibles para este análisis.");
       } else {
-        setError(err?.response?.data?.message || "An error occurred while validating the analysis");
+        setError(err?.response?.data?.message || "Ocurrió un error al validar el análisis");
       }
       setAnalysisId(null);
     } finally {
@@ -85,11 +85,11 @@ const ParticipateContent = () => {
         setAnalysisEntryId(response.data.analysisEntryId);
         setCurrentStep('analysis');
       } else {
-        setError("Failed to fetch analysis data. Please try again.");
+        setError("Error al obtener los datos del análisis. Por favor, inténtalo de nuevo.");
         setCurrentStep('permissions');
       }
     } catch (err) {
-      setError(err?.response?.data?.message || "An error occurred while fetching the analysis data");
+      setError(err?.response?.data?.message || "Ocurrió un error al obtener los datos del análisis");
       setCurrentStep('permissions');
     } finally {
       setDataFetchLoading(false);
@@ -150,7 +150,7 @@ const ParticipateContent = () => {
 
     // Step 1: Scenario (permissions already handled before this)
     steps.push({
-      title: "Scenario",
+      title: "Escenario",
       content: <Text>{analysisData.scenario}</Text>
     });
 
@@ -215,7 +215,7 @@ const ParticipateContent = () => {
 
   return (
     <Container size="sm" my={40}>
-      <Title ta="center" mb="xl">Participate in Analysis</Title>
+      <Title ta="center" mb="xl">Participar en Análisis</Title>
       
       <ParticipateStepRouter
         currentStep={currentStep}

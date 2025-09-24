@@ -24,7 +24,7 @@ export const RecordingStep = ({
             <Stack align="center" spacing="xs">
               <Group gap="xs" align="center">
                 <IconVideo size={20} color="red" />
-                <Text c="red" fw={600}>Recording in progress</Text>
+                <Text c="red" fw={600}>Grabación en progreso</Text>
               </Group>
               <div style={{ fontSize: rem(40), fontWeight: 700, textAlign: "center" }}>
                 <Timer analysisData={analysisData} />

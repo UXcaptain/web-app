@@ -73,7 +73,7 @@ export const ParticipateStepRouter = ({
         <Card withBorder shadow="md" p="lg" mt="md" radius="md">
           <Stack align="center" spacing="md">
             <Loader size="lg" />
-            <Text>Loading analysis data...</Text>
+            <Text>Cargando datos del análisis...</Text>
           </Stack>
         </Card>
       )}
@@ -113,20 +113,20 @@ export const ParticipateStepRouter = ({
       >
         <Stack align="center" spacing="md">
           <IconAlertTriangle size={64} color="orange" />
-          <Text size="xl" fw={600}>Recording Stopped</Text>
+          <Text size="xl" fw={600}>Grabación Detenida</Text>
           <Text size="sm" c="dimmed" ta="center">
-            Screen sharing or microphone access has been stopped.
-            The analysis cannot continue without recording.
+            Se ha detenido el uso compartido de pantalla o el acceso al micrófono.
+            El análisis no puede continuar sin grabación.
           </Text>
           <Text size="sm" c="dimmed" ta="center">
-            Your analysis will be cancelled and any recorded data will be discarded.
+            Tu análisis será cancelado y cualquier dato grabado será descartado.
           </Text>
           <Button
             color="red"
             onClick={handleRecordingStoppedConfirm}
             fullWidth
           >
-            Exit Analysis
+            Salir del Análisis
           </Button>
         </Stack>
       </Modal>
