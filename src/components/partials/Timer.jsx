@@ -31,7 +31,7 @@ const Timer = ({ analysisData }) => {
     };
 
     return (
-        <Text>Time Elapsed: {formatTime(timer)}</Text>
+        <Text>Duración: {formatTime(timer)}</Text>
     );
 };
 

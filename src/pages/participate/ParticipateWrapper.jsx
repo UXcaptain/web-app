@@ -214,9 +214,7 @@ const ParticipateContent = () => {
   }, [analysisData]);
 
   return (
-    <Container size="sm" my={40}>
-      <Title ta="center" mb="xl">Participar en Análisis</Title>
-      
+    <Container size="sm" my={40}>      
       <ParticipateStepRouter
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

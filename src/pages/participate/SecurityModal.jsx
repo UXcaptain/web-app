@@ -15,10 +15,10 @@ export const SecurityModal = ({ opened, onAccept, onDecline }) => {
           • La grabación se utilizará únicamente con fines de investigación
         </Text>
         <Text size="sm">
-          • Tu información personal se mantendrá confidencial
+          • Cualquier información que se muestre en pantalla quedará grabada - Procura no mostrar información confidencial
         </Text>
         <Text size="sm">
-          • Puedes detener la grabación en cualquier momento cerrando esta ventana
+          • Puedes dejar de participar en el análisis y eliminar la grabación en cualquier momento pulsando sobre "Salir del análisis"
         </Text>
 
         <Text mt="md" weight={500}>

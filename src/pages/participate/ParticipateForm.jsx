@@ -19,7 +19,7 @@ export const ParticipateForm = ({ onSubmitId, loading = false, defaultValue = ""
     <form onSubmit={handleSubmit}>
       <TextInput
         label="ID de Análisis"
-        placeholder="Introduce tu ID de análisis"
+        placeholder="Introduce el ID del análisis"
         value={analysisId}
         onChange={(e) => setAnalysisId(e.target.value)}
         disabled={loading}
@@ -33,7 +33,7 @@ export const ParticipateForm = ({ onSubmitId, loading = false, defaultValue = ""
         leftSection={<IconPlayerPlay size={14} />}
         loading={loading}
       >
-        {loading ? "Procesando..." : "Participar"}
+        {loading ? "Cargando..." : "Participar"}
       </Button>
     </form>
   );

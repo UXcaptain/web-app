@@ -9,7 +9,6 @@ export const PermissionsStep = ({ onPermissionsNext, onExit, onPermissionsGrante
   return (
     <Card withBorder shadow="md" p="lg" mt="md" radius="md">
       <Stack spacing="md">
-        <Text size="lg" fw={500}>Configurar Permisos de Grabación</Text>
         <MediaPermissionsStep
           onPermissionsGranted={onPermissionsGranted}
           onExit={onExit}

@@ -113,13 +113,13 @@ export const ParticipateStepRouter = ({
       >
         <Stack align="center" spacing="md">
           <IconAlertTriangle size={64} color="orange" />
-          <Text size="xl" fw={600}>Grabación Detenida</Text>
+          <Text size="xl" fw={600}>La grabación se ha detenido</Text>
           <Text size="sm" c="dimmed" ta="center">
             Se ha detenido el uso compartido de pantalla o el acceso al micrófono.
             El análisis no puede continuar sin grabación.
           </Text>
           <Text size="sm" c="dimmed" ta="center">
-            Tu análisis será cancelado y cualquier dato grabado será descartado.
+            Tu análisis y los datos asociados han sido eliminados.
           </Text>
           <Button
             color="red"
