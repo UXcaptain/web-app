@@ -3,6 +3,7 @@ import { Table, Button, Text, Center, Loader, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
+import { CopyInviteLinkButton } from "../../components/partials/CopyInviteLinkButton";
 
 export const AnalysisTable = () => {
     const [analysesArray, setAnalysesArray] = useState(null);
@@ -51,10 +52,12 @@ export const AnalysisTable = () => {
     if (!Array.isArray(analysesArray) || analysesArray.length === 0) {
         return (
             <Center py="xl">
-                <Text>No analysis entries found</Text>
+                <Text>No se han encontrado análisis</Text>
             </Center>
         );
     }
+
+
 
     const rows = analysesArray.map((item) => (
         <Table.Tr key={item.id}>
@@ -64,17 +67,17 @@ export const AnalysisTable = () => {
             <Table.Td>
                 <Text c="dimmed" size="sm">{item.url}</Text>
             </Table.Td>
-            <Table.Td>{item.device}</Table.Td>
+            <Table.Td>{item.device === 'computer' ? 'ordenador': 'móvil'}</Table.Td>
             <Table.Td>
                 {item._count.AnalysisEntries} / {item.max_number_of_participants}
             </Table.Td>
             <Table.Td>
                 <Text c={item.status === 'active' ? 'green' : 'dimmed'}>
-                    {item.status}
+                    {item.status === 'published' ? 'publicado' : 'completado '}
                 </Text>
             </Table.Td>
             <Table.Td>
-                {new Date(item.created_at).toLocaleDateString('en-US', {
+                {new Date(item.created_at).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric'
@@ -86,8 +89,13 @@ export const AnalysisTable = () => {
                     size="sm"
                     onClick={() => item?.id && navigate(`/analysis/${item.id}`)}
                 >
-                    View Details
+                    Ver detalles
                 </Button>
+                <CopyInviteLinkButton
+                    analysisId={item.id}
+                    size="sm"
+                    ml="xs"
+                />
             </Table.Td>
         </Table.Tr>
     ));
@@ -97,13 +105,13 @@ export const AnalysisTable = () => {
             <Table verticalSpacing="sm" striped highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th>Analysis Name</Table.Th>
+                        <Table.Th>Título</Table.Th>
                         <Table.Th>URL</Table.Th>
-                        <Table.Th>Device</Table.Th>
-                        <Table.Th>Participants</Table.Th>
-                        <Table.Th>Status</Table.Th>
-                        <Table.Th>Date</Table.Th>
-                        <Table.Th>Actions</Table.Th>
+                        <Table.Th>Dispositivo</Table.Th>
+                        <Table.Th>Participantes</Table.Th>
+                        <Table.Th>Estado</Table.Th>
+                        <Table.Th>Fecha</Table.Th>
+                        <Table.Th>Acciones</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>

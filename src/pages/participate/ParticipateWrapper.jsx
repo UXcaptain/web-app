@@ -1,39 +1,38 @@
 import { useState, useCallback, useEffect } from "react";
-import { Container, Title, Paper, Alert, Card, Stack, Group, Text, Button, Modal, rem, Loader } from "@mantine/core";
-import { IconAlertCircle, IconVideo, IconAlertTriangle } from "@tabler/icons-react";
-import { ParticipateForm } from "./ParticipateForm";
-import { SecurityModal } from "./SecurityModal";
-import Timer from "../../components/partials/Timer.jsx";
-import { AnalysisStepNavigator } from "../../components/partials/AnalysisStepNavigator.jsx";
-import { MediaPermissionsStep } from "../../components/partials/MediaPermissionsStep.jsx";
-import { Instructions } from "../../components/partials/Instructions.jsx";
+import { useParams } from "react-router";
+import { Container, Title, Alert, Modal, Text, Button } from "@mantine/core";
+import { IconAlertCircle, IconAlertTriangle } from "@tabler/icons-react";
 import { MediaPermissionsProvider, useMediaPermissions } from "../../contexts/MediaPermissionsContext";
-import apiClient from "../../config/API/axiosConfig.mjs";
 import { SiteFooter } from "../../components/partials/SiteFooter";
+import { ParticipateStepRouter } from "./ParticipateStepRouter";
+import apiClient from "../../config/API/axiosConfig.mjs";
 
 // Inner component that uses the media permissions context
 const ParticipateContent = () => {
+  // Get analysis ID from URL parameters
+  const { id: urlAnalysisId } = useParams();
+
   // Core state
   const [analysisData, setAnalysisData] = useState(null);
   const [analysisId, setAnalysisId] = useState(null);
   const [analysisEntryId, setAnalysisEntryId] = useState(null);
   const [error, setError] = useState(null);
-  
+
   // Loading states for different steps
   const [validationLoading, setValidationLoading] = useState(false);
   const [dataFetchLoading, setDataFetchLoading] = useState(false);
-  
+
   // Workflow step states
   const [currentStep, setCurrentStep] = useState('input'); // input, permissions, security, analysis
   const [showSecurityModal, setShowSecurityModal] = useState(false);
   const [showStoppedRecordingModal, setShowStoppedRecordingModal] = useState(false);
-  
+
   const { isRecording, stopAllStreams, hasPermissions, permissionStatus } = useMediaPermissions();
 
   // Step 1: Validate analysis ID
   const handleSubmitId = async (submittedAnalysisId) => {
     if (!submittedAnalysisId || !submittedAnalysisId.trim()) {
-      setError("Please enter an analysis ID");
+      setError("Por favor, introduce un ID de análisis");
       return;
     }
 
@@ -51,16 +50,16 @@ const ParticipateContent = () => {
         // Move to permissions step
         setCurrentStep('permissions');
       } else {
-        setError("Analysis not found or no spots available. Please check your analysis ID and try again.");
+        setError("Análisis no encontrado o no hay plazas disponibles. Por favor, verifica tu ID de análisis e inténtalo de nuevo.");
         setAnalysisId(null);
       }
     } catch (err) {
       if (err?.response?.status === 404) {
-        setError("Analysis not found. Please check your analysis ID and try again.");
+        setError("Análisis no encontrado. Por favor, verifica tu ID de análisis e inténtalo de nuevo.");
       } else if (err?.response?.status === 400) {
-        setError("No spots available for this analysis.");
+        setError("No hay plazas disponibles para este análisis.");
       } else {
-        setError(err?.response?.data?.message || "An error occurred while validating the analysis");
+        setError(err?.response?.data?.message || "Ocurrió un error al validar el análisis");
       }
       setAnalysisId(null);
     } finally {
@@ -86,11 +85,11 @@ const ParticipateContent = () => {
         setAnalysisEntryId(response.data.analysisEntryId);
         setCurrentStep('analysis');
       } else {
-        setError("Failed to fetch analysis data. Please try again.");
+        setError("Error al obtener los datos del análisis. Por favor, inténtalo de nuevo.");
         setCurrentStep('permissions');
       }
     } catch (err) {
-      setError(err?.response?.data?.message || "An error occurred while fetching the analysis data");
+      setError(err?.response?.data?.message || "Ocurrió un error al obtener los datos del análisis");
       setCurrentStep('permissions');
     } finally {
       setDataFetchLoading(false);
@@ -136,6 +135,7 @@ const ParticipateContent = () => {
     }
   }, [permissionStatus, currentStep, analysisData]);
 
+
   const handleRecordingStoppedConfirm = useCallback(() => {
     // User acknowledged the recording stopped - exit analysis
     setShowStoppedRecordingModal(false);
@@ -150,7 +150,7 @@ const ParticipateContent = () => {
 
     // Step 1: Scenario (permissions already handled before this)
     steps.push({
-      title: "Scenario",
+      title: "Escenario",
       content: <Text>{analysisData.scenario}</Text>
     });
 
@@ -214,93 +214,37 @@ const ParticipateContent = () => {
   }, [analysisData]);
 
   return (
-    <Container size="sm" my={40}>
-      <Title ta="center" mb="xl">Participate in Analysis</Title>
-
-      {/* Step 1: Input Analysis ID */}
-      {currentStep === 'input' && (
-        <>
-          <Instructions phase="setup" />
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <ParticipateForm onSubmitId={handleSubmitId} loading={validationLoading} />
-          </Paper>
-        </>
-      )}
-
-      {/* Step 2: Permissions Setup */}
-      {currentStep === 'permissions' && (
-        <Card withBorder shadow="md" p="lg" mt="md" radius="md">
-          <Stack spacing="md">
-            <Text size="lg" fw={500}>Setup Recording Permissions</Text>
-            <MediaPermissionsStep
-              onPermissionsGranted={handlePermissionsGranted}
-              onExit={handleExitAnalysis}
-            />
-            <Group justify="flex-end">
-              <Button
-                onClick={handlePermissionsNext}
-                disabled={!hasPermissions()}
-              >
-                Next
-              </Button>
-            </Group>
-          </Stack>
-        </Card>
-      )}
-
-      {/* Step 3: Security Modal */}
-      <SecurityModal
-        opened={showSecurityModal}
-        onAccept={handleAcceptSecurity}
-        onDecline={handleDeclineSecurity}
+    <Container size="sm" my={40}>      
+      <ParticipateStepRouter
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        analysisData={analysisData}
+        analysisId={analysisId}
+        analysisEntryId={analysisEntryId}
+        error={error}
+        setError={setError}
+        validationLoading={validationLoading}
+        dataFetchLoading={dataFetchLoading}
+        showSecurityModal={showSecurityModal}
+        setShowSecurityModal={setShowSecurityModal}
+        showStoppedRecordingModal={showStoppedRecordingModal}
+        setShowStoppedRecordingModal={setShowStoppedRecordingModal}
+        handleSubmitId={handleSubmitId}
+        handleAcceptSecurity={handleAcceptSecurity}
+        handleDeclineSecurity={handleDeclineSecurity}
+        handleExitAnalysis={handleExitAnalysis}
+        handlePermissionsNext={handlePermissionsNext}
+        handlePermissionsGranted={handlePermissionsGranted}
+        handleRecordingStoppedConfirm={handleRecordingStoppedConfirm}
+        buildAnalysisSteps={buildAnalysisSteps}
+        urlAnalysisId={urlAnalysisId}
+        isRecording={isRecording}
+        hasPermissions={hasPermissions}
+        permissionStatus={permissionStatus}
       />
-
-      {/* Loading state for data fetching */}
-      {dataFetchLoading && (
-        <Card withBorder shadow="md" p="lg" mt="md" radius="md">
-          <Stack align="center" spacing="md">
-            <Loader size="lg" />
-            <Text>Loading analysis data...</Text>
-          </Stack>
-        </Card>
-      )}
-
-      {/* Step 4-6: Analysis Recording and Upload */}
-      {currentStep === 'analysis' && analysisData && (
-        <>
-          {/* Timer Card - only show when recording is active */}
-          {isRecording && (
-            <>
-              <Instructions phase="analysis" />
-              <Card withBorder shadow="md" p="lg" mt="xl" radius="md">
-                <Stack align="center" spacing="xs">
-                  <Group gap="xs" align="center">
-                    <IconVideo size={20} color="red" />
-                    <Text c="red" fw={600}>Recording in progress</Text>
-                  </Group>
-                  <div style={{ fontSize: rem(40), fontWeight: 700, textAlign: "center" }}>
-                    <Timer analysisData={analysisData} />
-                  </div>
-                </Stack>
-              </Card>
-            </>
-          )}
-
-          {/* Analysis content Card */}
-          <Card withBorder shadow="md" p="lg" mt="md" radius="md">
-            <AnalysisStepNavigator
-              steps={buildAnalysisSteps()}
-              onExit={handleExitAnalysis}
-              analysisData={analysisData}
-              analysisEntryId={analysisEntryId}
-              analysisId={analysisId}
-            />
-          </Card>
-        </>
-      )}
-
-      {/* Error Display */}
-      {error && (
+      
+      {/* Error Display for input step */}
+      {error && currentStep === 'input' && (
         <Alert
           icon={<IconAlertCircle size={16} />}
           title="Error"
@@ -310,36 +254,6 @@ const ParticipateContent = () => {
           {error}
         </Alert>
       )}
-
-      {/* Recording Stopped Warning Modal */}
-      <Modal
-        opened={showStoppedRecordingModal}
-        onClose={() => {}}
-        centered
-        size="md"
-        withCloseButton={false}
-        closeOnClickOutside={false}
-        closeOnEscape={false}
-      >
-        <Stack align="center" spacing="md">
-          <IconAlertTriangle size={64} color="orange" />
-          <Text size="xl" fw={600}>Recording Stopped</Text>
-          <Text size="sm" c="dimmed" ta="center">
-            Screen sharing or microphone access has been stopped.
-            The analysis cannot continue without recording.
-          </Text>
-          <Text size="sm" c="dimmed" ta="center">
-            Your analysis will be cancelled and any recorded data will be discarded.
-          </Text>
-          <Button
-            color="red"
-            onClick={handleRecordingStoppedConfirm}
-            fullWidth
-          >
-            Exit Analysis
-          </Button>
-        </Stack>
-      </Modal>
     </Container>
   );
 };

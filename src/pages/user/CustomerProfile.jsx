@@ -44,7 +44,7 @@ const CustomerProfile = () => {
     if (loading) return (
         <Box sx={{ maxWidth: 600 }} mx="auto" mt="xl">
             <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Text>Loading User...</Text>
+                <Text>Cargando usuario...</Text>
             </Card>
         </Box>
     );
@@ -60,13 +60,11 @@ const CustomerProfile = () => {
     return (
         <Box sx={{ maxWidth: 600 }} mx="auto" mt="xl">
             
-            <CustomerCard user={user} />
+            {/* <CustomerCard user={user} /> */}
             
             <PasswordUpdateForm />
-
             
-            
-            <AccountActionsForm />
+            {/* <AccountActionsForm /> */}
             
         </Box>
     )

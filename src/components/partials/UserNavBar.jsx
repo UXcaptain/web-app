@@ -32,9 +32,9 @@ const UserNavBar = () => {
   const [active, setActive] = useState('User Home');
 
   const data = [
-  { link: '/dashboard', label: 'User Home', icon: IconHomeFilled },
-  { link: '/user/profile', label: 'User Profile', icon: IconUserCircle },
-  { link: '/user/billing', label: 'Billing', icon: IconCreditCardFilled },
+  { link: '/dashboard', label: 'Dashboard', icon: IconHomeFilled },
+  { link: '/user/profile', label: 'Cambiar contraseña', icon: IconUserCircle },
+  // { link: '/user/billing', label: 'Planes', icon: IconCreditCardFilled },
 ];
 
   const links = data.map((item) => (
@@ -54,7 +54,7 @@ const UserNavBar = () => {
 
         <a className={classes.link} onClick={handleLogout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
+          <span>Cerrar sesión</span>
         </a>
       </div>
     </nav>

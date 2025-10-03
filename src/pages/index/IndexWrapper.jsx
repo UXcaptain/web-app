@@ -5,7 +5,7 @@ import { SiteFooter } from '../../components/partials/SiteFooter';
 const IndexWrapper = () => {
     return (
         <>
-          {/* <SiteNavBar /> */}
+          <SiteNavBar />
 
                 <Outlet />
 

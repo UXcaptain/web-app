@@ -1,7 +1,7 @@
 import { Container, Title, SimpleGrid, Card, Text } from '@mantine/core';
 import { IconShare, IconVideo, IconChartBar, IconShieldLock } from '@tabler/icons-react';
 
-const WaitlistFeatures = () => (
+const Features = () => (
   <Container size="lg" py="xl">
     <Title order={2} ta="center" mb="xl">
       Características
@@ -58,4 +58,4 @@ const WaitlistFeatures = () => (
   </Container>
 );
 
-export default WaitlistFeatures;
+export default Features;

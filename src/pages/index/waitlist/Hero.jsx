@@ -1,7 +1,8 @@
 import { Container, Stack, Title, Text, Group, Button } from '@mantine/core';
-import { IconUserPlus, IconBulb } from '@tabler/icons-react';
+import RegisterButton from '../../../components/navBarElements/RegisterButton';
 
-const WaitlistHero = () => (
+
+const MainHero = () => (
   <Container size="lg" py="xl">
     <Stack align="center" gap="xl">
       <Title order={1} ta="center">
@@ -10,9 +11,11 @@ const WaitlistHero = () => (
       <Text size="lg" ta="center" c="dimmed">
         Recibe videos de usuarios reales interactuando con tus productos mientras comparten su feedback, identifica pain points y mejora tus productos
       </Text>
-      
+      {/* <Group>
+        <RegisterButton /> // TODO ENABLE ON LAUNCH
+      </Group> */}
     </Stack>
   </Container>
 );
 
-export default WaitlistHero;
+export default MainHero;

@@ -19,8 +19,8 @@ import { useSubscription } from '../../contexts/SubscriptionContext.jsx';
  
 export const CreateAnalysisPage = () => {
 
-    const [name, setName] = useState('null');
-    const [url, setUrl] = useState('youtube.com');
+    const [name, setName] = useState('');
+    const [url, setUrl] = useState('');
     const [successMessage, setSuccessMessage] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [countdown, setCountdown] = useState(5);
@@ -65,7 +65,7 @@ export const CreateAnalysisPage = () => {
     const removeTask = (index) => {
         // Prevent removing all tasks - ensure at least one task exists
         if (tasks.length <= 1) {
-            setErrors(prev => ({ ...prev, tasks: 'At least one task is required' }));
+            setErrors(prev => ({ ...prev, tasks: 'Incluye al menos una tarea' }));
             return;
         }
         
@@ -95,26 +95,26 @@ export const CreateAnalysisPage = () => {
         
         // Validate name
         if (!name || name.trim() === '') {
-            newErrors.name = 'Analysis name is required';
+            newErrors.name = 'El nombre del análisis es obligatorio';
         }
         
         // Validate URL
         if (!url || url.trim() === '') {
-            newErrors.url = 'URL is required';
+            newErrors.url = 'La URL es obligatoria';
         } else if (!/^https?:\/\/(www\.)?([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}.*$/.test(url) &&
                    !/^(www\.)?([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}.*$/.test(url)) {
-            newErrors.url = 'Please enter a valid URL with a proper domain structure';
+            newErrors.url = 'Por favor, introduzca una URL válida con una estructura de dominio adecuada';
         }
         
         // Validate maxNumberOfParticipants
         if (!maxNumberOfParticipants || maxNumberOfParticipants < 1) {
-            newErrors.maxNumberOfParticipants = 'Number of participants must be at least 1';
+            newErrors.maxNumberOfParticipants = 'El número de participantes debe ser al menos 1';
         }
         
         // Validate tasks
         const nonEmptyTasks = tasks.filter(task => task.value.trim() !== '');
         if (nonEmptyTasks.length === 0) {
-            newErrors.tasks = 'At least one task with content is required';
+            newErrors.tasks = 'Se requiere al menos una tarea con contenido';
         }
         
         setErrors(newErrors);
@@ -149,7 +149,7 @@ export const CreateAnalysisPage = () => {
 
         try {
             const response = await apiClient.post('/api/v1/analysis', analysisData);
-            setSuccessMessage('Analysis created successfully!');
+            setSuccessMessage('¡Análisis creado con éxito!');
             setShowModal(true);
             setCountdown(5);
             const timer = setInterval(() => {
@@ -165,7 +165,7 @@ export const CreateAnalysisPage = () => {
             }, 1000);
             return response.data;
         } catch (error) {
-            console.error("Error creating analysis:", error);
+            console.error("Error creando análisis:", error);
             throw error;
         }
     };
@@ -180,11 +180,11 @@ export const CreateAnalysisPage = () => {
     return (
         <Box sx={{ maxWidth: 600 }} mx="auto" mt="xl">
             <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Title order={2} mb="lg">Create Analysis</Title>
+                <Title order={2} mb="lg">Crear Análisis</Title>
                 <form onSubmit={handleSubmit}>
                     <TextInput
-                        label="Analysis Name"
-                        placeholder="Enter analysis name"
+                        label="Nombre del Análisis"
+                        placeholder="Happy Path - Purchase"
                         value={name}
                         onChange={(e) => {
                             setName(e.target.value);
@@ -198,8 +198,8 @@ export const CreateAnalysisPage = () => {
                     />
 
                     <Textarea
-                        label="Analysis URL"
-                        placeholder="Enter URL for analysis"
+                        label="Introduce la URL que se debe probar"
+                        placeholder="https://youtube.com"
                         value={url}
                         onChange={(e) => {
                             setUrl(e.target.value);
@@ -213,8 +213,8 @@ export const CreateAnalysisPage = () => {
                     />
 
                     <Textarea
-                        label="Scenario - please indicate the mindset the user should have when completing this test (Optional)"
-                        placeholder="Enter scenario description"
+                        label="(Opcional) Escenario - Indica el escenario que debe tener simular el participante"
+                        placeholder="Imagina que es el cumpleaños de tu hermano y tienes 250€ para comprar un reloj"
                         value={scenario}
                         onChange={(e) => setScenario(e.target.value)}
                         mb="md"
@@ -222,7 +222,7 @@ export const CreateAnalysisPage = () => {
                     />
 
                     <NumberInput
-                        label="Number of Participants - Recommended: 5-10"
+                        label="Número de Participantes - Recomendado: 5-10"
                         value={maxNumberOfParticipants}
                         onChange={(value) => {
                             setmaxNumberOfParticipants(value);
@@ -238,14 +238,14 @@ export const CreateAnalysisPage = () => {
 
                     <Box mb="md">
                         <Group position="apart" mb="xs">
-                            <Text weight={500}>Tasks</Text>
+                            <Text weight={500}>Tareas</Text>
                             <Button onClick={addTask} variant="outline" size="sm">
-                                Add Task
+                                Añadir Tarea
                             </Button>
                         </Group>
                         
                         {errors.tasks && (
-                            <Alert icon={<IconAlertCircle size="1rem" />} title="Task Error" color="red" mb="sm">
+                            <Alert icon={<IconAlertCircle size="1rem" />} title="Error de Tarea" color="red" mb="sm">
                                 {errors.tasks}
                             </Alert>
                         )}
@@ -253,7 +253,7 @@ export const CreateAnalysisPage = () => {
                         {tasks.map((task, index) => (
                             <Card key={index} shadow="none" padding="sm" radius="md" withBorder mb="sm">
                                 <Group position="apart" mb="xs">
-                                    <Text size="sm" weight={500}>Task {index + 1}</Text>
+                                    <Text size="sm" weight={500}>Tarea {index + 1}</Text>
                                     {tasks.length > 1 && (
                                         <Button
                                             onClick={() => removeTask(index)}
@@ -261,12 +261,12 @@ export const CreateAnalysisPage = () => {
                                             color="red"
                                             size="xs"
                                         >
-                                            Remove
+                                            Eliminar
                                         </Button>
                                     )}
                                 </Group>
                                 <Textarea
-                                    placeholder="Enter task description"
+                                    placeholder="Introduzca la descripción de la tarea"
                                     value={task.value}
                                     onChange={(e) => handleTaskChange(index, e.target.value)}
                                     minRows={2}
@@ -277,14 +277,14 @@ export const CreateAnalysisPage = () => {
 
                     <Group position="right" mt="md">
                         <Button type="submit">
-                            Create Analysis
+                            Crear Análisis
                         </Button>
                     </Group>
                 </form>
                 <Modal
                     opened={showModal}
                     onClose={() => setShowModal(false)}
-                    title="Success"
+                    title="Éxito"
                     centered
                     size="md"
                     styles={{
@@ -305,7 +305,7 @@ export const CreateAnalysisPage = () => {
                     }}
                 >
                     <Text size="md" style={{ color: 'light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1))' }}>{successMessage}</Text>
-                    <Text size="sm" mt="sm" style={{ color: 'light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2))' }}>Redirecting in {countdown} seconds...</Text>
+                    <Text size="sm" mt="sm" style={{ color: 'light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2))' }}>Redirigiendo en {countdown} segundos...</Text>
                 </Modal>
             </Card>
         </Box>

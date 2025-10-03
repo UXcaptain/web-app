@@ -1,38 +1,35 @@
 import { NavLink } from 'react-router'
-import LogInLink from '../navBarElements/LogInLink.jsx';
-import RegisterLink from '../navBarElements/RegisterLink.jsx';
+import { Anchor, Image } from '@mantine/core';
+import LogInButton from '../navBarElements/LogInButton.jsx';
+import RegisterButton from '../navBarElements/RegisterButton.jsx';
+import styles from './SiteNavBar.module.css';
 
 const SiteNavBar = () => {
     return (
-        <div className="navBarWrapper">
-
-            <div className="logoContainer">
+        <header className={styles.header}>
+            <div className={styles.logoContainer}>
                 <NavLink to="/">
-                    <img src="/logo.svg" alt="logo" />
+                    <Image src="/logo.svg" alt="logo" width={40} height={40} />
                 </NavLink>
             </div>
 
-        
-            <nav className='navBar'>
-                <ul className='navBarUl'>
-                    <li>
-                        <NavLink to="/">Home</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/terminos-condiciones">Términos y condiciones</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/preguntas-frecuentes">Preguntas frecuentes</NavLink>
-                        </li>
-                </ul>
+            <nav className={styles.navLinks}>
+                <Anchor component={NavLink} to="/" className={styles.link}>
+                    Home
+                </Anchor>
+                <Anchor component={NavLink} to="/terminos-condiciones" className={styles.link}>
+                    Términos y condiciones
+                </Anchor>
+                <Anchor component={NavLink} to="/preguntas-frecuentes" className={styles.link}>
+                    Preguntas frecuentes
+                </Anchor>
             </nav>
 
-
-            <div className='buttonWrapper'>
-            <LogInLink />
-            <RegisterLink /> {/* Added RegisterLink component here */}
+            <div style={{ display: 'flex', gap: 'var(--mantine-spacing-sm)' }}>
+                <LogInButton />
+                <RegisterButton />
             </div>
-        </div>
+        </header>
     );
 };
 

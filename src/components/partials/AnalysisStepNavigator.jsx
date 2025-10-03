@@ -176,7 +176,7 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
           onClick={handlePrevious}
           disabled={currentStep === 0 || isFinishing}
         >
-          Previous
+          Anterior
         </Button>
         
         <Group>
@@ -201,7 +201,7 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
               onClick={handleNext}
               disabled={!canProceed || isFinishing}
             >
-              Next
+              Siguiente
             </Button>
           )}
         </Group>

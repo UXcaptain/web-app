@@ -1,26 +1,27 @@
 import { Card, Text, List, ThemeIcon, Stack } from '@mantine/core';
-import { IconInfoCircle, IconScreenShare, IconMicrophone, IconPlayerPlay, IconAlertTriangle } from '@tabler/icons-react';
+import { IconInfoCircle, IconPlayerPlay, IconAlertTriangle } from '@tabler/icons-react';
 
 export const Instructions = ({ phase = 'setup' }) => {
   const setupInstructions = [
-    "Enter your analysis ID provided by the researcher",
-    "Grant permission to share your screen and microphone when prompted",
-    "Review and accept the security terms before starting",
-    "Follow the step-by-step instructions during the analysis"
+    "Introduce el ID del análisis que has recibido",
+    "Comparte toda tu pantalla y tu micrófono",
+    "Comparte tu feedback - positivo y negativo - de manera constante y en voz alta.",
+    "Completa cada tarea lo mejor que puedas, si no puedes completar una, continúa a la siguiente",
   ];
 
   const analysisInstructions = [
-    "Complete each task as instructed",
-    "Your screen and audio are being recorded for research purposes",
-    "Do not close this window or stop sharing until analysis is complete",
-    "If you need to stop, click the 'Exit Analysis' button"
+    "Vuelve a esta pestaña para si necesitar recordar la tarea o continuar a la siguiente",
+    "Adopta el escenario mostrado en el campo \"escenario\" durante el análisis",
+    "Completa cada tarea lo mejor que puedas, si no puedes completar una, continúa a la siguiente",
+    "Comparte tu feedback - positivo y negativo - de manera constante y en voz alta.",
+    "No pases a la siguiente tarea hasta haber completado la tarea anterior"
   ];
 
   const warnings = [
-    "Do not navigate away from this page during recording",
-    "Ensure your microphone is working properly",
-    "Make sure your screen content is appropriate for recording",
-    "If recording stops unexpectedly, the analysis will be cancelled"
+    "Asegúrate que tu micrófono funciona correctamente ",
+    "Recuerda que se compartirá toda tu pantalla",
+    "Si la grabación se detiene, se perderá la grabación y tu participación no será registrada",
+    "No cierres esta ventana o dejes de compartir hasta que el análisis haya sido finalizado",
   ];
 
   return (
@@ -28,7 +29,7 @@ export const Instructions = ({ phase = 'setup' }) => {
       <Stack spacing="md">
         <Text size="lg" fw={600} c="blue">
           <IconInfoCircle size={20} style={{ marginRight: 8 }} />
-          Instructions
+          {(phase === 'setup' ? '¿Cómo participar?' : '¿Cómo debo completar el análisis?')}
         </Text>
         
         <List
@@ -50,7 +51,7 @@ export const Instructions = ({ phase = 'setup' }) => {
           <>
             <Text size="md" fw={600} c="orange" mt="md">
               <IconAlertTriangle size={20} style={{ marginRight: 8 }} />
-              Important Reminders
+              Recordatorios importantes
             </Text>
             
             <List

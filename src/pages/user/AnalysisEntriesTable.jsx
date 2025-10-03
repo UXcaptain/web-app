@@ -1,8 +1,10 @@
-import { Table, Button, Text, Center } from '@mantine/core';
+import { Table, Button, Text, Center, Stack, Container, ThemeIcon, Title } from '@mantine/core';
+import { IconTableOff, IconUsers } from '@tabler/icons-react';
+import { CopyInviteLinkButton } from '../../components/partials/CopyInviteLinkButton';
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { useState } from 'react';
 
-export const AnalysisEntriesTable = ({ participants = [] }) => {
+export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
     const [loadingEntries, setLoadingEntries] = useState({});
 
     const handleViewAnalysisEntry = async (analysisEntryId) => {
@@ -22,22 +24,52 @@ export const AnalysisEntriesTable = ({ participants = [] }) => {
     };
 
     // Handle empty state
-    if (!Array.isArray(participants) || participants.length === 0) {
+    if (!Array.isArray(AnalysisEntries) || AnalysisEntries.length === 0) {
         return (
-            <Center py="xl">
-                <Text>No analysis entries found</Text>
-            </Center>
+            <Container py="xl" size="sm">
+                <Center>
+                    <Stack align="center" spacing="lg">
+                        <ThemeIcon size={80} radius="xl" variant="light" color="blue">
+                            <IconUsers size={40} />
+                        </ThemeIcon>
+                        <Title order={2} ta="center">Aún no hay participantes</Title>
+                        <Text color="dimmed" ta="center" size="lg">
+                            ¡Vaya! Aún nadie ha participado en tu análisis.
+                        </Text>
+                        <Text color="dimmed" ta="center" size="sm">
+                            Comparte tu análisis para comenzar a recibir participaciones.
+                        </Text>
+                        <CopyInviteLinkButton
+                            analysisId={analysisId}
+                            size="md"
+                            mt="md"
+                        />
+                    </Stack>
+                </Center>
+            </Container>
         );
     }
 
-    const rows = participants.map((item) => (
+    const rows = AnalysisEntries.map((item) => (
         <Table.Tr key={item.id}>
             <Table.Td>
-                <Text fw={500}>{item.ParticipantsProfile?.name || 'N/A'}</Text>
+                <Text fw={500}>{item.id || 'N/A'}</Text>
             </Table.Td>
-            <Table.Td>{item.ParticipantsProfile?.last_name || 'N/A'}</Table.Td>
-            <Table.Td>{item.ParticipantsProfile?.gender || 'N/A'}</Table.Td>
-            <Table.Td>{item.ParticipantsProfile?.country || 'N/A'}</Table.Td>
+            <Table.Td>
+                <Text fw={500}>{item.updated_at ? new Date(item.updated_at).toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'N/A'}</Text>
+            </Table.Td>
+            {/* <Table.Td>
+                <Text fw={500}>{item.AnalysisEntriesProfile?.name || 'N/A'}</Text>
+            </Table.Td> */}
+            {/* <Table.Td>
+            {item.AnalysisEntriesProfile?.last_name || 'N/A'}
+            </Table.Td> */}
+            {/* <Table.Td>
+            {item.AnalysisEntriesProfile?.gender || 'N/A'}
+            </Table.Td> */}
+            {/* <Table.Td>
+            {item.AnalysisEntriesProfile?.country || 'N/A'}
+            </Table.Td> */}
             <Table.Td>
                 <Button
                     variant="subtle"
@@ -45,7 +77,7 @@ export const AnalysisEntriesTable = ({ participants = [] }) => {
                     loading={loadingEntries[item.id]}
                     onClick={() => handleViewAnalysisEntry(item.id)}
                 >
-                    View Analysis Entry
+                    Ver grabación
                 </Button>
             </Table.Td>
         </Table.Tr>
@@ -56,11 +88,17 @@ export const AnalysisEntriesTable = ({ participants = [] }) => {
             <Table verticalSpacing="sm" striped highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th>First Name</Table.Th>
+                        <Table.Th>ID</Table.Th>
+                        <Table.Th>Fecha de subida</Table.Th>
+                        <Table.Th>Acciones</Table.Th>
+
+
+
+                        {/* <Table.Th>First Name</Table.Th>
                         <Table.Th>Last Name</Table.Th>
                         <Table.Th>Gender</Table.Th>
                         <Table.Th>Country</Table.Th>
-                        <Table.Th>Actions</Table.Th>
+                        <Table.Th>Actions</Table.Th> */}
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>

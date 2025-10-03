@@ -29,9 +29,9 @@ jobs:
             uses: docker/build-push-action@v6
             with:
                 context: .
-                platforms: linux/amd64,linux/arm64
+                platforms: linux/amd64 #,linux/arm64 - Not building for ARM, since ubuntu server is just amd64
                 push: true
-                tags: sergion14/uxcaptain:front-next
+                tags: sergion14/uxcaptain:webapp-next
                 build-args: |
                     VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL }}
                     VITE_PUBLIC_POSTHOG_KEY=${{ vars.VITE_PUBLIC_POSTHOG_KEY }}

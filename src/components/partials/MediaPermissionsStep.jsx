@@ -41,10 +41,9 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
 
   return (
     <Stack spacing="md">
-      <Alert icon={<IconInfoCircle size={16} />} title="Recording Setup Required" color="blue">
+      <Alert icon={<IconInfoCircle size={16} />} title="Configuración de permisos" color="blue">
         <Text size="sm">
-          To participate in this analysis, we need to record your screen and microphone. 
-          This helps us understand how you interact with the interface.
+          Para participar en el análisis, es necesario que compartas tu pantalla y tu micrófono
         </Text>
       </Alert>
 
@@ -54,20 +53,20 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
           <Group justify="space-between">
             <Group gap="xs">
               <IconScreenShare size={20} />
-              <Text fw={500}>Screen Sharing</Text>
+              <Text fw={500}>Pantalla</Text>
             </Group>
             {hasScreenPermission ? (
               <Badge color="green" variant="light">
                 <Group gap={4}>
                   <IconCheck size={14} />
-                  Active
+                  Concedido
                 </Group>
               </Badge>
             ) : (
               <Badge color="gray" variant="light">
                 <Group gap={4}>
                   <IconX size={14} />
-                  Not Active
+                  Pendiente
                 </Group>
               </Badge>
             )}
@@ -78,20 +77,20 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
           <Group justify="space-between">
             <Group gap="xs">
               <IconMicrophone size={20} />
-              <Text fw={500}>Microphone</Text>
+              <Text fw={500}>Micrófono</Text>
             </Group>
             {hasAudioPermission ? (
               <Badge color="green" variant="light">
                 <Group gap={4}>
                   <IconCheck size={14} />
-                  Active
+                  Concedido
                 </Group>
               </Badge>
             ) : (
               <Badge color="gray" variant="light">
                 <Group gap={4}>
                   <IconX size={14} />
-                  Not Active
+                  Pendiente
                 </Group>
               </Badge>
             )}
@@ -101,21 +100,21 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
 
       {/* Error Message */}
       {errorMessage && (
-        <Alert icon={<IconAlertCircle size={16} />} title="Permission Required" color="red">
+        <Alert icon={<IconAlertCircle size={16} />} title="Error en la inicialización" color="red">
           <Stack spacing="xs">
             <Text size="sm">{errorMessage}</Text>
             <Text size="xs" c="dimmed">
-              If you're having trouble, try the following:
+              ¿Estás teniendo problemas?, prueba estos pasos:
             </Text>
             <List size="xs" spacing="xs">
               <List.Item>
-                <Text size="xs">Make sure you're not in incognito/private mode</Text>
+                <Text size="xs">Asegúrate que no estas en modo navegación privada/incógnito</Text>
               </List.Item>
               <List.Item>
-                <Text size="xs">Check that your browser has permission to access screen and microphone</Text>
+                <Text size="xs">Comprueba que tu navegador tiene permiso para acceder a la pantalla y/o el micrófono</Text>
               </List.Item>
               <List.Item>
-                <Text size="xs">Try refreshing the page and starting again</Text>
+                <Text size="xs">Recarga la página y prueba de nuevo</Text>
               </List.Item>
             </List>
           </Stack>
@@ -143,8 +142,8 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
               disabled={permissionStatus === 'requesting'}
             >
               {permissionStatus === 'requesting' 
-                ? 'Requesting Permissions...' 
-                : 'Share Screen & Microphone'}
+                ? 'Solicitando permisos...' 
+                : 'Compartir pantalla y micrófono'}
             </Button>
 
             {permissionStatus === 'denied' && (
@@ -171,7 +170,7 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
         ) : (
           <Alert color="green" icon={<IconCheck size={16} />}>
             <Text size="sm" fw={500}>
-              All permissions granted! Click "Next" to continue with the analysis.
+              ¡Permisos concedidos! Pulsa sobre "Siguiente" para iniciar el análisis.
             </Text>
           </Alert>
         )}
@@ -183,14 +182,14 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
           onClick={onExit}
           disabled={permissionStatus === 'requesting'}
         >
-          Exit Analysis
+          Salir del análisis
         </Button>
       </Stack>
 
       {/* Information Footer */}
       <Text size="xs" c="dimmed" ta="center">
-        Recording will start automatically when you proceed to the next step.
-        You can stop the recording at any time by closing this window.
+        La grabación empezará al pulsar sobre "Siguiente"
+        Puedes dejar de participar en el análisis y eliminar la grabación en cualquier momento pulsando sobre "Salir del análisis".
       </Text>
     </Stack>
   );
