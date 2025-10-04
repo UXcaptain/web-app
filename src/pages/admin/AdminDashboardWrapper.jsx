@@ -3,7 +3,6 @@ import AdminNavBar from '../../components/partials/AdminNavBar.jsx'
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from "react";
 import apiClient from '../../config/API/axiosConfig.mjs';
-import { logError } from '../../config/logging/loggerFunctions.mjs';
 import { SiteFooter } from '../../components/partials/SiteFooter';
 
 export const AdminDashboardWrapper = () => {
@@ -23,7 +22,6 @@ export const AdminDashboardWrapper = () => {
 
 
             } catch (error) {
-                logError('Failed to check session', error);
                 setLoading(false);
                 navigate('/auth/login');
             }

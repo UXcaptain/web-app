@@ -9,7 +9,6 @@ import {
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from "react-router";
 import apiClient from "../../config/API/axiosConfig.mjs";
-import { logError } from "../../config/logging/loggerFunctions.mjs";
 
 
 const UserNavBar = () => {
@@ -23,7 +22,6 @@ const UserNavBar = () => {
         navigate('/')
 
     } catch (error) {
-        logError('Error in logout functionality', error, 'N/A');
         }
     
     }

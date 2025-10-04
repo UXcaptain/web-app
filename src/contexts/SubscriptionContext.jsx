@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import apiClient from '../config/API/axiosConfig.mjs';
-import { logError } from '../config/logging/loggerFunctions.mjs';
 
 const SubscriptionContext = createContext(null);
 
@@ -37,7 +36,6 @@ export const SubscriptionProvider = ({ children }) => {
     } catch (err) {
       setError(err?.message ?? 'Failed to fetch subscription');
       try {
-        logError('Failed to fetch subscription', err);
       } catch (_) {}
     } finally {
       setLoading(false);
@@ -61,7 +59,6 @@ export const SubscriptionProvider = ({ children }) => {
       return cid;
     } catch (err) {
       try {
-        logError('Failed to create billing customer id', err);
       } catch (_) {}
       return null;
     }

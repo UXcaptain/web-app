@@ -3,7 +3,6 @@ import  NavbarSimple  from "../../components/partials/UserNavBar";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import apiClient from "../../config/API/axiosConfig.mjs";
-import { logError } from "../../config/logging/loggerFunctions.mjs";
 import { usePostHog } from 'posthog-js/react'
 import { AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -28,7 +27,6 @@ const UserWrapper = () => {
                 setLoading(false);
 
             } catch (error) {
-                logError('Failed to check session', error);
                 navigate('/auth/login');
             }
         };

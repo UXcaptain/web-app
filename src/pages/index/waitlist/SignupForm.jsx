@@ -13,7 +13,6 @@ import {
   Button,
 } from '@mantine/core';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
-import { logError } from '../../../config/logging/loggerFunctions.mjs';
 
 const WaitlistSignupForm = () => {
   const [submissionStatus, setSubmissionStatus] = useState({
@@ -55,10 +54,6 @@ const WaitlistSignupForm = () => {
       }
     } catch (error) {
       setSubmissionStatus({ loading: false, success: false, error: true });
-      logError('Waitlist submission failed', error, {
-        email: values.email,
-        endpoint: 'api/v1/waitlist',
-      });
     }
   };
 

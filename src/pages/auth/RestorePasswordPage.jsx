@@ -1,7 +1,6 @@
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { logError } from '../../config/logging/loggerFunctions.mjs';
 import {
   Anchor,
   Box,
@@ -80,7 +79,6 @@ const RestorePasswordPage = () => {
             setPasswordUpdateResponse(response.data);
             setLoading(false);
         } catch (error) {
-            logError('Failed to update recovered password', error);
             setError(error.message || 'Failed to update password');
             setLoading(false);
         }

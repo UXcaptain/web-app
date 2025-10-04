@@ -13,11 +13,8 @@
   "scripts": {
     "build": "vite build",
     "start:local": "vite",
-
     "docker-build:local": "docker build --platform=linux/amd64 --build-arg VITE_API_BASE_URL=http://localhost:3000 --build-arg VITE_PUBLIC_POSTHOG_KEY=phc_rEM8kq6iDndSMMDYlYoVVb0iitdyUx1KOXaLVPIQR9q -t sergion14/uxcaptain:front-local .",
-
     "docker-build:prod": "docker build -t sergion14/uxcaptain:front-latest . && docker push sergion14/uxcaptain:front-latest",
-
     "docker-build:dev": "docker build --platform=linux/amd64 -t sergion14/uxcaptain:front-next . && docker push sergion14/uxcaptain:front-next"
   },
   "dependencies": {
@@ -27,7 +24,6 @@
     "@tabler/icons-react": "^3.31.0",
     "axios": "^1.7.9",
     "js-cookie": "^3.0.5",
-    "pino": "^9.6.0",
     "posthog-js": "^1.257.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

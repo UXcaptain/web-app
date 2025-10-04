@@ -1,6 +1,5 @@
 import apiClient from "../../config/API/axiosConfig.mjs"
 import { useState } from "react"
-import { logError } from "../../config/logging/loggerFunctions.mjs"
 import { Link } from "react-router";
 import {
     Anchor,
@@ -56,7 +55,7 @@ const handleRegister = async (e) => {
             })
         }
 
-        logError('Registration failed', err, 'N/A')
+
 
         return setRegisterError({
             success: false,

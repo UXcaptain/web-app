@@ -1,6 +1,5 @@
 import apiClient from "../../config/API/axiosConfig.mjs";
 import { useState, useEffect } from "react"
-import { logError } from "../../config/logging/loggerFunctions.mjs";
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { ActionIcon, Anchor, Group, Table, Text } from '@mantine/core';
 
@@ -18,8 +17,6 @@ const AdminDashboard = () => {
                 setUserCount(response.data.users.length)
                 setLoading(false)
             } catch (err) {
-                
-                logError('Failed to fetch users', err)
 
                 setError('User is not authorized to view this page - please log in again')
                 
