@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router";
 import apiClient from "../../config/API/axiosConfig.mjs";
-import { logError } from "../../config/logging/loggerFunctions.mjs";
 import { usePostHog } from 'posthog-js/react'
 
 
@@ -18,7 +17,6 @@ const LogOutButton = () => {
         posthog.reset(); //! FIX
 
     } catch (error) {
-        logError('Error in logout functionality', error, 'N/A');
         }
     
     }

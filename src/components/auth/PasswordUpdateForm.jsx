@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import apiClient from '../../config/API/axiosConfig.mjs';
-import { logError } from '../../config/logging/loggerFunctions.mjs';
 import { Card, Button, TextInput, Text, Alert, Box } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 
@@ -26,7 +25,6 @@ const PasswordUpdateForm = () => {
             });
 
         } catch (error) {
-            logError('Failed to update password', error);
 
             if (error.response && error.response.status === 401) {
                 setResponse({

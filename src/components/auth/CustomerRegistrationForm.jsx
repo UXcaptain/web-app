@@ -1,6 +1,5 @@
 import apiClient from "../../config/API/axiosConfig.mjs"
 import { useState } from "react"
-import { logError } from "../../config/logging/loggerFunctions.mjs"
 import { Link } from "react-router";
 import {
     Anchor,
@@ -29,11 +28,11 @@ const handleRegister = async (e) => {
     }
     
     try {
-        const registerResponse = await apiClient.post(`/api/v1/auth/register/local/customer`, data)
+        await apiClient.post(`/api/v1/auth/register/local/customer`, data)
         
         setRegisterResponse({
             success: true,
-            message: registerResponse.data.message
+            message: 'Usuario creado correctamente'
         })
 
         setRegisterError(null)
@@ -45,7 +44,7 @@ const handleRegister = async (e) => {
         if (err.status === 409) {
             return setRegisterError({
                 success: false,
-                message: 'El nombre de usuario ya existe'
+                message: 'No ha sido posible crear un usuario con este correo electrónico'
             })
         }
 
@@ -56,11 +55,11 @@ const handleRegister = async (e) => {
             })
         }
 
-        logError('Registration failed', err, 'N/A')
+
 
         return setRegisterError({
             success: false,
-            message: 'Error interno, por favor intente nuevamente en unos minutos'
+            message: 'Error interno, por favor intentálo en unos minutos'
         })
     }
 }
