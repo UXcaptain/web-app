@@ -51,7 +51,7 @@ export const CreateAnalysisPage = () => {
     };
     const [maxNumberOfParticipants, setmaxNumberOfParticipants] = useState(5);
     const [tasks, setTasks] = useState([{ value: '' }]);
-    const [scenario, setScenario] = useState('null');
+    const [scenario, setScenario] = useState('');
     const [errors, setErrors] = useState({});
 
     const addTask = () => {
