@@ -16,17 +16,15 @@ export const useMediaPermissions = () => {
 export const MediaPermissionsProvider = ({ children }) => {
   const [screenStream, setScreenStream] = useState(null);
   const [audioStream, setAudioStream] = useState(null);
-  const [permissionStatus, setPermissionStatus] = useState('idle'); // idle, requesting, granted, denied, error
+  const [permissionStatus, setPermissionStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  const [uploadStatus, setUploadStatus] = useState('idle'); // idle, uploading, success, error
+  const [uploadStatus, setUploadStatus] = useState('idle');
   const [uploadError, setUploadError] = useState('');
-  const [uploadProgress, setUploadProgress] = useState(0); // 0-100
+  const [uploadProgress, setUploadProgress] = useState(0);
   
-  // Refs for MediaRecorder
   const mediaRecorderRef = useRef(null);
   const recordedChunksRef = useRef([]);
-  
   const recordingStartTimeRef = useRef(null);
 
   // Request screen sharing permission
@@ -41,10 +39,9 @@ export const MediaPermissionsProvider = ({ children }) => {
           logicalSurface: true,
           cursor: 'always'
         },
-        audio: false // We'll get audio separately for better control
+        audio: false
       });
 
-      // Listen for stream end (user stops sharing)
       stream.getVideoTracks().forEach(track => {
         track.addEventListener('ended', () => {
           handleStreamEnded('screen');
@@ -75,13 +72,11 @@ export const MediaPermissionsProvider = ({ children }) => {
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
-          autoGainControl: true,
-          sampleRate: 44100
+          autoGainControl: true
         },
         video: false
       });
 
-      // Listen for stream end
       stream.getAudioTracks().forEach(track => {
         track.addEventListener('ended', () => {
           handleStreamEnded('audio');
@@ -103,85 +98,76 @@ export const MediaPermissionsProvider = ({ children }) => {
     }
   }, []);
 
-  // Start recording with MediaRecorder
+  // Start recording - completely rewritten with basic settings
   const startRecording = useCallback((screen, audio) => {
-    // Accept streams as parameters or use state
     const screenToUse = screen || screenStream;
     const audioToUse = audio || audioStream;
     
     if (!screenToUse || !audioToUse) {
+      console.error('[Recording] Missing streams');
       return false;
     }
 
     try {
-      // Combine screen and audio streams
+      // Combine streams
       const combinedStream = new MediaStream([
         ...screenToUse.getVideoTracks(),
         ...audioToUse.getAudioTracks()
       ]);
 
-      // Create MediaRecorder with MP4 format options (preferred format)
-      const mp4Options = [
-        'video/mp4;codecs=avc1,mp4a.40.2', // H.264 + AAC (best compatibility)
-        'video/mp4;codecs=avc1',           // H.264 video only (fallback)
-        'video/mp4'                        // Basic MP4 (final fallback)
-      ];
-    
-      let selectedMimeType = 'video/mp4'; // Default MP4 format
-      
-      // Find the best supported MP4 format
-      for (const mimeType of mp4Options) {
-        if (MediaRecorder.isTypeSupported(mimeType)) {
-          selectedMimeType = mimeType;
-          break;
+      // Use WebM format - fully supported and stable in all modern browsers
+      // VP9 codec provides excellent quality and compression
+      const options = {
+        mimeType: 'video/webm;codecs=vp9,opus',
+        videoBitsPerSecond: 2500000,  // 2.5 Mbps for 720p quality
+        audioBitsPerSecond: 128000    // 128 kbps for good audio quality
+      };
+
+      // Verify format is supported
+      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        options.mimeType = 'video/webm;codecs=vp8,opus';
+        
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+          setErrorMessage('Your browser does not support video recording. Please use a modern browser.');
+          return false;
         }
       }
-    
-      const options = {
-        mimeType: selectedMimeType,
-        videoBitsPerSecond: 1000000, // 1 Mbps (for 720p)
-        audioBitsPerSecond: 96000    // 96 kbps (sufficient audio quality)
-      };
 
       const mediaRecorder = new MediaRecorder(combinedStream, options);
       
-      // Clear previous chunks
       recordedChunksRef.current = [];
 
-      // Handle data available event
       mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
+        if (event.data && event.data.size > 0) {
           recordedChunksRef.current.push(event.data);
         }
       };
 
-      // Handle recording stop
       mediaRecorder.onstop = () => {
         // Recording stopped
       };
 
-      // Handle errors
       mediaRecorder.onerror = (event) => {
-        setErrorMessage('Recording error: ' + event.error);
+        setErrorMessage(`Recording error: ${event.error}`);
+        setIsRecording(false);
       };
 
       // Start recording
-      mediaRecorder.start(1000); // Collect data every second
-      mediaRecorderRef.current = mediaRecorder;
-      setIsRecording(true);
+      mediaRecorder.start(1000);
       
-      // Record start time
-      const startTime = new Date().toISOString();
-      recordingStartTimeRef.current = startTime;
+      mediaRecorderRef.current = mediaRecorder;
+      recordingStartTimeRef.current = new Date().toISOString();
+      setIsRecording(true);
       
       return true;
     } catch (error) {
-      setErrorMessage('Failed to start recording: ' + error.message);
+      console.error('[Recording] Failed to start:', error);
+      setErrorMessage(`Failed to start recording: ${error.message}`);
       return false;
     }
   }, [screenStream, audioStream]);
 
-  // Stop recording and return the blob with metadata
+  // Stop recording
   const stopRecording = useCallback(() => {
     return new Promise((resolve) => {
       if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive') {
@@ -191,36 +177,22 @@ export const MediaPermissionsProvider = ({ children }) => {
 
       const mediaRecorder = mediaRecorderRef.current;
       
-      // Set up the onstop handler to resolve with the blob and metadata
       mediaRecorder.onstop = () => {
-        const endTime = new Date().toISOString();
-        const startTime = recordingStartTimeRef.current;
-        
-        // Calculate recording duration
-        const duration = startTime ?
-          Math.round((new Date(endTime) - new Date(startTime)) / 1000) : 0;
-        
-        // Ensure MP4 format is always used
-        const mimeType = mediaRecorder.mimeType && mediaRecorder.mimeType.includes('mp4')
-          ? mediaRecorder.mimeType
-          : 'video/mp4';
-          
         const blob = new Blob(recordedChunksRef.current, {
-          type: mimeType
+          type: mediaRecorder.mimeType || 'video/webm'
         });
         
         recordedChunksRef.current = [];
         setIsRecording(false);
-        resolve({ blob: blob, metadata: null });
+        resolve({ blob, metadata: null });
       };
 
-      // Stop the recording
       mediaRecorder.stop();
       mediaRecorderRef.current = null;
     });
   }, []);
 
-  // Upload recording using presigned URL from /upload-url endpoint
+  // Upload recording
   const uploadRecording = useCallback(async (blob, analysisId, analysisEntryId) => {
     if (!blob) {
       setUploadError('Missing recording data');
@@ -237,7 +209,7 @@ export const MediaPermissionsProvider = ({ children }) => {
       setUploadError('');
       setUploadProgress(0);
       
-      // Step 5: Get presigned URL from /upload-url endpoint
+      console.log('[Upload] Requesting presigned URL');
       const uploadUrlResponse = await apiClient.post('/api/v1/analysisEntry/upload-url', {
         analysisEntryId,
         analysisId
@@ -250,12 +222,10 @@ export const MediaPermissionsProvider = ({ children }) => {
       const { analysisEntryPresignedUploadUrl } = uploadUrlResponse.data;
       setUploadProgress(25);
 
-      // Upload to S3 using presigned URL
-      // IMPORTANT: Content-Type must exactly match what was used to generate the presigned URL
-      // The backend generates presigned URLs with ContentType: 'video/mp4'
+      console.log('[Upload] Uploading to S3 as WebM');
       const uploadResponse = await axios.put(analysisEntryPresignedUploadUrl, blob, {
         headers: {
-          'Content-Type': 'video/mp4',
+          'Content-Type': blob.type || 'video/webm',
         },
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
@@ -287,7 +257,6 @@ export const MediaPermissionsProvider = ({ children }) => {
       setPermissionStatus('requesting');
       setErrorMessage('');
 
-      // Request both permissions
       const [screen, audio] = await Promise.all([
         requestScreenPermission(),
         requestAudioPermission()
@@ -295,34 +264,31 @@ export const MediaPermissionsProvider = ({ children }) => {
 
       if (screen && audio) {
         setPermissionStatus('granted');
-        // Don't start recording here - let it be started after state updates
         return { screen, audio };
       }
     } catch (error) {
       setPermissionStatus('denied');
       setIsRecording(false);
-      // Error message already set by individual functions
       return null;
     }
   }, [requestScreenPermission, requestAudioPermission]);
 
   // Handle stream ended
   const handleStreamEnded = useCallback((type) => {
+    console.log('[Streams] Stream ended:', type);
     if (type === 'screen') {
       setScreenStream(null);
     } else if (type === 'audio') {
       setAudioStream(null);
     }
     
-    // If any stream ends, we need to re-request permissions
     setPermissionStatus('denied');
     setIsRecording(false);
     setErrorMessage('Recording stopped. Please share your screen and microphone again to continue.');
   }, []);
 
-  // Stop all streams and recording
+  // Stop all streams
   const stopAllStreams = useCallback(async () => {
-    // Stop recording first and get the blob with metadata
     const recordingData = await stopRecording();
     
     if (screenStream) {
@@ -336,18 +302,17 @@ export const MediaPermissionsProvider = ({ children }) => {
     setPermissionStatus('idle');
     setIsRecording(false);
     setErrorMessage('');
-    
     recordingStartTimeRef.current = null;
     
-    return recordingData; // Return the recording data
+    return recordingData;
   }, [screenStream, audioStream, stopRecording]);
 
-  // Check if permissions are granted
+  // Check permissions
   const hasPermissions = useCallback(() => {
     return screenStream !== null && audioStream !== null;
   }, [screenStream, audioStream]);
 
-  // Start recording when both streams are available
+  // Auto-start recording when streams are ready
   useEffect(() => {
     if (screenStream && audioStream && permissionStatus === 'granted' && !isRecording && !mediaRecorderRef.current) {
       startRecording(screenStream, audioStream);
