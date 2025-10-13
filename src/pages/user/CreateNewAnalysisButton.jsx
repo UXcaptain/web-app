@@ -14,7 +14,7 @@ export const CreateNewAnalysisButton = () => {
     }
   };
 
-  const tooltipLabel = 'An active subscription is required to create a new analysis. Visit Billing to choose a plan.';
+  const tooltipLabel = 'Debes tener una suscripción activa para poder crear análisis.';
 
   return (
     <Tooltip
