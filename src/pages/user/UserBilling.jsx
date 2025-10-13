@@ -5,23 +5,25 @@ import { useSubscription } from '../../contexts/SubscriptionContext.jsx'
 import NoActiveSubscriptionBanner from '../../components/partials/NoActiveSubscriptionBanner.jsx'
 
 const UserBilling = () => {
-  const { subscription, stripeCustomerId, loading, error, isPaid } = useSubscription()
+  const { subscription, loading, error, hasActiveSubscription } = useSubscription()
   const [actionError, setActionError] = useState(null)
 
-  const handlePriceLink = async (planName, billingCycle) => {
-    const data = {
+
+  const handlePriceLink = async (planName, planBillingCycle) => {
+
+    const planData = {
       planName: planName,
-      planBillingCycle: billingCycle
+      planBillingCycle: planBillingCycle,
     }
 
     try {
       setActionError(null)
-      const response = await apiClient.post(`/api/v1/billing/checkout-session`, data)
+      const response = await apiClient.post(`/api/v1/billing/checkout-session`, planData)
       const { checkoutSessionUrl } = response.data
       window.open(checkoutSessionUrl, '_blank')
     } catch (err) {
       if (err.status === 400) {
-              return setActionError('El usuario ya tiene una suscripción existente, gestiónala en el portal')
+              return setActionError('El usuario ya tiene una suscripción existente, gestiónela en el portal')
             }
       return setActionError(err.message)
     }
@@ -40,9 +42,6 @@ const UserBilling = () => {
 
   // Derived billing state (kept minimal due to API payload shape)
     const hasSubscription = Boolean(subscription?.id)
-    const paidCycle = ''
-    const isCurrentMonthly = false
-    const isTrialing = false
 
   if (loading) {
     return (
@@ -67,7 +66,7 @@ const UserBilling = () => {
   return (
     <Container size="sm">
       <Stack gap="lg">
-        {subscription && isPaid && (
+        {subscription && hasActiveSubscription && (
                   <Card withBorder p="lg" radius="md">
                     <Title order={3}>Suscripción actual</Title>
             <Group gap="sm" mt="sm">
@@ -75,17 +74,17 @@ const UserBilling = () => {
                             <Text fw={500}>
                               ID de suscripción: {subscription.id}
                             </Text>
-              {paidCycle && (
-                <Badge variant="light" color="blue">{paidCycle}</Badge>
-              )}
+                            {subscription.expires_at && (
+                              <Text fw={500}>
+                                Expira el: {new Date(subscription.expires_at).toLocaleDateString()}
+                              </Text>
+                            )}
             </Group>
           </Card>
         )}
 
         <NoActiveSubscriptionBanner />
-
-        <Title order={2}>Planes de precios</Title>
-
+        
         <SimpleGrid cols={1} spacing="lg">
                           <Card
                             withBorder
@@ -104,14 +103,15 @@ const UserBilling = () => {
                                                     <Button
                               mt="auto"
                               fullWidth
-                              variant={isCurrentMonthly ? 'filled' : 'outline'}
-                              disabled={isCurrentMonthly}
-                              onClick={() => !isCurrentMonthly && handlePriceLink('basic', 'monthly')}
+                              variant= 'outline'
+                              disabled={hasActiveSubscription}
+                              onClick={() => handlePriceLink('basic', 'monthly')}
                             >
-                              {isCurrentMonthly ? 'Plan actual' : 'Elegir Mensual'}
+                              { hasActiveSubscription ? 'Ya tienes una suscripción activa' : 'Elegir mensual' }
                             </Button>
                           </Card>
                         </SimpleGrid>
+
 
         <Card withBorder p="lg" radius="md">
                   <Title order={3}>Historial de facturas</Title>
