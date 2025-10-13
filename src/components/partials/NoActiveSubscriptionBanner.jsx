@@ -3,10 +3,10 @@ import { useSubscription } from '../../contexts/SubscriptionContext.jsx';
 import { useNavigate } from 'react-router';
 
 const NoActiveSubscriptionBanner = () => {
-  const { isPaid, loading, error } = useSubscription();
+  const { hasActiveSubscription, loading, error } = useSubscription();
   const navigate = useNavigate();
 
-  if (loading || error || isPaid) {
+  if (loading || error || hasActiveSubscription) {
     return null;
   }
 

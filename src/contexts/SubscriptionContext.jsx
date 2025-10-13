@@ -85,7 +85,6 @@ export const SubscriptionProvider = ({ children }) => {
     subscription,
     stripeCustomerId,
     hasActiveSubscription,
-    isPaid: hasActiveSubscription,
     loading,
     error,
     refresh: fetchSubscription,
