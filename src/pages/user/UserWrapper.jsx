@@ -7,7 +7,6 @@ import { usePostHog } from 'posthog-js/react'
 import { AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { SubscriptionProvider } from "../../contexts/SubscriptionContext.jsx";
-import TrialEndedBanner from "../../components/partials/TrialEndedBanner.jsx";
 import { SiteFooter } from "../../components/partials/SiteFooter";
 
 const UserWrapper = () => {
@@ -70,10 +69,9 @@ const UserWrapper = () => {
 
         <AppShell.Main>
           {loading ? (
-            <div>Loading...</div>
+            <div>Cargando...</div>
           ) : (
             <>
-              <TrialEndedBanner />
               <Outlet />
             </>
           )}

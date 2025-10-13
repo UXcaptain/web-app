@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import apiClient from '../../config/API/axiosConfig.mjs'
-import { Container, Stack, Card, Title, Text, Group, Button, Alert, Loader, Center, Badge, SimpleGrid, List } from '@mantine/core'
+import { Container, Stack, Card, Title, Text, Group, Button, Loader, Center, Badge, SimpleGrid, List } from '@mantine/core'
 import { useSubscription } from '../../contexts/SubscriptionContext.jsx'
+import NoActiveSubscriptionBanner from '../../components/partials/NoActiveSubscriptionBanner.jsx'
 
 const UserBilling = () => {
   const { subscription, stripeCustomerId, loading, error, isPaid } = useSubscription()
@@ -81,12 +82,7 @@ const UserBilling = () => {
           </Card>
         )}
 
-        {/* Only keep indication that the free trial has ended */}
-                {!isTrialing && !isPaid && (
-                  <Alert color="gray" variant="light" title="Prueba finalizada">
-                    Tu prueba gratuita ha finalizado. Elige un plan de pago para continuar.
-                  </Alert>
-                )}
+        <NoActiveSubscriptionBanner />
 
         <Title order={2}>Planes de precios</Title>
 

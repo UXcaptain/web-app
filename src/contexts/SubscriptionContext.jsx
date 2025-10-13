@@ -77,7 +77,9 @@ export const SubscriptionProvider = ({ children }) => {
     }
   }, [stripeCustomerId, customerBillingIdCreated, loading, createCustomerBillingId, fetchSubscription]);
 
-  const hasActiveSubscription = Boolean(subscription?.id);
+  const hasActiveSubscription = Boolean(
+    subscription?.id && subscription?.expires_at && new Date(subscription.expires_at) > new Date()
+  );
 
   const value = {
     subscription,
