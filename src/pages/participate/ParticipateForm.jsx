@@ -1,7 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, TextInput } from "@mantine/core";
+import { Button, Text, TextInput } from "@mantine/core";
 import { IconPlayerPlay } from "@tabler/icons-react";
+import { Link } from "react-router";
 
 // Pure input + submit component. API calls and rendering of analysis data/timer
 // are handled by the wrapper.
@@ -33,8 +34,12 @@ export const ParticipateForm = ({ onSubmitId, loading = false, defaultValue = ""
         leftSection={<IconPlayerPlay size={14} />}
         loading={loading}
       >
-        {loading ? "Cargando..." : "Participar"}
-      </Button>
+       {loading ? "Cargando..." : "Participar"}
+     </Button>
+     <Text size="sm" c="dimmed" className="terms-and-conditions" style={{ textAlign: 'center', marginTop: '10px' }}>
+       Al participar, aceptas estar de acuerdo con los{" "}
+       <Link to="/terminos-condiciones">términos y condiciones</Link>
+     </Text>
     </form>
   );
 };
