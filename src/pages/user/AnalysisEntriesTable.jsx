@@ -56,7 +56,13 @@ export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
                 <Text fw={500}>{item.id || 'N/A'}</Text>
             </Table.Td>
             <Table.Td>
-                <Text fw={500}>{item.updated_at ? new Date(item.updated_at).toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'N/A'}</Text>
+                <Text fw={500}>{item.updated_at ? new Date(item.updated_at).toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 'N/A'}</Text>
             </Table.Td>
             {/* <Table.Td>
                 <Text fw={500}>{item.AnalysisEntriesProfile?.name || 'N/A'}</Text>

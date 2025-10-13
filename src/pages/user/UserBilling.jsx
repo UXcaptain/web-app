@@ -40,9 +40,6 @@ const UserBilling = () => {
     }
   }
 
-  // Derived billing state (kept minimal due to API payload shape)
-    const hasSubscription = Boolean(subscription?.id)
-
   if (loading) {
     return (
       <Center h={200}>
@@ -66,25 +63,42 @@ const UserBilling = () => {
   return (
     <Container size="sm">
       <Stack gap="lg">
-        {subscription && hasActiveSubscription && (
-                  <Card withBorder p="lg" radius="md">
-                    <Title order={3}>Suscripción actual</Title>
-            <Group gap="sm" mt="sm">
-              <Badge color="green">Activo</Badge>
-                            <Text fw={500}>
-                              ID de suscripción: {subscription.id}
-                            </Text>
-                            {subscription.expires_at && (
-                              <Text fw={500}>
-                                Expira el: {new Date(subscription.expires_at).toLocaleDateString()}
-                              </Text>
-                            )}
-            </Group>
-          </Card>
-        )}
 
-        <NoActiveSubscriptionBanner />
+                  <Card withBorder p="lg" radius="md">
+            <Stack gap="sm" mt="sm">
+              <Text fw={500}>
+                <b>Estado de la suscripción:</b> {hasActiveSubscription ? 'Activa' : 'Inactiva'}
+              </Text>
+              {subscription.next_charge_at && (
+                <Text fw={500}>
+                  <b>Próxima fecha de cobro:</b> {new Date(subscription.next_charge_at).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </Text>
+              )}
+              {subscription.expires_at && (
+                <Text fw={500}>
+                  <b>Expira el:</b> {new Date(subscription.expires_at).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </Text>
+              )}
+            </Stack>
+          </Card>
         
+
+        
+        
+        { !hasActiveSubscription && 
+
         <SimpleGrid cols={1} spacing="lg">
                           <Card
                             withBorder
@@ -111,6 +125,8 @@ const UserBilling = () => {
                             </Button>
                           </Card>
                         </SimpleGrid>
+
+        }
 
 
         <Card withBorder p="lg" radius="md">
