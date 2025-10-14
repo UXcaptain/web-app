@@ -9,6 +9,7 @@ import {
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from "react-router";
 import apiClient from "../../config/API/axiosConfig.mjs";
+import { CreateNewAnalysisButton } from '../../pages/user/CreateNewAnalysisButton';
 
 
 const UserNavBar = () => {
@@ -45,6 +46,9 @@ const UserNavBar = () => {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
+        <div style={{ padding: '0 16px 16px 16px' }}>
+          <CreateNewAnalysisButton fullWidth />
+        </div>
         {links}
       </div>
 
