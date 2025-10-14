@@ -115,23 +115,28 @@ export const MediaPermissionsProvider = ({ children }) => {
         ...audioToUse.getAudioTracks()
       ]);
 
-      // Use WebM format - fully supported and stable in all modern browsers
-      // VP9 codec provides excellent quality and compression
-      const options = {
-        mimeType: 'video/webm;codecs=vp9,opus',
+      // Try to use MP4 format first, fallback to WebM if not supported
+      let options = {
+        mimeType: 'video/mp4;codecs=avc1,opus',  // MP4 with H.264 video codec and Opus audio codec
         videoBitsPerSecond: 2500000,  // 2.5 Mbps for 720p quality
         audioBitsPerSecond: 128000    // 128 kbps for good audio quality
       };
-
-      // Verify format is supported
+      
+      // Check if MP4 is supported, fallback to WebM if not
       if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-        options.mimeType = 'video/webm;codecs=vp8,opus';
-        
+        options.mimeType = 'video/mp4;codecs=h264';
         if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-          setErrorMessage('Your browser does not support video recording. Please use a modern browser.');
-          return false;
+          options.mimeType = 'video/webm;codecs=vp9,opus';
+          if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            options.mimeType = 'video/webm;codecs=vp8,opus';
+            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+              setErrorMessage('Your browser does not support MP4 or WebM video recording. Please use a modern browser.');
+              return false;
+            }
+          }
         }
       }
+
 
       const mediaRecorder = new MediaRecorder(combinedStream, options);
       
@@ -148,7 +153,7 @@ export const MediaPermissionsProvider = ({ children }) => {
       };
 
       mediaRecorder.onerror = (event) => {
-        setErrorMessage(`Recording error: ${event.error}`);
+        setErrorMessage(`Recording error: ${event.error}. Please try again.`);
         setIsRecording(false);
       };
 
@@ -179,7 +184,7 @@ export const MediaPermissionsProvider = ({ children }) => {
       
       mediaRecorder.onstop = () => {
         const blob = new Blob(recordedChunksRef.current, {
-          type: mediaRecorder.mimeType || 'video/webm'
+          type: mediaRecorder.mimeType || 'video/mp4'
         });
         
         recordedChunksRef.current = [];
@@ -222,10 +227,10 @@ export const MediaPermissionsProvider = ({ children }) => {
       const { analysisEntryPresignedUploadUrl } = uploadUrlResponse.data;
       setUploadProgress(25);
 
-      console.log('[Upload] Uploading to S3 as WebM');
+      console.log('[Upload] Uploading to S3');
       const uploadResponse = await axios.put(analysisEntryPresignedUploadUrl, blob, {
         headers: {
-          'Content-Type': blob.type || 'video/webm',
+          'Content-Type': blob.type || 'video/mp4',
         },
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
