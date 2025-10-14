@@ -7,9 +7,9 @@ const UserDashboard = () => {
     return (
         <Container size="xl" py="xl">
             <NoActiveSubscriptionBanner />
-            <CreateNewAnalysisButton mb="xl" />
-
-            <Paper shadow="xs" p="md" mb="xl">
+            <CreateNewAnalysisButton mb="xl" mt="md" />
+            
+                        <Paper shadow="xs" p="md" mb="xl" mt="xl">
                 <AnalysisTable />
             </Paper>
 
