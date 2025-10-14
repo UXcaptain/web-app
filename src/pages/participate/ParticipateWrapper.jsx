@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { useParams } from "react-router";
+import { useSearchParams } from "react-router";
 import { Container, Title, Alert, Modal, Text, Button } from "@mantine/core";
 import { IconAlertCircle, IconAlertTriangle } from "@tabler/icons-react";
 import { MediaPermissionsProvider, useMediaPermissions } from "../../contexts/MediaPermissionsContext";
@@ -9,8 +9,9 @@ import apiClient from "../../config/API/axiosConfig.mjs";
 
 // Inner component that uses the media permissions context
 const ParticipateContent = () => {
-  // Get analysis ID from URL parameters
-  const { id: urlAnalysisId } = useParams();
+  // Get analysis ID from URL query parameters
+  const [searchParams] = useSearchParams();
+  const urlAnalysisId = searchParams.get('analysisId');
 
   // Core state
   const [analysisData, setAnalysisData] = useState(null);

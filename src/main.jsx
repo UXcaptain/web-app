@@ -82,9 +82,7 @@ createRoot(document.getElementById('root')).render(
               </Route>
 
 
-        <Route path="/participate" element={<ParticipateWrapper />}> 
-          <Route path=":id" element={<ParticipateWrapper />} />
-          </Route>
+        <Route path="/participate" element={<ParticipateWrapper />} />
 
         
         
