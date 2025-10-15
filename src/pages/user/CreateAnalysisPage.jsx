@@ -50,7 +50,7 @@ export const CreateAnalysisPage = () => {
         return `https://${trimmedUrl}`;
     };
     const [maxNumberOfParticipants, setmaxNumberOfParticipants] = useState(5);
-    const [tasks, setTasks] = useState([{ value: '' }]);
+    const [tasks, setTasks] = useState([{ value: '' }, { value: '' }, { value: '' }]);
     const [scenario, setScenario] = useState('');
     const [errors, setErrors] = useState({});
 
@@ -243,6 +243,9 @@ export const CreateAnalysisPage = () => {
                                 Añadir Tarea
                             </Button>
                         </Group>
+                        <Text size="sm" color="dimmed" mb="sm">
+                            Recuerda que para obtener mejores resultados, la duración ideal debe ser de 15-20 minutos - Aproximadamente 3 minutos por tarea
+                        </Text>
                         
                         {errors.tasks && (
                             <Alert icon={<IconAlertCircle size="1rem" />} title="Error de Tarea" color="red" mb="sm">
