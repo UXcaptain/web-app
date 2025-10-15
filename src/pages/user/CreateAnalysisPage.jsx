@@ -198,7 +198,7 @@ export const CreateAnalysisPage = () => {
                     />
 
                     <Textarea
-                        label="Introduce la URL que se debe probar"
+                        label="Introduce la URL que deben analizar los participantes"
                         placeholder="https://youtube.com"
                         value={url}
                         onChange={(e) => {
@@ -221,20 +221,25 @@ export const CreateAnalysisPage = () => {
                         minRows={3}
                     />
 
-                    <NumberInput
-                        label="Número de Participantes - Recomendado: 5-10"
-                        value={maxNumberOfParticipants}
-                        onChange={(value) => {
-                            setmaxNumberOfParticipants(value);
-                            if (errors.maxNumberOfParticipants) {
-                                setErrors(prev => ({ ...prev, maxNumberOfParticipants: '' }));
-                            }
-                        }}
-                        error={errors.maxNumberOfParticipants}
-                        required
-                        min={1}
-                        mb="md"
-                    />
+                    <Box mb="md">
+                        <NumberInput
+                            label="Número de Participantes"
+                            value={maxNumberOfParticipants}
+                            onChange={(value) => {
+                                setmaxNumberOfParticipants(value);
+                                if (errors.maxNumberOfParticipants) {
+                                    setErrors(prev => ({ ...prev, maxNumberOfParticipants: '' }));
+                                }
+                            }}
+                            error={errors.maxNumberOfParticipants}
+                            required
+                            min={1}
+                            max={20}
+                        />
+                        <Text size="sm" color="dimmed" mt="xs">
+                            Para obtener mejores resultados, utiliza entre 5-7 participantes
+                        </Text>
+                    </Box>
 
                     <Box mb="md">
                         <Group position="apart" mb="xs">
@@ -244,7 +249,7 @@ export const CreateAnalysisPage = () => {
                             </Button>
                         </Group>
                         <Text size="sm" color="dimmed" mb="sm">
-                            Recuerda que para obtener mejores resultados, la duración ideal debe ser de 15-20 minutos - Aproximadamente 3 minutos por tarea
+                            Recuerda que para obtener mejores resultados, la duración debe ser de 15-20 minutos - Aproximadamente 3 minutos por tarea
                         </Text>
                         
                         {errors.tasks && (
