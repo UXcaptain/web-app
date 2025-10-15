@@ -52,7 +52,7 @@ export const AnalysisTable = () => {
     if (!Array.isArray(analysesArray) || analysesArray.length === 0) {
         return (
             <Center py="xl">
-                <Text>No se han encontrado análisis</Text>
+                <Text>¡Nada por aquí! - Crea tu primer análisis y recibe tu feedback en horas</Text>
             </Center>
         );
     }
