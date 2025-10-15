@@ -23,10 +23,8 @@ export const SubscriptionProvider = ({ children }) => {
     try {
       const response = await apiClient.get('/api/v1/billing');
       const subscriptionData = response.data?.subscriptionData || {};
-      const subscriptionObj = subscriptionData?.Subscription?.[0] || null;
 
-
-      setSubscription(subscriptionObj);
+      setSubscription(subscriptionData);
     } catch (err) {
       setError(err?.message ?? 'Failed to fetch subscription');
       try {
