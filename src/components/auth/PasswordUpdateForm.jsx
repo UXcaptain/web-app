@@ -77,8 +77,8 @@ const PasswordUpdateForm = () => {
                             )}
                         </Alert>
                     ) : (
-                        <Alert title="Success" color="green">
-                            <Text>{response.message}</Text>
+                        <Alert title="¡Hecho!" color="green">
+                            <Text>La contraseña ha sido modificado con éxito</Text>
                         </Alert>
                     )}
                 </Box>
@@ -86,9 +86,20 @@ const PasswordUpdateForm = () => {
             
             <form onSubmit={handleSubmit}>
                 <TextInput
+                    label="nombre de usuario"
+                    name="username"
+                    type="text"
+                    autoComplete='username'
+                    placeholder="Introduce tu nombre de usuario"
+                    mb="md"
+                    style={{ display: 'none' }}
+                />
+                
+                <TextInput
                     label="Contraseña actual"
                     name="currentPassword"
                     type="password"
+                    autoComplete='current-password'
                     placeholder="Introduce tu contraseña actual"
                     required
                     mb="md"
@@ -98,6 +109,7 @@ const PasswordUpdateForm = () => {
                     label="Nueva contraseña"
                     name="newPassword"
                     type="password"
+                    autoComplete='new-password'
                     placeholder="Introduce tu nueva contraseña"
                     required
                     mb="md"
