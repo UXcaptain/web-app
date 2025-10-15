@@ -98,34 +98,32 @@ const UserBilling = () => {
         
         
         { !hasActiveSubscription && 
-
-        <SimpleGrid cols={1} spacing="lg">
-                          <Card
-                            withBorder
-                            p="lg"
-                            radius="md"
-                            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
-                          >
-                            <Title order={3}>Suscripción Mensual</Title>
-                                        <Group align="center" mt="xs">
-                                          <Text fw={700} size="xl">€29/mes</Text>
-                                          <Text size="sm" c="dimmed">IVA incluido</Text>
-                                        </Group>
-                                        {/* hidden placeholder to keep cards identical in height distribution */}
-                                                    <Text c="teal" size="sm" mt={4} style={{ visibility: 'hidden' }}>Ahorra 17%</Text>
-                                                    <Text c="dimmed" mt="xs">Utiliza la plataforma sin límites.</Text>
-                                                    <Button
-                              mt="auto"
-                              fullWidth
-                              variant= 'outline'
-                              disabled={hasActiveSubscription}
-                              onClick={() => handlePriceLink('basic', 'monthly')}
+          <SimpleGrid cols={1} spacing="lg">
+                            <Card
+                              withBorder
+                              p="lg"
+                              radius="md"
+                              style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
                             >
-                              { hasActiveSubscription ? 'Ya tienes una suscripción activa' : 'Elegir mensual' }
-                            </Button>
-                          </Card>
-                        </SimpleGrid>
-
+                              <Title order={3}>Suscripción Mensual</Title>
+                                          <Group align="center" mt="xs">
+                                            <Text fw={700} size="xl">€29/mes</Text>
+                                            <Text size="sm" c="dimmed">IVA incluido</Text>
+                                          </Group>
+                                          {/* hidden placeholder to keep cards identical in height distribution */}
+                                                      <Text c="teal" size="sm" mt={4} style={{ visibility: 'hidden' }}>Ahorra 17%</Text>
+                                                      <Text c="dimmed" mt="xs">Utiliza la plataforma sin límites.</Text>
+                                                      <Button
+                                mt="auto"
+                                fullWidth
+                                variant= 'outline'
+                                disabled={hasActiveSubscription}
+                                onClick={() => handlePriceLink('basic', 'monthly')}
+                              >
+                                { hasActiveSubscription ? 'Ya tienes una suscripción activa' : 'Elegir mensual' }
+                              </Button>
+                            </Card>
+                          </SimpleGrid>
         }
 
 
