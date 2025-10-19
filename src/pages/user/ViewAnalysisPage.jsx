@@ -57,7 +57,14 @@ export const ViewAnalysisPage = () => {
           <Text size="sm"><strong>ID:</strong> {analysisData.id}</Text>
           <Text size="sm"><strong>URL:</strong> <Anchor href={analysisData.url} target="_blank" size="sm">{analysisData.url}</Anchor></Text>
           <Text size="sm"><strong>Dispositivo:</strong> <Badge color={analysisData.device === 'computer' ? 'blue' : 'green'} size="sm">{analysisData.device === 'computer' ? 'Ordenador' : 'Móvil'}</Badge></Text>
-          <Text size="sm"><strong>Fecha de Creación:</strong> {new Date(analysisData.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</Text>
+          <Text size="sm"><strong>Fecha de Creación:</strong> {new Date(analysisData.created_at).toLocaleDateString('es-ES', { 
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit' 
+            })
+          }</Text>
           
           {analysisData.scenario && (
             <Text size="sm"><strong>Escenario:</strong> {analysisData.scenario}</Text>

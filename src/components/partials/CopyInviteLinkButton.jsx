@@ -5,7 +5,7 @@ export const CopyInviteLinkButton = ({ analysisId, size = "sm", variant = "light
     const [buttonText, setButtonText] = useState('Copiar enlace de invitación');
 
     const copyInviteLink = async () => {
-        const inviteLink = `${import.meta.env.VITE_SITE_BASE_URL}/participate/${analysisId}`;
+        const inviteLink = `${import.meta.env.VITE_SITE_BASE_URL}/participate?analysisId=${analysisId}`;
         try {
             await navigator.clipboard.writeText(inviteLink);
             setButtonText('¡Enlace copiado!');

@@ -123,7 +123,7 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
 
       {/* Action Buttons */}
       <Stack spacing="sm">
-        {!hasPermissions() ? (
+        {!hasPermissions() || errorMessage ? (
           <>
             <Button
               size="lg"
@@ -167,7 +167,7 @@ export const MediaPermissionsStep = ({ onPermissionsGranted, onExit }) => {
               </Group>
             )}
           </>
-        ) : (
+        ) : errorMessage ? null : (
           <Alert color="green" icon={<IconCheck size={16} />}>
             <Text size="sm" fw={500}>
               ¡Permisos concedidos! Pulsa sobre "Siguiente" para iniciar el análisis.

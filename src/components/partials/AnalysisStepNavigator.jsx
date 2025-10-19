@@ -64,15 +64,9 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
         return;
       }
       
-      // Prepare minimal metadata for upload - only recording duration
-      const uploadMetadata = {
-        recordingDuration: recordingData.metadata?.recordingDuration
-      };
-      
       // Step 5: Upload recording using presigned URL
       const uploadSuccess = await uploadRecording(
         recordingData.blob,
-        uploadMetadata,
         analysisId,
         analysisEntryId
       );

@@ -4,7 +4,7 @@ import { MediaPermissionsStep } from "../../../components/partials/MediaPermissi
 import { useMediaPermissions } from "../../../contexts/MediaPermissionsContext";
 
 export const PermissionsStep = ({ onPermissionsNext, onExit, onPermissionsGranted }) => {
-  const { hasPermissions } = useMediaPermissions();
+  const { hasPermissions, errorMessage } = useMediaPermissions();
 
   return (
     <Card withBorder shadow="md" p="lg" mt="md" radius="md">
@@ -16,7 +16,7 @@ export const PermissionsStep = ({ onPermissionsNext, onExit, onPermissionsGrante
         <Group justify="flex-end">
           <Button
             onClick={onPermissionsNext}
-            disabled={!hasPermissions()}
+            disabled={!hasPermissions() || !!errorMessage}
           >
             Siguiente
           </Button>

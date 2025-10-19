@@ -15,16 +15,26 @@ export const AnalysisOverlay = ({ analysisData, onClose }) => {
 
     try {
       const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
-      const recorder = new MediaRecorder(stream);
+      
+      // Try to use MP4 format first, fallback to WebM if not supported
+      let options = { mimeType: 'video/mp4;codecs=avc1' };
+      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        options = { mimeType: 'video/mp4;codecs=h264' };
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+          options = { mimeType: 'video/webm;codecs=vp9' };
+        }
+      }
+      
+      const recorder = new MediaRecorder(stream, options);
       recorder.ondataavailable = (event) => {
         mediaChunks.current.push(event.data);
       };
       recorder.onstop = () => {
-        const blob = new Blob(mediaChunks.current, { type: 'video/webm' });
+        const blob = new Blob(mediaChunks.current, { type: recorder.mimeType || 'video/mp4' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'recording.webm';
+        a.download = recorder.mimeType?.includes('webm') ? 'recording.webm' : 'recording.mp4';
         a.click();
         URL.revokeObjectURL(url);
         mediaChunks.current = [];

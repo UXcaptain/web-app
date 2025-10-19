@@ -1,26 +1,29 @@
 import { useState } from 'react'
 import apiClient from '../../config/API/axiosConfig.mjs'
-import { Container, Stack, Card, Title, Text, Group, Button, Alert, Loader, Center, Badge, SimpleGrid, List } from '@mantine/core'
+import { Container, Stack, Card, Title, Text, Group, Button, Loader, Center, Badge, SimpleGrid, List } from '@mantine/core'
 import { useSubscription } from '../../contexts/SubscriptionContext.jsx'
+import NoActiveSubscriptionBanner from '../../components/partials/NoActiveSubscriptionBanner.jsx'
 
 const UserBilling = () => {
-  const { subscription, stripeCustomerId, loading, error, isPaid } = useSubscription()
+  const { subscription, loading, error, hasActiveSubscription } = useSubscription()
   const [actionError, setActionError] = useState(null)
 
-  const handlePriceLink = async (planName, billingCycle) => {
-    const data = {
+
+  const handlePriceLink = async (planName, planBillingCycle) => {
+
+    const planData = {
       planName: planName,
-      planBillingCycle: billingCycle
+      planBillingCycle: planBillingCycle,
     }
 
     try {
       setActionError(null)
-      const response = await apiClient.post(`/api/v1/billing/checkout-session`, data)
+      const response = await apiClient.post(`/api/v1/billing/checkout-session`, planData)
       const { checkoutSessionUrl } = response.data
       window.open(checkoutSessionUrl, '_blank')
     } catch (err) {
       if (err.status === 400) {
-              return setActionError('El usuario ya tiene una suscripción existente, gestiónala en el portal')
+              return setActionError('El usuario ya tiene una suscripción existente, gestiónela en el portal')
             }
       return setActionError(err.message)
     }
@@ -36,12 +39,6 @@ const UserBilling = () => {
       setActionError(err.message)
     }
   }
-
-  // Derived billing state (kept minimal due to API payload shape)
-    const hasSubscription = Boolean(subscription?.id)
-    const paidCycle = ''
-    const isCurrentMonthly = false
-    const isTrialing = false
 
   if (loading) {
     return (
@@ -66,56 +63,69 @@ const UserBilling = () => {
   return (
     <Container size="sm">
       <Stack gap="lg">
-        {subscription && isPaid && (
+
                   <Card withBorder p="lg" radius="md">
-                    <Title order={3}>Suscripción actual</Title>
-            <Group gap="sm" mt="sm">
-              <Badge color="green">Activo</Badge>
-                            <Text fw={500}>
-                              ID de suscripción: {subscription.id}
-                            </Text>
-              {paidCycle && (
-                <Badge variant="light" color="blue">{paidCycle}</Badge>
+            <Stack gap="sm" mt="sm">
+              <Text fw={500}>
+                <b>Estado de la suscripción:</b> {hasActiveSubscription ? 'Activa' : 'Inactiva'}
+              </Text>
+              {subscription.next_charge_at && (
+                <Text fw={500}>
+                  <b>Próxima fecha de cobro:</b> {new Date(subscription.next_charge_at).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </Text>
               )}
-            </Group>
+              {subscription.expires_at && (
+                <Text fw={500}>
+                  <b>Expira el:</b> {new Date(subscription.expires_at).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </Text>
+              )}
+            </Stack>
           </Card>
-        )}
+        
 
-        {/* Only keep indication that the free trial has ended */}
-                {!isTrialing && !isPaid && (
-                  <Alert color="gray" variant="light" title="Prueba finalizada">
-                    Tu prueba gratuita ha finalizado. Elige un plan de pago para continuar.
-                  </Alert>
-                )}
-
-        <Title order={2}>Planes de precios</Title>
-
-        <SimpleGrid cols={1} spacing="lg">
-                          <Card
-                            withBorder
-                            p="lg"
-                            radius="md"
-                            style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
-                          >
-                            <Title order={3}>Suscripción Mensual</Title>
-                                        <Group align="center" mt="xs">
-                                          <Text fw={700} size="xl">€29/mes</Text>
-                                          <Text size="sm" c="dimmed">IVA incluido</Text>
-                                        </Group>
-                                        {/* hidden placeholder to keep cards identical in height distribution */}
-                                                    <Text c="teal" size="sm" mt={4} style={{ visibility: 'hidden' }}>Ahorra 17%</Text>
-                                                    <Text c="dimmed" mt="xs">Utiliza la plataforma sin límites.</Text>
-                                                    <Button
-                              mt="auto"
-                              fullWidth
-                              variant={isCurrentMonthly ? 'filled' : 'outline'}
-                              disabled={isCurrentMonthly}
-                              onClick={() => !isCurrentMonthly && handlePriceLink('basic', 'monthly')}
+        
+        
+        { !hasActiveSubscription && 
+          <SimpleGrid cols={1} spacing="lg">
+                            <Card
+                              withBorder
+                              p="lg"
+                              radius="md"
+                              style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}
                             >
-                              {isCurrentMonthly ? 'Plan actual' : 'Elegir Mensual'}
-                            </Button>
-                          </Card>
-                        </SimpleGrid>
+                              <Title order={3}>Suscripción Mensual</Title>
+                                          <Group align="center" mt="xs">
+                                            <Text fw={700} size="xl">€29/mes</Text>
+                                            <Text size="sm" c="dimmed">IVA incluido</Text>
+                                          </Group>
+                                          {/* hidden placeholder to keep cards identical in height distribution */}
+                                                      <Text c="teal" size="sm" mt={4} style={{ visibility: 'hidden' }}>Ahorra 17%</Text>
+                                                      <Text c="dimmed" mt="xs">Utiliza la plataforma sin límites.</Text>
+                                                      <Button
+                                mt="auto"
+                                fullWidth
+                                variant= 'outline'
+                                disabled={hasActiveSubscription}
+                                onClick={() => handlePriceLink('basic', 'monthly')}
+                              >
+                                { hasActiveSubscription ? 'Ya tienes una suscripción activa' : 'Elegir mensual' }
+                              </Button>
+                            </Card>
+                          </SimpleGrid>
+        }
+
 
         <Card withBorder p="lg" radius="md">
                   <Title order={3}>Historial de facturas</Title>

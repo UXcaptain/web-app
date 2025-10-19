@@ -9,6 +9,7 @@ import {
 import classes from './NavbarSimple.module.css';
 import { useNavigate } from "react-router";
 import apiClient from "../../config/API/axiosConfig.mjs";
+import { CreateNewAnalysisButton } from '../../pages/user/CreateNewAnalysisButton';
 
 
 const UserNavBar = () => {
@@ -32,7 +33,7 @@ const UserNavBar = () => {
   const data = [
   { link: '/dashboard', label: 'Dashboard', icon: IconHomeFilled },
   { link: '/user/profile', label: 'Cambiar contraseña', icon: IconUserCircle },
-  // { link: '/user/billing', label: 'Planes', icon: IconCreditCardFilled },
+  { link: '/user/billing', label: 'Planes', icon: IconCreditCardFilled },
 ];
 
   const links = data.map((item) => (
@@ -45,6 +46,9 @@ const UserNavBar = () => {
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
+        <div style={{ padding: '0 16px 16px 16px' }}>
+          <CreateNewAnalysisButton fullWidth />
+        </div>
         {links}
       </div>
 

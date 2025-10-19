@@ -98,6 +98,10 @@ return (
                               Registrarse
                             </Button>
                           </form>
+                          <Text size="sm" c="dimmed" className="terms-and-conditions" style={{ textAlign: 'center', marginTop: '10px' }}>
+       Al registrarte, aceptas estar de acuerdo con los{" "}
+       <Link to="/terminos-condiciones">términos y condiciones</Link>
+     </Text>
                         </Paper>
                         </Container>
                     </>
