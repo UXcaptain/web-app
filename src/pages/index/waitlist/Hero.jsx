@@ -11,9 +11,9 @@ const MainHero = () => (
       <Text size="lg" ta="center" c="dimmed">
         Recibe videos de usuarios reales interactuando con tus productos mientras comparten su feedback, identifica pain points y mejora tus productos
       </Text>
-      {/* <Group>
-        <RegisterButton /> // TODO ENABLE ON LAUNCH
-      </Group> */}
+      <Group>
+        <RegisterButton />
+      </Group>
     </Stack>
   </Container>
 );
