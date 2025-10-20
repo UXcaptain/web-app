@@ -8,15 +8,6 @@ const WaitlistFAQ = () => (
     </Title>
     <Accordion variant="separated">
 
-      <Accordion.Item value="availability">
-        <Accordion.Control icon={<IconHelpHexagon size={16} />}>
-          ¿Cuándo estará disponible?
-        </Accordion.Control>
-        <Accordion.Panel>
-          ¡Pronto! Actualmente estamos en fase beta - Apúntate y se de los primeros en probar la herramienta.
-        </Accordion.Panel>
-      </Accordion.Item>
-
       <Accordion.Item value="analysis-time">
         <Accordion.Control icon={<IconHelpHexagon size={16} />}>
           ¿Cuánto tardaré en preparar un análisis?
@@ -46,7 +37,7 @@ const WaitlistFAQ = () => (
 
       <Accordion.Item value="recruit">
         <Accordion.Control icon={<IconHelpHexagon size={16} />}>
-          ¿Cómo recluto participantes a los participantes?
+          ¿Cómo recluto a los participantes?
         </Accordion.Control>
         <Accordion.Panel>
          ¡Tu decides! - Puedes invitar a tus análisis a quien quieras, tus clientes, en redes sociales, o incluso tu equipo interno - Simplemente comparte el enlace de tu análisis con ellos. 
@@ -55,7 +46,7 @@ const WaitlistFAQ = () => (
 
       <Accordion.Item value="participants-number">
         <Accordion.Control icon={<IconHelpHexagon size={16} />}>
-          ¿Cuántos participantes necesito para obtener resultados?
+          ¿Cuántos participantes necesito para obtener buenos resultados?
         </Accordion.Control>
         <Accordion.Panel>
           5 participantes son suficientes para identificar hasta un 85% de los problemas de usabilidad.
@@ -76,7 +67,7 @@ const WaitlistFAQ = () => (
           ¿Puedo probar mi aplicación móvil?
         </Accordion.Control>
         <Accordion.Panel>
-          Lamentablemente, aún no - Estamos trabajando en una aplicación móvil para que pronto puedas probar tus aplicaciones móviles.
+          Lamentablemente, todavía no - Estamos trabajando en una aplicación móvil para que pronto puedas probar tus aplicaciones móviles.
         </Accordion.Panel>
       </Accordion.Item>
 
