@@ -13,9 +13,8 @@ const Homepage = () => {
         <div className="home-page">
       <MainHero />
       <CompaniesLogoStrip />
-
       <WaitlistHowItWorks />
-      <RecordingExample />
+      {/* <RecordingExample /> */}
       <Features />
       <WaitlistFAQ />
     </div>
