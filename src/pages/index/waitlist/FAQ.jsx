@@ -75,8 +75,11 @@ const WaitlistFAQ = () => (
         <Accordion.Control icon={<IconHelpHexagon size={16} />}>
           Tengo más preguntas ¿Os puedo contactar?
         </Accordion.Control>
+        {/* <Accordion.Panel>
+          ¡Claro! - Únete a nuestro /* <Anchor href="https://discord.gg/VcwNV9rjpy">Discord</Anchor> o por <Anchor href="https://api.whatsapp.com/send?phone=34679146035&text=%C2%A1Hola!%20Me%20encantar%C3%ADa%20probar%20la%20beta%20de%20UXcaptain&utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Whatsapp</Anchor>. Estaremos encantados de hablar contigo
+        </Accordion.Panel> */}
         <Accordion.Panel>
-          ¡Claro! - Únete a nuestro <Anchor href="https://join.slack.com/t/uxcaptainespacio/shared_invite/zt-3c8lqp7nb-0OORUPkQ20A2oiquV13kUQ?utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Slack</Anchor>, <Anchor href="https://discord.gg/VcwNV9rjpy">Discord</Anchor> o por <Anchor href="https://api.whatsapp.com/send?phone=34679146035&text=%C2%A1Hola!%20Me%20encantar%C3%ADa%20probar%20la%20beta%20de%20UXcaptain&utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Whatsapp</Anchor>. Estaremos encantados de hablar contigo
+          ¡Claro! - Escríbenos por <Anchor href="https://api.whatsapp.com/send?phone=34679146035&text=%C2%A1Hola!%20Me%20encantar%C3%ADa%20probar%20la%20beta%20de%20UXcaptain&utm_source=brevo&utm_campaign=welcome_waitlist&utm_medium=email&utm_id=4">Whatsapp</Anchor>. Estaremos encantados de hablar contigo
         </Accordion.Panel>
       </Accordion.Item>
 
