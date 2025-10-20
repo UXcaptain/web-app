@@ -15,7 +15,7 @@ const Homepage = () => {
       <CompaniesLogoStrip />
 
       <WaitlistHowItWorks />
-      <RecordingExample />
+      {/* <RecordingExample /> */}
       <Features />
       <WaitlistFAQ />
     </div>
