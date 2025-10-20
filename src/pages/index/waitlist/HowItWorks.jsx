@@ -1,7 +1,7 @@
 import { Container, Title, SimpleGrid, Card, Stack, Text } from '@mantine/core';
 import { IconClipboardList, IconShare, IconRecordMail, IconTrendingUp , IconUser } from '@tabler/icons-react';
 
-const WaitlistHowItWorks = () => (
+const HowItWorks = () => (
   <Container size="lg" py="xl" id="how-it-works">
     <Title order={2} ta="center" mb="xl">
       Cómo funciona
@@ -77,4 +77,4 @@ const WaitlistHowItWorks = () => (
   </Container>
 );
 
-export default WaitlistHowItWorks;
+export default HowItWorks;
