@@ -12,7 +12,7 @@ const CompaniesLogoStrip = () => {
 
   return (
     <Container size="lg" py="xl">
-      {/* <Group justify="center" gap="xl">
+      <Group justify="center" gap="xl">
         {companies.map((company) => {
           const IconComponent = company.icon;
           return (
@@ -24,9 +24,9 @@ const CompaniesLogoStrip = () => {
             />
           );
         })}
-      </Group> */}
+      </Group>
       <Title order={4} ta="center" mt="md" c="dimmed" fw={500} size="sm">
-        Decenas de profesionales de UX ya utilizan UXcaptain 
+        Profesionales de UX de decenas de empresas ya utilizan UXcaptain 
       </Title>
     </Container>
   );
