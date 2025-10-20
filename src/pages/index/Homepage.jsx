@@ -12,7 +12,7 @@ const Homepage = () => {
 
         <div className="home-page">
       <MainHero />
-      <CompaniesLogoStrip />
+      {/* <CompaniesLogoStrip /> */}
       <HowItWorks />
       {/* <RecordingExample /> */}
       <Features />
