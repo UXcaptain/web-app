@@ -44,12 +44,9 @@ createRoot(document.getElementById('root')).render(
       <Routes>
 
         <Route path="/" element={<IndexWrapper />}>
-        <Route path="/home" element={<IndexWrapper />}> //* DELETE after launch
-        {/* <Route path="/" element={<IndexWrapper />}> //* UNCOMMER after launch */}
 
           <Route index element={<Homepage />} />
           
-          <Route path='home' element={<Homepage />} />
 
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
           <Route path='preguntas-frecuentes' element={<FAQ />} />
