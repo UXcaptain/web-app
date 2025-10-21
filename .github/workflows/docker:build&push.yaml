@@ -2,7 +2,7 @@ name: Build Webapp Docker image and push to Docker Hub
 
 on:
     push:
-        branches: [ "next", "latest", local ]
+        branches: [ "next", "latest" ]
 
 jobs:
     docker-build-and-push:
