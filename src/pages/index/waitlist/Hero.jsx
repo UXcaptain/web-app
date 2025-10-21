@@ -1,4 +1,4 @@
-import { Container, Stack, Title, Text, Group, Button } from '@mantine/core';
+import { Container, Stack, Title, Text, Group } from '@mantine/core';
 import RegisterButton from '../../../components/navBarElements/RegisterButton';
 
 
@@ -6,10 +6,10 @@ const MainHero = () => (
   <Container size="lg" py="xl">
     <Stack align="center" gap="xl">
       <Title order={1} ta="center">
-        Feedback de calidad, en minutos
+        La forma más fácil y económica de probar tus sitios web, apps y prototipos con usuarios reales
       </Title>
       <Text size="lg" ta="center" c="dimmed">
-        Recibe videos de usuarios reales interactuando con tus productos mientras comparten su feedback, identifica pain points y mejora tus productos
+        UXcaptain te muestra qué funciona en tu producto… y qué no. Una herramienta sencilla con la que puedes crear un análisis con usuarios no moderados en minutos y recibir resultados en solo unas horas.
       </Text>
       <Group>
         <RegisterButton />
