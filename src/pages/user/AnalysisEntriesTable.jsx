@@ -37,7 +37,7 @@ export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
                             ¡Vaya! Aún nadie ha participado en tu análisis.
                         </Text>
                         <Text color="dimmed" ta="center" size="sm">
-                            Comparte tu análisis para comenzar a recibir participaciones.
+                            Comparte tu análisis para comenzar a recibir grabaciones.
                         </Text>
                         <CopyInviteLinkButton
                             analysisId={analysisId}
@@ -78,7 +78,8 @@ export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
             </Table.Td> */}
             <Table.Td>
                 <Button
-                    variant="subtle"
+                    variant="filled"
+                    color="blue"
                     size="sm"
                     loading={loadingEntries[item.id]}
                     onClick={() => handleViewAnalysisEntry(item.id)}
