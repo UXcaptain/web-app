@@ -105,7 +105,7 @@ export const AnalysisTable = () => {
             <Table verticalSpacing="sm" striped highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th>Título</Table.Th>
+                        <Table.Th>Nombre</Table.Th>
                         <Table.Th>URL</Table.Th>
                         <Table.Th>Dispositivo</Table.Th>
                         <Table.Th>Participantes</Table.Th>

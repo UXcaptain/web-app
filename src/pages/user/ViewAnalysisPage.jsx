@@ -50,11 +50,11 @@ export const ViewAnalysisPage = () => {
 
   return (
     <Container size="lg">
-      <Title order={2} mb="md">Análisis: {analysisData.name}</Title>
+
       
       <Card shadow="sm" padding="sm" radius="md" withBorder mb="lg">
         <Stack spacing="xs">
-          <Text size="sm"><strong>ID:</strong> {analysisData.id}</Text>
+          <Text size="sm"><strong>Nombre del análisis:</strong> {analysisData.name}</Text>
           <Text size="sm"><strong>URL:</strong> <Anchor href={analysisData.url} target="_blank" size="sm">{analysisData.url}</Anchor></Text>
           <Text size="sm"><strong>Dispositivo:</strong> <Badge color={analysisData.device === 'computer' ? 'blue' : 'green'} size="sm">{analysisData.device === 'computer' ? 'Ordenador' : 'Móvil'}</Badge></Text>
           <Text size="sm"><strong>Fecha de Creación:</strong> {new Date(analysisData.created_at).toLocaleDateString('es-ES', { 
@@ -91,7 +91,7 @@ export const ViewAnalysisPage = () => {
       </Card>
       
       <Card shadow="sm" padding="sm" radius="md" withBorder>
-        <Text size="md" fw={700} mb="xs">Participaciones</Text>
+        <Text size="md" fw={700} mb="xs">Participantes</Text>
         <AnalysisEntriesTable AnalysisEntries={analysisData.AnalysisEntries} analysisId={id} />
       </Card>
     </Container>
