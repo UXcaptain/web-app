@@ -83,7 +83,7 @@ export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
                     loading={loadingEntries[item.id]}
                     onClick={() => handleViewAnalysisEntry(item.id)}
                 >
-                    Ver grabación
+                    Ver análisis
                 </Button>
             </Table.Td>
         </Table.Tr>
