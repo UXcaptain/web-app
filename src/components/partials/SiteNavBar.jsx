@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router'
+import { NavLink } from 'react-router';
 import { Anchor, Image } from '@mantine/core';
 import LogInButton from '../navBarElements/LogInButton.jsx';
 import RegisterButton from '../navBarElements/RegisterButton.jsx';

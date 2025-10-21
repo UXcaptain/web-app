@@ -20,7 +20,7 @@
 }
 
 .link {
-  color: var(--mantine-color-text);
+  color: black !important;
   text-decoration: none;
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
   border-radius: var(--mantine-radius-sm);
@@ -30,5 +30,5 @@
 
 .link:hover {
   background-color: var(--mantine-color-default-hover);
-  color: var(--mantine-color-default-hover-color);
+  color: blue !important;
 }
