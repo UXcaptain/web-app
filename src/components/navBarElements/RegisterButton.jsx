@@ -10,7 +10,7 @@ const RegisterButton = () => {
                     color="blue"
                     size="sm"
                 >
-                    Registrate gratis
+                    Pruébalo gratis
                 </Button>
     );
 }
