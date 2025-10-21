@@ -52,7 +52,7 @@ export const AnalysisTable = () => {
     if (!Array.isArray(analysesArray) || analysesArray.length === 0) {
         return (
             <Center py="xl">
-                <Text>¡Nada por aquí! - Crea tu primer análisis y recibe tu feedback en horas</Text>
+                <Text>¡Nada por aquí! - Crea tu primer análisis y empieza a recibir feedback</Text>
             </Center>
         );
     }
@@ -105,7 +105,7 @@ export const AnalysisTable = () => {
             <Table verticalSpacing="sm" striped highlightOnHover>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th>Título</Table.Th>
+                        <Table.Th>Nombre</Table.Th>
                         <Table.Th>URL</Table.Th>
                         <Table.Th>Dispositivo</Table.Th>
                         <Table.Th>Participantes</Table.Th>

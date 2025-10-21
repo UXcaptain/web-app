@@ -23,7 +23,6 @@ import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
 import UserBilling from './pages/user/UserBilling.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
-import { Waitlist } from './pages/index/Waitlist.jsx'
 
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
@@ -44,14 +43,10 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Waitlist />} /> //* DELETE after launch
-
-        <Route path="/home" element={<IndexWrapper />}> //* DELETE after launch
-        {/* <Route path="/" element={<IndexWrapper />}> //* UNCOMMER after launch */}
+        <Route path="/" element={<IndexWrapper />}>
 
           <Route index element={<Homepage />} />
           
-          <Route path='home' element={<Homepage />} />
 
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
           <Route path='preguntas-frecuentes' element={<FAQ />} />
