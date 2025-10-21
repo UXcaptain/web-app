@@ -114,7 +114,7 @@ return (
                             <PasswordInput name="password" label="Contraseña" placeholder="Tu contraseña" required mt="md" />
 
                             <Button type="submit" fullWidth mt="xl">
-                              Registrarse
+                              Crear cuenta
                             </Button>
                           </form>
                           <Text size="sm" c="dimmed" className="terms-and-conditions" style={{ textAlign: 'center', marginTop: '10px' }}>
