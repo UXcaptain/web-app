@@ -1,5 +1,5 @@
 import { Container, Title, SimpleGrid, Card, Text } from '@mantine/core';
-import { IconShare, IconVideo, IconChartBar, IconShieldLock } from '@tabler/icons-react';
+import { IconShare, IconVideo, IconDownload, IconZoom } from '@tabler/icons-react';
 
 const Features = () => (
   <Container size="lg" py="xl">
@@ -24,34 +24,34 @@ const Features = () => (
           <IconVideo size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
-          Grabaciones ricas
+          Feedback directo, en video y voz
         </Text>
         <Text size="sm" c="dimmed" mt="sm">
-          Audio, cámara y pantalla en una sola sesión
+          Escucha el feedback directamente de los usuarios mientras observas cómo interactúan con tu producto
         </Text>
       </Card>
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconChartBar size={48} color="#238BE6" />
+          <IconZoom size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
-          Análisis asistido
+          Análisis guiados
         </Text>
         <Text size="sm" c="dimmed" mt="sm">
-          Marcadores y resúmenes para encontrar patrones más rápido
+          ¡Tu decides! - Guía a los participantes hacia las áreas más críticas o que más te preocupen 
         </Text>
       </Card>
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconShieldLock size={48} color="#238BE6" />
+          <IconDownload size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
-          Privacidad y seguridad
+          Descarga y comparte
         </Text>
         <Text size="sm" c="dimmed" mt="sm">
-          Control de permisos y borrado bajo demanda
+          Descarga los análisis y compártelos con quien y cómo quieras
         </Text>
       </Card>
     </SimpleGrid>
