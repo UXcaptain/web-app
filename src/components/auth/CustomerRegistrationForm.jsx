@@ -12,11 +12,16 @@ import {
     Title,
   } from '@mantine/core';
   import classes from './AuthenticationTitle.module.css';
+import { useNavigate } from 'react-router';
+
 
 const CustomerRegistrationForm = () => {
 
 const [registerResponse, setRegisterResponse] = useState(null)
 const [registerError, setRegisterError] = useState(null)
+const [countdown, setCountdown] = useState(null)
+    const navigate = useNavigate();
+
 
 const handleRegister = async (e) => {
     e.preventDefault()
@@ -32,10 +37,24 @@ const handleRegister = async (e) => {
         
         setRegisterResponse({
             success: true,
-            message: 'Usuario creado correctamente'
+            message: 'Usuario creado correctamente - Redirigiendo al inicio de sesión'
         })
 
         setRegisterError(null)
+
+        setCountdown(3);
+            const timer = setInterval(() => {
+                setCountdown(prevCountdown => {
+                    if (prevCountdown <= 1) {
+                        clearInterval(timer);
+                        navigate('/auth/login');
+                        return 0;
+                    }
+                    return prevCountdown - 1;
+                });
+            }, 1000);
+
+        
         
     } catch (err) {
 
