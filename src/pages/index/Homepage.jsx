@@ -6,6 +6,7 @@ import WaitlistFAQ from './waitlist/FAQ.jsx';
 import WaitlistNavBar from '../../components/partials/WaitlistNavBar.jsx';
 import RecordingExample from '../../components/RecordingExample.jsx';
 import CompaniesLogoStrip from './waitlist/CompaniesLogoStrip.jsx';
+import DashboardExample from '../../components/DashboardExample.jsx';
 
 const Homepage = () => {
     return (
@@ -14,6 +15,7 @@ const Homepage = () => {
       <MainHero />
       {/* <CompaniesLogoStrip /> */}
       <HowItWorks />
+      <DashboardExample />
       {/* <RecordingExample /> */}
       <Features />
       <WaitlistFAQ />
