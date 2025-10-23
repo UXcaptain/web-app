@@ -6,7 +6,6 @@ import BetaBadge from '../../../components/shared/BetaBadge';
 const MainHero = () => (
   <Container size="lg" py="xl">
     <Stack align="center" gap="xl">
-      <BetaBadge />
       <Title order={1} ta="center">
         La forma más fácil y económica de probar tus sitios web, apps y prototipos con usuarios reales
       </Title>
@@ -16,6 +15,7 @@ const MainHero = () => (
       <Group>
         <RegisterButton />
       </Group>
+      <BetaBadge />
     </Stack>
   </Container>
 );
