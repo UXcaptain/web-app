@@ -1,13 +1,12 @@
 import { Container, Stack, Title, Text, Group } from '@mantine/core';
 import RegisterButton from '../../../components/navBarElements/RegisterButton';
+import BetaBadge from '../../../components/shared/BetaBadge';
 
 
 const MainHero = () => (
   <Container size="lg" py="xl">
     <Stack align="center" gap="xl">
-      <Text size="sm" c="blue" fw={700} style={{ backgroundColor: '#e0f7fa', padding: '4px 8px', borderRadius: '4px' }}>
-        100% gratis durante la beta
-      </Text>
+      <BetaBadge />
       <Title order={1} ta="center">
         La forma más fácil y económica de probar tus sitios web, apps y prototipos con usuarios reales
       </Title>

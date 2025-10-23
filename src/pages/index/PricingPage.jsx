@@ -1,5 +1,6 @@
-import { Container, Title, Text, Card, Badge, List, ThemeIcon, Stack, SimpleGrid } from '@mantine/core';
+import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid } from '@mantine/core';
 import RegisterButton from '../../components/navBarElements/RegisterButton.jsx';
+import BetaBadge from '../../components/shared/BetaBadge.jsx';
 import { PLANS } from '../../config/plans.js';
 
 const PlanCard = ({ plan }) => (
@@ -11,13 +12,7 @@ const PlanCard = ({ plan }) => (
     </Title>
     
     <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '1rem' }}>
-      <Badge
-        size="lg"
-        variant="filled"
-        color="green"
-      >
-        100% Gratis durante la beta
-      </Badge>
+      <BetaBadge />
     </div>
 
     <Text c="dimmed" size="sm" mb="md">
