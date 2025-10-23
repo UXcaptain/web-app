@@ -1,4 +1,5 @@
 import { Box, Container, SimpleGrid, Stack, Group, Divider, Image, Text, Anchor, ActionIcon } from '@mantine/core';
+import classes from './SiteFooter.module.css';
 
 export const SiteFooter = () => {
   
@@ -29,7 +30,7 @@ export const SiteFooter = () => {
   ];
 
   return (
-    <Box component="footer" role="contentinfo" aria-label="Site footer" p="xl">
+    <Box component="footer" role="contentinfo" aria-label="Site footer" p="xl" className={classes.footer}>
       <Container size="xl">
         <SimpleGrid
           cols={5}
