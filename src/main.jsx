@@ -23,6 +23,7 @@ import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
 import UserBilling from './pages/user/UserBilling.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
+import { PricingPage } from './pages/index/PricingPage.jsx'
 
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
@@ -50,6 +51,7 @@ createRoot(document.getElementById('root')).render(
 
           <Route path='terminos-condiciones' element={<TerminosCondiciones />} />
           <Route path='preguntas-frecuentes' element={<FAQ />} />
+          <Route path='pricing' element={<PricingPage />} />
         </Route>
 
         <Route path='/admin' element={<AdminDashboardWrapper />} >

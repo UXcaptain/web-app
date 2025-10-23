@@ -1,5 +1,6 @@
 import { Container, Stack, Title, Text, Group } from '@mantine/core';
 import RegisterButton from '../../../components/navBarElements/RegisterButton';
+import BetaBadge from '../../../components/shared/BetaBadge';
 
 
 const MainHero = () => (
@@ -14,6 +15,7 @@ const MainHero = () => (
       <Group>
         <RegisterButton />
       </Group>
+      <BetaBadge />
     </Stack>
   </Container>
 );

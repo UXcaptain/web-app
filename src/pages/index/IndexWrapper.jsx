@@ -9,7 +9,7 @@ const IndexWrapper = () => {
 
                 <Outlet />
 
-            {/* <SiteFooter /> */}
+            <SiteFooter />
         </>
       )
     };
