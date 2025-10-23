@@ -14,21 +14,21 @@ export const PLANS = {
       'Historial y auditoría de cambios'
     ]
   },
-  PREMIUM: {
-    id: 'premium',
-    name: 'Plan Premium',
-    price: 49,
-    currency: '€',
-    period: 'mes',
-    subtitle: 'Para equipos que necesitan más funcionalidades y soporte prioritario.',
-    features: [
-      'Proyectos ilimitados',
-      'Exportaciones ilimitadas',
-      'Colaboración con hasta 10 miembros',
-      'Soporte prioritario 24/7',
-      'Historial y auditoría de cambios',
-      'Funciones avanzadas',
-      'Integraciones personalizadas'
-    ]
-  }
+  // PREMIUM: {
+  //   id: 'premium',
+  //   name: 'Plan Premium',
+  //   price: 49,
+  //   currency: '€',
+  //   period: 'mes',
+  //   subtitle: 'Para equipos que necesitan más funcionalidades y soporte prioritario.',
+  //   features: [
+  //     'Proyectos ilimitados',
+  //     'Exportaciones ilimitadas',
+  //     'Colaboración con hasta 10 miembros',
+  //     'Soporte prioritario 24/7',
+  //     'Historial y auditoría de cambios',
+  //     'Funciones avanzadas',
+  //     'Integraciones personalizadas'
+  //   ]
+  // },
 };
