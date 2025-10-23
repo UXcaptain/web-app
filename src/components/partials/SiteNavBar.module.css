@@ -5,18 +5,22 @@
   padding: var(--mantine-spacing-md);
   background-color: var(--mantine-color-default);
   border-bottom: 1px solid var(--mantine-color-default-border);
-  height: 60px;
+  min-height: 60px;
+  flex-wrap: wrap;
+  gap: var(--mantine-spacing-sm);
 }
 
 .logoContainer {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .navLinks {
   display: flex;
   gap: var(--mantine-spacing-md);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .link {
@@ -26,9 +30,91 @@
   border-radius: var(--mantine-radius-sm);
   transition: background-color 0.2s;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .link:hover {
   background-color: var(--mantine-color-default-hover);
   color: blue !important;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: var(--mantine-spacing-sm);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.mobileMenuButton {
+  display: none;
+}
+
+.mobileNav {
+  display: none;
+}
+
+/* Tablet and smaller screens */
+@media (max-width: 992px) {
+  .navLinks {
+    gap: var(--mantine-spacing-sm);
+  }
+  
+  .link {
+    padding: var(--mantine-spacing-xs);
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: nowrap;
+    padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  }
+
+  .navLinks {
+    display: none;
+  }
+
+  .buttonContainer {
+    gap: 0.5rem;
+  }
+
+  .mobileMenuButton {
+    display: block;
+    margin-left: auto;
+  }
+
+  .mobileNav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: var(--mantine-spacing-md) 0;
+    gap: var(--mantine-spacing-sm);
+  }
+
+  .mobileNav .link {
+    width: 100%;
+    text-align: center;
+    padding: var(--mantine-spacing-sm);
+  }
+
+  .mobileButtonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-sm);
+    width: 100%;
+    padding-top: var(--mantine-spacing-sm);
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .header {
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  }
+
+  .buttonContainer {
+    gap: 0.25rem;
+  }
 }

@@ -4,15 +4,14 @@ import { Button } from '@mantine/core';
 const RegisterButton = () => {
     return (
         <Button
-                    component={NavLink}
-                    to="/auth/register"
-                    variant="filled"
-                    color="blue"
-                    size="sm"
-                    fullWidth
-                >
-                    Pruébalo gratis
-                </Button>
+            component={NavLink}
+            to="/auth/register"
+            variant="filled"
+            color="blue"
+            size="sm"
+        >
+            Pruébalo gratis
+        </Button>
     );
 }
 
