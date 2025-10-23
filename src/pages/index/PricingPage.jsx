@@ -6,9 +6,19 @@ const PlanCard = ({ plan }) => (
   <Card withBorder shadow="sm" radius="md" p="lg" style={{ width: '100%', height: '100%', textAlign: 'center' }}>
     <Title order={3} mb="md">{plan.name}</Title>
     
-    <Title order={2} mb="md">
+    <Title order={2} mb="xs" style={{ textDecoration: 'line-through', color: '#999' }}>
       {plan.price}{plan.currency} / {plan.period}
     </Title>
+    
+    <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '1rem' }}>
+      <Badge
+        size="lg"
+        variant="filled"
+        color="green"
+      >
+        100% Gratis durante la beta
+      </Badge>
+    </div>
 
     <Text c="dimmed" size="sm" mb="md">
       {plan.subtitle}
