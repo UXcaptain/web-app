@@ -9,6 +9,7 @@ const RegisterButton = () => {
                     variant="filled"
                     color="blue"
                     size="sm"
+                    fullWidth
                 >
                     Pruébalo gratis
                 </Button>
