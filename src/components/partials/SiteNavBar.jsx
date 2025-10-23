@@ -40,38 +40,36 @@ const SiteNavBar = () => {
                 size="sm"
             />
 
-            {mobileMenuOpened && (
-                <nav className={styles.mobileNav}>
-                    <Anchor
-                        component={NavLink}
-                        to="/"
-                        className={styles.link}
-                        onClick={() => setMobileMenuOpened(false)}
-                    >
-                        Home
-                    </Anchor>
-                    <Anchor
-                        component={NavLink}
-                        to="/pricing"
-                        className={styles.link}
-                        onClick={() => setMobileMenuOpened(false)}
-                    >
-                        Precio
-                    </Anchor>
-                    <Anchor
-                        component={NavLink}
-                        to="/preguntas-frecuentes"
-                        className={styles.link}
-                        onClick={() => setMobileMenuOpened(false)}
-                    >
-                        Preguntas frecuentes
-                    </Anchor>
-                    <div className={styles.mobileButtonContainer}>
-                        <LogInButton />
-                        <RegisterButton />
-                    </div>
-                </nav>
-            )}
+            <nav className={`${styles.mobileNav} ${mobileMenuOpened ? styles.mobileNavOpen : ''}`}>
+                <Anchor
+                    component={NavLink}
+                    to="/"
+                    className={styles.link}
+                    onClick={() => setMobileMenuOpened(false)}
+                >
+                    Home
+                </Anchor>
+                <Anchor
+                    component={NavLink}
+                    to="/pricing"
+                    className={styles.link}
+                    onClick={() => setMobileMenuOpened(false)}
+                >
+                    Precio
+                </Anchor>
+                <Anchor
+                    component={NavLink}
+                    to="/preguntas-frecuentes"
+                    className={styles.link}
+                    onClick={() => setMobileMenuOpened(false)}
+                >
+                    Preguntas frecuentes
+                </Anchor>
+                <div className={styles.mobileButtonContainer}>
+                    <LogInButton />
+                    <RegisterButton />
+                </div>
+            </nav>
         </header>
     );
 };
