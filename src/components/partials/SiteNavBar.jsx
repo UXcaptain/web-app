@@ -23,9 +23,6 @@ const SiteNavBar = () => {
                 <Anchor component={NavLink} to="/preguntas-frecuentes" className={styles.link}>
                     Preguntas frecuentes
                 </Anchor>
-                <Anchor component={NavLink} to="/terminos-condiciones" className={styles.link}>
-                    Términos y condiciones
-                </Anchor>
             </nav>
 
             <div style={{ display: 'flex', gap: 'var(--mantine-spacing-sm)' }}>
