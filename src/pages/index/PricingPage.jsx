@@ -3,17 +3,18 @@ import RegisterButton from '../../components/navBarElements/RegisterButton.jsx';
 import { PLANS } from '../../config/plans.js';
 
 const PlanCard = ({ plan }) => (
-  <Card withBorder shadow="sm" radius="md" p="lg" style={{ width: '100%', height: '100%' }}>
-    <Group justify="space-between" align="center" mb="md">
-      <Title order={3} m={0}>{plan.name}</Title>
-      <Badge size="lg" variant="light" color="blue">{plan.price}{plan.currency} / {plan.period}</Badge>
-    </Group>
+  <Card withBorder shadow="sm" radius="md" p="lg" style={{ width: '100%', height: '100%', textAlign: 'center' }}>
+    <Title order={3} mb="md">{plan.name}</Title>
+    
+    <Title order={2} mb="md">
+      {plan.price}{plan.currency} / {plan.period}
+    </Title>
 
     <Text c="dimmed" size="sm" mb="md">
       {plan.subtitle}
     </Text>
 
-    <List spacing="sm" size="sm" center>
+    <List spacing="sm" size="sm" mb="xl" style={{ textAlign: 'left', display: 'inline-block' }}>
       {plan.features.map((feature, index) => (
         <List.Item
           key={index}
@@ -28,7 +29,7 @@ const PlanCard = ({ plan }) => (
       ))}
     </List>
 
-    <div style={{ margin: '20px 0' }}>
+    <div>
       <RegisterButton />
     </div>
   </Card>
