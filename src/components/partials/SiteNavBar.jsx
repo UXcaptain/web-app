@@ -18,7 +18,7 @@ const SiteNavBar = () => {
                     Home
                 </Anchor>
                 <Anchor component={NavLink} to="/pricing" className={styles.link}>
-                    Precios
+                    Precio
                 </Anchor>
                 <Anchor component={NavLink} to="/preguntas-frecuentes" className={styles.link}>
                     Preguntas frecuentes
