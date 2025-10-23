@@ -1,4 +1,4 @@
-import { Container, Title, Text, Card, Group, Badge, List, ThemeIcon, Stack, SimpleGrid } from '@mantine/core';
+import { Container, Title, Text, Card, Badge, List, ThemeIcon, Stack, SimpleGrid } from '@mantine/core';
 import RegisterButton from '../../components/navBarElements/RegisterButton.jsx';
 import { PLANS } from '../../config/plans.js';
 

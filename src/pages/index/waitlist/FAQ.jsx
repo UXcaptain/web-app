@@ -22,7 +22,7 @@ const WaitlistFAQ = () => (
           ¿Cómo funciona?
         </Accordion.Control>
         <Accordion.Panel>
-          Utilizando la plataforma, podrás crear un análisis en menos de 10 minutos. Una vez lo lances, podrás invitar a tus participantes, que grabarán su pantalla y voz mientrás completan las tareas que hayas definido.
+          Utilizando la plataforma, podrás crear un análisis en menos de 5 minutos. Una vez lo lances, podrás invitar a tus participantes, que grabarán su pantalla y voz mientrás completan las tareas que hayas definido.
         </Accordion.Panel>
       </Accordion.Item>
 

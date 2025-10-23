@@ -7,11 +7,11 @@ export const PLANS = {
     period: 'mes',
     subtitle: 'Todo lo que necesitas para empezar a trabajar con nuestra plataforma.',
     features: [
-      '5 proyectos activos',
-      'Exportaciones ilimitadas',
-      'Colaboración con hasta 3 miembros',
-      'Soporte por email prioritario',
-      'Historial y auditoría de cambios'
+      'Feedback de calidad en video y audio',
+      'Crea análisis en menos de 5 minutos',
+      'Invita a quien tu quieras',
+      'Exporta tus análisis fácilmente',
+      'Soporte por email',
     ]
   },
   // PREMIUM: {
