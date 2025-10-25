@@ -7,7 +7,7 @@ import { usePostHog } from 'posthog-js/react'
 import { AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { SubscriptionProvider } from "../../contexts/SubscriptionContext.jsx";
-import { SiteFooter } from "../../components/partials/SiteFooter";
+
 
 const UserWrapper = () => {
 
@@ -76,7 +76,6 @@ const UserWrapper = () => {
             </>
           )}
         </AppShell.Main>
-        <SiteFooter />
       </AppShell>
     </SubscriptionProvider>
   );
