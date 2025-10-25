@@ -188,7 +188,7 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
               disabled={isFinishing}
               leftSection={isFinishing ? <Loader size={14} color="white" /> : null}
             >
-              {isFinishing ? 'Finishing...' : 'Finish Analysis'}
+              {isFinishing ? 'Cargando...' : 'Finalizar análisis'}
             </Button>
           ) : (
             <Button
