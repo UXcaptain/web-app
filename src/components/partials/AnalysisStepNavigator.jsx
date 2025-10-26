@@ -122,10 +122,10 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
       <Box>
         <Group justify="space-between" mb="xs">
           <Text size="sm" c="dimmed">
-            Step {currentStep + 1} of {steps.length}
+            Tarea {currentStep + 1} de {steps.length}
           </Text>
           <Text size="sm" c="dimmed">
-            {Math.round(progress)}% Complete
+            {Math.round(progress)}% Completado
           </Text>
         </Group>
         <Progress value={progress} size="sm" radius="xl" />
