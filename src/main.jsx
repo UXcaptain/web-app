@@ -23,6 +23,7 @@ import '@mantine/core/styles.css';
 import { ViewAnalysisPage } from './pages/user/ViewAnalysisPage.jsx'
 import UserBilling from './pages/user/UserBilling.jsx'
 import { ViewAnalysisEntryPage } from './pages/user/ViewAnalysisEntryPage.jsx'
+import { VideoPlayerPage } from './pages/user/VideoPlayerPage.jsx'
 import { PricingPage } from './pages/index/PricingPage.jsx'
 
 import posthog from 'posthog-js';
@@ -71,6 +72,9 @@ createRoot(document.getElementById('root')).render(
         <Route path="/analysis" element={<UserWrapper />}>
           <Route path="create" element={<CreateAnalysisPage />} />
           <Route path=":id" element={<ViewAnalysisPage />} />
+        </Route>
+        <Route path="/analysis/:analysisId/:entryId/player" element={<UserWrapper />}>
+          <Route index element={<VideoPlayerPage />} />
         </Route>
 
 
