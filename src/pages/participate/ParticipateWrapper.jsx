@@ -90,6 +90,11 @@ const ParticipateContent = () => {
         setCurrentStep('permissions');
       }
     } catch (err) {
+
+      if (err.status === 403) {
+        setError('No ha sido posible participar en el análisis - Ya se ha cubierto el número máximo de participantes')
+      }
+
       setError(err?.response?.data?.message || "Ocurrió un error al obtener los datos del análisis");
       setCurrentStep('permissions');
     } finally {
@@ -173,7 +178,7 @@ const ParticipateContent = () => {
     // Step 3+: Tasks
     (analysisData.tasks || []).forEach((task, index) => {
       steps.push({
-        title: `Task ${index + 1}`,
+        title: `Tarea ${index + 1}`,
         content: (() => {
           const content = String(task.taskContent ?? "");
           // URL regex: matches http(s) and bare domains like example.com or sub.example.co.uk
