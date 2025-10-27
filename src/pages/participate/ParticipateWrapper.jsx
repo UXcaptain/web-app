@@ -178,7 +178,7 @@ const ParticipateContent = () => {
     // Step 3+: Tasks
     (analysisData.tasks || []).forEach((task, index) => {
       steps.push({
-        title: `Task ${index + 1}`,
+        title: `Tarea ${index + 1}`,
         content: (() => {
           const content = String(task.taskContent ?? "");
           // URL regex: matches http(s) and bare domains like example.com or sub.example.co.uk
