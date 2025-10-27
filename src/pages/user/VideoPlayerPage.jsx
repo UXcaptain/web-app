@@ -258,7 +258,7 @@ export const VideoPlayerPage = () => {
                     <Text size="xs" color="blue" fw={500} w={60} style={{ flexShrink: 0 }}>
                       {formatTime(segment.start)}
                     </Text>
-                    <Text size="sm" style={{ flex: 1 }}>
+                    <Text size="sm" style={{ flex: 1 }} component="div">
                       <Highlight highlight={activeTranscriptId === segment.id ? [] : []}>
                         {segment.text}
                       </Highlight>
