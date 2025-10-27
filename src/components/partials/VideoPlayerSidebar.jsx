@@ -33,9 +33,9 @@ export const VideoPlayerSidebar = ({
       
       <Tabs defaultValue="transcript" orientation="horizontal">
         <Tabs.List style={{ flexWrap: 'wrap', padding: '0 10px' }}>
-          <Tabs.Tab value="participant">Participante</Tabs.Tab>
+          {/* <Tabs.Tab value="participant">Participante</Tabs.Tab> */}
           <Tabs.Tab value="tasks">Tareas</Tabs.Tab>
-          <Tabs.Tab value="notes">Notas</Tabs.Tab>
+          {/* <Tabs.Tab value="notes">Notas</Tabs.Tab> */}
           <Tabs.Tab value="transcript">Transcripción</Tabs.Tab>
         </Tabs.List>
 
@@ -60,13 +60,13 @@ export const VideoPlayerSidebar = ({
                 <Title order={5} mb="xs">Tareas del Análisis</Title>
                 {tasks && tasks.length > 0 ? (
                   <Stack spacing="xs">
+                        {/* {scenario && (
+                          <Text size="sm"><strong>Escenario:</strong> {scenario}</Text>
+                        )} */}
                     {tasks.map((task, index) => (
                       <Box key={index}>
                         <Text size="sm" fw={500}>{task.title || `Tarea ${index + 1}`}</Text>
                         <Text size="sm">{task.description || 'Sin descripción'}</Text>
-                        {task.scenario && (
-                          <Text size="sm"><strong>Escenario:</strong> {task.scenario}</Text>
-                        )}
                       </Box>
                     ))}
                   </Stack>
