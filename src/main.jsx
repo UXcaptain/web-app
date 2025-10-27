@@ -13,6 +13,7 @@ import AdminDashboardHome from './pages/admin/AdminDashboardHome.jsx'
 import AdminDashboardWrapper from './pages/admin/AdminDashboardWrapper.jsx'
 import CustomerProfile from './pages/user/CustomerProfile.jsx'
 import UserWrapper from './pages/user/UserWrapper.jsx'
+import VideoPlayerWrapper from './pages/user/VideoPlayerWrapper.jsx'
 import UserDashboard from './pages/user/UserDashboard.jsx'
 import RecoverPasswordPage from './pages/auth/RecoverPasswordPage.jsx'
 import FAQ from './pages/index/waitlist/FAQ.jsx'
@@ -73,7 +74,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="create" element={<CreateAnalysisPage />} />
           <Route path=":id" element={<ViewAnalysisPage />} />
         </Route>
-        <Route path="/analysis/:analysisId/:entryId/player" element={<UserWrapper />}>
+        
+        <Route path="/analysis/:analysisId/:entryId/player" element={<VideoPlayerWrapper />}>
           <Route index element={<VideoPlayerPage />} />
         </Route>
 

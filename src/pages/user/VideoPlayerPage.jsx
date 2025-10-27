@@ -38,8 +38,8 @@ export const VideoPlayerPage = () => {
   // Mock transcript data - will be replaced with actual data fetching
   const [transcript] = useState([
     { id: 1, start: 0, end: 5, text: "Hello, welcome to this analysis recording." },
-    { id: 2, start: 5, end: 12, text: "Today we'll be reviewing the user experience of our new application." },
-    { id: 3, start: 12, end: 20, text: "As you can see on the screen, we have several key features that users interact with." },
+    { id: 2, start: 1, end: 2, text: "Today we'll be reviewing the user experience of our new application." },
+    { id: 3, start: 2, end: 3, text: "As you can see on the screen, we have several key features that users interact with." },
     { id: 4, start: 20, end: 28, text: "The navigation menu is located at the top of the page for easy access." },
     { id: 5, start: 28, end: 35, text: "Users can quickly find what they're looking for with our search functionality." },
     { id: 6, start: 35, end: 42, text: "Let's take a look at how the checkout process works in this application." },
@@ -196,13 +196,9 @@ export const VideoPlayerPage = () => {
         <Group position="apart">
           <Group>
             <Button variant="subtle" size="sm" onClick={() => navigate(-1)}>
-              ← Go back
+              ← Volver
             </Button>
-            <Title order={3}>Analysis Recording</Title>
           </Group>
-          <Button variant="outline" size="sm">
-            Share
-          </Button>
         </Group>
       </Box>
 
@@ -235,7 +231,7 @@ export const VideoPlayerPage = () => {
           flexDirection: 'column'
         }}>
           <Box p="md" style={{ borderBottom: '1px solid var(--mantine-color-gray-3)' }}>
-            <Title order={4}>Transcript</Title>
+            <Title order={4}>Transcripción</Title>
           </Box>
           
           <ScrollArea style={{ flex: 1 }} type="auto">
