@@ -78,9 +78,9 @@ export const VideoPlayerPage = () => {
         ];
         
         setTranscript(mockTranscript);
-        setParticipant(mockParticipant);
+        // setParticipant(); // TODO - Add participant info
         setTasks(transformedTasks);
-        setNotes(mockNotes);
+        // setNotes(mockNotes); // TODO -- Add notes 
         setLoading(false);
         setScenario(scenario);
       } catch (err) {

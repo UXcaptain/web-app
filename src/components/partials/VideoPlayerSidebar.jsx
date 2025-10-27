@@ -34,25 +34,24 @@ export const VideoPlayerSidebar = ({
       
       <Tabs defaultValue="transcript" orientation="horizontal">
         <Tabs.List style={{ flexWrap: 'wrap', padding: '0 10px' }}>
-          {/* <Tabs.Tab value="participant">Participante</Tabs.Tab> */}
+          {/* <Tabs.Tab value="participant">Participante</Tabs.Tab> // TODO -- Add participants view */}
           <Tabs.Tab value="tasks">Tareas</Tabs.Tab>
-          {/* <Tabs.Tab value="notes">Notas</Tabs.Tab> */}
+          {/* <Tabs.Tab value="notes">Notas</Tabs.Tab> // TODO - Add notes view */}
           <Tabs.Tab value="transcript">Transcripción</Tabs.Tab>
         </Tabs.List>
 
-        {/* <Tabs.Panel value="participant" p="md" style={{ flex: 1 }}>
+        <Tabs.Panel value="participant" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
               <Card p="sm" shadow="xs" radius="sm" withBorder>
                 <Title order={5} mb="xs">Detalles del Participante</Title>
-                <Text size="sm"><strong>Nombre:</strong> {participant.name || 'N/A'}</Text>
+                <Text size="sm"><strong>ID:</strong> {participant.name || 'N/A'}</Text>
                 <Text size="sm"><strong>Edad:</strong> {participant.age || 'N/A'}</Text>
                 <Text size="sm"><strong>Género:</strong> {participant.gender || 'N/A'}</Text>
-                <Text size="sm"><strong>Información adicional:</strong> {participant.info || 'N/A'}</Text>
               </Card>
             </Stack>
           </ScrollArea> 
-        </Tabs.Panel> */}
+        </Tabs.Panel>
 
         <Tabs.Panel value="tasks" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
@@ -74,9 +73,6 @@ export const VideoPlayerSidebar = ({
                 <Title order={5} mb="xs">Tareas del Análisis</Title>
                 {tasks && tasks.length > 0 ? (
                   <Stack spacing="xs">
-                        {/* {scenario && (
-                          <Text size="sm"><strong>Escenario:</strong> {scenario}</Text>
-                        )} */}
                     {tasks.map((task, index) => (
                       <Box key={index}>
                         <Text size="sm" fw={500}>{task.title || `Tarea ${index + 1}`}</Text>
@@ -92,7 +88,7 @@ export const VideoPlayerSidebar = ({
           </ScrollArea>
         </Tabs.Panel>
 
-        {/* <Tabs.Panel value="notes" p="md" style={{ flex: 1 }}>
+        <Tabs.Panel value="notes" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
               <Card p="sm" shadow="xs" radius="sm" withBorder>
@@ -114,7 +110,7 @@ export const VideoPlayerSidebar = ({
               </Card>
             </Stack>
           </ScrollArea>
-        </Tabs.Panel> */}
+        </Tabs.Panel>
 
         <Tabs.Panel value="transcript" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
