@@ -27,6 +27,22 @@ export const VideoPlayerPage = () => {
         const videoResponse = await apiClient.get(`/api/v1/analysisEntry/${entryId}`);
         setVideoUrl(videoResponse.data.analysisEntryPresignedUrl);
         
+        // Fetch analysis data to get real tasks
+        let transformedTasks = [];
+        try {
+          const analysisResponse = await apiClient.get(`/api/v1/analysis/${analysisId}`);
+          const analysisTasks = analysisResponse.data.analysisData.tasks || [];
+          
+          // Transform analysis tasks to match the expected format
+          transformedTasks = analysisTasks.map((task, index) => ({
+            title: `Tarea ${index + 1}`,
+            description: task.taskContent || 'Sin descripción',
+          }));
+        } catch (analysisError) {
+          console.error('Error fetching analysis data:', analysisError);
+          // Continue with empty tasks array if analysis fetch fails
+        }
+        
         // Fetch transcript data (this would be a real API call in implementation)
         // For now, we'll use mock data
         const mockTranscript = [
@@ -50,25 +66,6 @@ export const VideoPlayerPage = () => {
           info: "Usuario frecuente de aplicaciones móviles, 10+ años de experiencia"
         };
         
-        // Mock tasks data
-        const mockTasks = [
-          {
-            title: "Tarea 1",
-            description: "Encuentra la sección de productos y añade uno al carrito",
-            scenario: "Necesitas comprar un regalo de cumpleaños"
-          },
-          {
-            title: "Tarea 2",
-            description: "Usa el buscador para encontrar un producto específico",
-            scenario: "Buscas un teléfono móvil con características específicas"
-          },
-          {
-            title: "Tarea 3",
-            description: "Completa el proceso de compra hasta el pago",
-            scenario: "Tienes un presupuesto de 500€"
-          }
-        ];
-        
         // Mock notes data
         const mockNotes = [
           {
@@ -83,12 +80,12 @@ export const VideoPlayerPage = () => {
         
         setTranscript(mockTranscript);
         setParticipant(mockParticipant);
-        setTasks(mockTasks);
+        setTasks(transformedTasks);
         setNotes(mockNotes);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching video data:', err);
-        setError('Failed to load video');
+        setError('Failed to load video data');
         setLoading(false);
       }
     };
