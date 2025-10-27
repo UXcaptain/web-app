@@ -212,13 +212,13 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
         <Center>
           <Stack align="center" spacing="md">
             <IconCircleCheck size={64} color="green" />
-            <Text size="xl" fw={600}>Success!</Text>
+            <Text size="xl" fw={600}>¡Hecho!</Text>
             <Text size="sm" c="dimmed" ta="center">
-              Your recording has been uploaded successfully.
-              Thank you for participating in this analysis.
+              Tu análisis ha sido registrado correctamente.
+              Muchas gracias por tu participación.
             </Text>
             <Text size="xs" c="dimmed">
-              Redirecting...
+              Redirigiendo...
             </Text>
           </Stack>
         </Center>
