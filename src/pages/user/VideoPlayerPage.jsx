@@ -3,13 +3,16 @@ import { useParams, useNavigate } from 'react-router';
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { Container, Text, Loader, Alert, Stack, Button, Group, Box } from '@mantine/core';
 import VideoPlayer from '../../components/partials/VideoPlayer';
-import TranscriptSidebar from '../../components/partials/TranscriptSidebar';
+import { VideoPlayerSidebar } from '../../components/partials/VideoPlayerSidebar';
 
 export const VideoPlayerPage = () => {
   const { analysisId, entryId } = useParams();
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState(null);
   const [transcript, setTranscript] = useState([]);
+  const [participant, setParticipant] = useState({});
+  const [tasks, setTasks] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [playing, setPlaying] = useState(false);
@@ -39,7 +42,49 @@ export const VideoPlayerPage = () => {
           { id: 10, start: 65, end: 70, text: "Thank you for watching this analysis recording." }
         ];
         
+        // Mock participant data
+        const mockParticipant = {
+          name: "Juan Pérez",
+          age: 32,
+          gender: "Masculino",
+          info: "Usuario frecuente de aplicaciones móviles, 10+ años de experiencia"
+        };
+        
+        // Mock tasks data
+        const mockTasks = [
+          {
+            title: "Tarea 1",
+            description: "Encuentra la sección de productos y añade uno al carrito",
+            scenario: "Necesitas comprar un regalo de cumpleaños"
+          },
+          {
+            title: "Tarea 2",
+            description: "Usa el buscador para encontrar un producto específico",
+            scenario: "Buscas un teléfono móvil con características específicas"
+          },
+          {
+            title: "Tarea 3",
+            description: "Completa el proceso de compra hasta el pago",
+            scenario: "Tienes un presupuesto de 500€"
+          }
+        ];
+        
+        // Mock notes data
+        const mockNotes = [
+          {
+            content: "El usuario tuvo dificultades para encontrar el botón de búsqueda",
+            timestamp: 15
+          },
+          {
+            content: "El proceso de pago parece intuitivo y claro",
+            timestamp: 45
+          }
+        ];
+        
         setTranscript(mockTranscript);
+        setParticipant(mockParticipant);
+        setTasks(mockTasks);
+        setNotes(mockNotes);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching video data:', err);
@@ -123,11 +168,14 @@ export const VideoPlayerPage = () => {
           setPlaying={setPlaying}
           seekToTime={currentTime}
         />
-        <TranscriptSidebar
+        <VideoPlayerSidebar
           transcript={transcript}
           activeTranscriptId={activeTranscriptId}
           onTranscriptClick={handleTranscriptClick}
           formatTime={formatTime}
+          participant={participant}
+          tasks={tasks}
+          notes={notes}
         />
       </Box>
     </Box>
