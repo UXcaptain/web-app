@@ -18,7 +18,8 @@ export const VideoPlayerSidebar = ({
   formatTime,
   participant = {},
   tasks = [],
-  notes = []
+  notes = [],
+  scenario = '',
 }) => {
   return (
     <Box style={{
@@ -39,7 +40,7 @@ export const VideoPlayerSidebar = ({
           <Tabs.Tab value="transcript">Transcripción</Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="participant" p="md" style={{ flex: 1 }}>
+        {/* <Tabs.Panel value="participant" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
               <Card p="sm" shadow="xs" radius="sm" withBorder>
@@ -50,12 +51,25 @@ export const VideoPlayerSidebar = ({
                 <Text size="sm"><strong>Información adicional:</strong> {participant.info || 'N/A'}</Text>
               </Card>
             </Stack>
-          </ScrollArea>
-        </Tabs.Panel>
+          </ScrollArea> 
+        </Tabs.Panel> */}
 
         <Tabs.Panel value="tasks" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
+              <Card p="sm" shadow="xs" radius="sm" withBorder>
+                <Title order={5} mb="xs">Escenario</Title>
+                {tasks && tasks.length > 0 ? (
+                  <Stack spacing="xs">
+                        {scenario && (
+                          <Text size="sm">{scenario}</Text>
+                        )}
+
+                  </Stack>
+                ) : (
+                  <Text size="sm">No se ha definido un escenario</Text>
+                )}
+              </Card>
               <Card p="sm" shadow="xs" radius="sm" withBorder>
                 <Title order={5} mb="xs">Tareas del Análisis</Title>
                 {tasks && tasks.length > 0 ? (
@@ -78,7 +92,7 @@ export const VideoPlayerSidebar = ({
           </ScrollArea>
         </Tabs.Panel>
 
-        <Tabs.Panel value="notes" p="md" style={{ flex: 1 }}>
+        {/* <Tabs.Panel value="notes" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
               <Card p="sm" shadow="xs" radius="sm" withBorder>
@@ -100,12 +114,12 @@ export const VideoPlayerSidebar = ({
               </Card>
             </Stack>
           </ScrollArea>
-        </Tabs.Panel>
+        </Tabs.Panel> */}
 
         <Tabs.Panel value="transcript" p="md" style={{ flex: 1 }}>
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
-              <Title order={5}>Transcripción</Title>
+              <Text size="sm" color="dimmed" >Haz click para navegar a un momento específico</Text>
               {transcript && transcript.length > 0 ? (
                 transcript.map((segment) => (
                   <Card

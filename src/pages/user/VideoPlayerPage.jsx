@@ -12,6 +12,7 @@ export const VideoPlayerPage = () => {
   const [transcript, setTranscript] = useState([]);
   const [participant, setParticipant] = useState({});
   const [tasks, setTasks] = useState([]);
+  const [scenario, setScenario] = useState([]);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,19 +30,17 @@ export const VideoPlayerPage = () => {
         
         // Fetch analysis data to get real tasks
         let transformedTasks = [];
-        try {
-          const analysisResponse = await apiClient.get(`/api/v1/analysis/${analysisId}`);
+        
+          const analysisResponse = await apiClient.get(`/api/v1/analysis/${analysisId}`); // TODO - FIX - Adding the request call here is a patch - Should be done properly via context or something
           const analysisTasks = analysisResponse.data.analysisData.tasks || [];
+          const scenario = analysisResponse.data.analysisData.scenario
           
           // Transform analysis tasks to match the expected format
           transformedTasks = analysisTasks.map((task, index) => ({
             title: `Tarea ${index + 1}`,
             description: task.taskContent || 'Sin descripción',
           }));
-        } catch (analysisError) {
-          console.error('Error fetching analysis data:', analysisError);
-          // Continue with empty tasks array if analysis fetch fails
-        }
+        
         
         // Fetch transcript data (this would be a real API call in implementation)
         // For now, we'll use mock data
@@ -83,9 +82,10 @@ export const VideoPlayerPage = () => {
         setTasks(transformedTasks);
         setNotes(mockNotes);
         setLoading(false);
+        setScenario(scenario);
       } catch (err) {
         console.error('Error fetching video data:', err);
-        setError('Failed to load video data');
+        setError('Error al cargar los datos del análisis');
         setLoading(false);
       }
     };
@@ -124,7 +124,7 @@ export const VideoPlayerPage = () => {
       <Container>
         <Stack align="center" mt="xl">
           <Loader size="xl" />
-          <Text>Loading video player...</Text>
+          <Text>Cargando reproducción...</Text>
         </Stack>
       </Container>
     );
@@ -173,6 +173,7 @@ export const VideoPlayerPage = () => {
           participant={participant}
           tasks={tasks}
           notes={notes}
+          scenario={scenario}
         />
       </Box>
     </Box>
