@@ -14,7 +14,7 @@ export const VideoPlayerPage = () => {
   const [transcriptError, setTranscriptError] = useState(null);
   const [participant, setParticipant] = useState({});
   const [tasks, setTasks] = useState([]);
-  const [scenario, setScenario] = useState([]);
+  const [scenario, setScenario] = useState('');
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
