@@ -37,7 +37,7 @@ export const VideoPlayerPage = () => {
       
       // Handle HTTP errors
       if (!response.ok) {
-        throw new Error(`Error al obtener la transcripción: ${response.status} ${response.statusText}`);
+        throw new Error(`Error al obtener la transcripción`);
       }
       
       // Parse JSON response
