@@ -100,7 +100,7 @@ export const VideoPlayerPage = () => {
     };
 
     fetchVideoData();
-  }, [entryId]);
+  }, [entryId, analysisId]);
   const handleTranscriptClick = (startTime) => {
     // Update currentTime to trigger seek in VideoPlayer component
     setCurrentTime(startTime);
