@@ -77,13 +77,13 @@ export const VideoPlayerPage = () => {
         let transformedTasks = [];
         
           const analysisResponse = await apiClient.get(`/api/v1/analysis/${analysisId}`); // TODO - FIX - Adding the request call here is a patch - Should be done properly via context or something
-          const analysisTasks = analysisResponse.data.analysisData.tasks || [];
-          const scenario = analysisResponse.data.analysisData.scenario
+          const analysisTasks = analysisResponse?.data?.analysisData?.tasks || [];
+          const fetchedScenario = analysisResponse?.data?.analysisData?.scenario || '';
           
           // Transform analysis tasks to match the expected format
           transformedTasks = analysisTasks.map((task, index) => ({
             title: `Tarea ${index + 1}`,
-            description: task.taskContent || 'Sin descripción',
+            description: task?.taskContent || 'Sin descripción',
           }));
         
         
@@ -91,7 +91,7 @@ export const VideoPlayerPage = () => {
         setTasks(transformedTasks);
         // setNotes(mockNotes); // TODO -- Add notes
         setLoading(false);
-        setScenario(scenario);
+        setScenario(fetchedScenario);
       } catch (err) {
         console.error('Error fetching video data:', err);
         setError('Error al cargar los datos del análisis');
