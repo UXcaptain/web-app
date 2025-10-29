@@ -149,7 +149,7 @@ export const VideoPlayerSidebar = ({
                   </Card>
                 ))
               ) : (
-                <Text size="sm">No hay transcripción disponible</Text>
+                <Text size="sm">La transcripción aún no está disponible</Text>
               )}
             </Stack>
           </ScrollArea>
