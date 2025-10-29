@@ -29,16 +29,6 @@ const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, du
       video.removeEventListener('loadedmetadata', updateDuration);
     };
   }, [onTimeUpdate, onDurationChange, seekToTime, currentTime]);
-  const togglePlay = () => {
-    const video = videoRef.current;
-    if (video.paused) {
-      video.play();
-      setPlaying(true);
-    } else {
-      video.pause();
-      setPlaying(false);
-    }
-  };
 
   return (
     <Box style={{ flex: 1, position: 'relative', backgroundColor: '#000', minWidth: 0 }}>
