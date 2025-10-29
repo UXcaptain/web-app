@@ -42,7 +42,7 @@ export const VideoPlayerPage = () => {
       
       // Parse JSON response
       const rawTranscriptData = await response.json();
-      const transformedData = transformTranscriptData(rawTranscriptData);
+      const transformedData = transformTranscriptData(rawTranscriptData, 1.0);
       setTranscript(transformedData);
       setTranscriptError(null);
     } catch (err) {

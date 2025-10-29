@@ -1,9 +1,10 @@
 /**
  * Transform AWS Transcribe JSON format to the structure expected by VideoPlayerSidebar
  * @param {Object} rawTranscriptData - The raw AWS Transcribe JSON response
+ * @param {number} mergeThresholdSeconds - The time gap threshold in seconds for merging segments (default: 1.0)
  * @returns {Array} - Transformed transcript data with segments
  */
-export const transformTranscriptData = (rawTranscriptData) => {
+export const transformTranscriptData = (rawTranscriptData, mergeThresholdSeconds = 1.0) => {
   try {
     // Check if raw transcript data exists
     if (!rawTranscriptData || !rawTranscriptData.results || !rawTranscriptData.results.items) {
@@ -27,10 +28,14 @@ export const transformTranscriptData = (rawTranscriptData) => {
       
       // Handle pronunciation items
       if (item.type === 'pronunciation') {
-        // For this implementation, we'll create a new segment for each pronunciation item
-        // and then merge segments that are close together to form meaningful sentences
-        if (!currentSegment || item.start_time) {
-          // If we have a current segment, save it before creating a new one
+        // Build segments more intelligently by checking the time gap between consecutive items
+        // Create a new segment if:
+        // 1. There's no current segment (first item)
+        // 2. The time gap between the current segment end and this item start is greater than the threshold
+        if (!currentSegment ||
+            (currentSegment && item.start_time &&
+             (parseFloat(item.start_time) - currentSegment.end) > mergeThresholdSeconds)) {
+          // Save the current segment if it exists
           if (currentSegment) {
             segments.push(currentSegment);
             segmentId++;
@@ -49,11 +54,11 @@ export const transformTranscriptData = (rawTranscriptData) => {
           if (item.alternatives && item.alternatives.length > 0) {
             currentSegment.text += item.alternatives[0].content;
           }
-        }
-        
-        // Update the end time of the current segment
-        if (item.end_time) {
-          currentSegment.end = parseFloat(item.end_time);
+          
+          // Update the end time of the current segment
+          if (item.end_time) {
+            currentSegment.end = parseFloat(item.end_time);
+          }
         }
       }
     });
@@ -63,31 +68,7 @@ export const transformTranscriptData = (rawTranscriptData) => {
       segments.push(currentSegment);
     }
     
-    // Post-process segments to group related items together
-    // This is a simple approach that groups items within 1 second of each other
-    const mergedSegments = [];
-    let currentMergedSegment = null;
-    
-    segments.forEach(segment => {
-      if (!currentMergedSegment) {
-        currentMergedSegment = { ...segment };
-      } else if (segment.start - currentMergedSegment.end <= 1.0) {
-        // If this segment starts within 1 second of the previous segment ending, merge them
-        currentMergedSegment.text += ' ' + segment.text;
-        currentMergedSegment.end = segment.end;
-      } else {
-        // Otherwise, save the current merged segment and start a new one
-        mergedSegments.push(currentMergedSegment);
-        currentMergedSegment = { ...segment };
-      }
-    });
-    
-    // Add the final merged segment
-    if (currentMergedSegment) {
-      mergedSegments.push(currentMergedSegment);
-    }
-    
-    return mergedSegments;
+    return segments;
   } catch (err) {
     console.error('Error transforming transcript data:', err);
     return [];
