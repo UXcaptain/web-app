@@ -87,7 +87,8 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
       try {
         await apiClient.patch('/api/v1/analysisEntry', {
           analysisEntryId,
-          analysisEntryStatus: 'submitted'
+          analysisEntryStatus: 'submitted',
+          analysisId
         });
       } catch (patchErr) {
         setFinishError('Failed to update analysis entry after upload.');
