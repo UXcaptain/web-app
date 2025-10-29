@@ -14,13 +14,14 @@ export const VideoPlayerPage = () => {
   const [transcriptError, setTranscriptError] = useState(null);
   const [participant, setParticipant] = useState({});
   const [tasks, setTasks] = useState([]);
-  const [scenario, setScenario] = useState([]);
+  const [scenario, setScenario] = useState('');
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [seekToTime, setSeekToTime] = useState(null);
   const [activeTranscriptId, setActiveTranscriptId] = useState(null);
   
   // Function to fetch transcript data from presigned URL
@@ -41,7 +42,7 @@ export const VideoPlayerPage = () => {
       
       // Parse JSON response
       const rawTranscriptData = await response.json();
-      const transformedData = transformTranscriptData(rawTranscriptData);
+      const transformedData = transformTranscriptData(rawTranscriptData, 1.0);
       setTranscript(transformedData);
       setTranscriptError(null);
     } catch (err) {
@@ -77,13 +78,13 @@ export const VideoPlayerPage = () => {
         let transformedTasks = [];
         
           const analysisResponse = await apiClient.get(`/api/v1/analysis/${analysisId}`); // TODO - FIX - Adding the request call here is a patch - Should be done properly via context or something
-          const analysisTasks = analysisResponse.data.analysisData.tasks || [];
-          const scenario = analysisResponse.data.analysisData.scenario
+          const analysisTasks = analysisResponse?.data?.analysisData?.tasks || [];
+          const fetchedScenario = analysisResponse?.data?.analysisData?.scenario || '';
           
           // Transform analysis tasks to match the expected format
           transformedTasks = analysisTasks.map((task, index) => ({
             title: `Tarea ${index + 1}`,
-            description: task.taskContent || 'Sin descripción',
+            description: task?.taskContent || 'Sin descripción',
           }));
         
         
@@ -91,7 +92,7 @@ export const VideoPlayerPage = () => {
         setTasks(transformedTasks);
         // setNotes(mockNotes); // TODO -- Add notes
         setLoading(false);
-        setScenario(scenario);
+        setScenario(fetchedScenario);
       } catch (err) {
         console.error('Error fetching video data:', err);
         setError('Error al cargar los datos del análisis');
@@ -100,10 +101,10 @@ export const VideoPlayerPage = () => {
     };
 
     fetchVideoData();
-  }, [entryId]);
+  }, [entryId, analysisId]);
   const handleTranscriptClick = (startTime) => {
-    // Update currentTime to trigger seek in VideoPlayer component
-    setCurrentTime(startTime);
+    // Update seekToTime to trigger seek in VideoPlayer component
+    setSeekToTime(startTime);
   };
 
   const handleTimeUpdate = (time) => {
@@ -173,7 +174,8 @@ export const VideoPlayerPage = () => {
           duration={duration}
           playing={playing}
           setPlaying={setPlaying}
-          seekToTime={currentTime}
+          seekToTime={seekToTime}
+          onSeekComplete={() => setSeekToTime(null)}
         />
         <VideoPlayerSidebar
           transcript={transcript}

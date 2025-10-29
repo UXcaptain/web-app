@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import apiClient from "../../config/API/axiosConfig.mjs";
 import { useNavigate } from "react-router";
 import { usePostHog } from 'posthog-js/react'
+import { Container, Stack, Loader, Text } from '@mantine/core';
 
 const VideoPlayerWrapper = () => {
     const posthog = usePostHog()
@@ -34,7 +35,12 @@ const VideoPlayerWrapper = () => {
     return (
         <>
             {loading ? (
-                <div>Cargando...</div>
+                <Container>
+                    <Stack align="center" mt="xl">
+                        <Loader size="xl" />
+                        <Text>Cargando...</Text>
+                    </Stack>
+                </Container>
             ) : (
                 <>
                     <Outlet />

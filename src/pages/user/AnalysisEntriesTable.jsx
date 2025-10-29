@@ -13,15 +13,8 @@ export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
         // Set loading state for this specific entry
         setLoadingEntries(prev => ({ ...prev, [analysisEntryId]: true }));
 
-        try {
-            // Navigate to the video player page
-            navigate(`/analysis/${analysisId}/${analysisEntryId}/player`);
-        } catch (error) {
-            console.error('Error navigating to analysis entry:', error);
-        } finally {
-            // Reset loading state for this specific entry
-            setLoadingEntries(prev => ({ ...prev, [analysisEntryId]: false }));
-        }
+        // Navigate to the video player page
+        navigate(`/analysis/${analysisId}/${analysisEntryId}/player`);
     };
 
     // Handle empty state
