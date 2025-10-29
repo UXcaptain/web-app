@@ -56,7 +56,10 @@ export const ViewAnalysisPage = () => {
         <Stack spacing="xs">
           <Text size="sm"><strong>Nombre del análisis:</strong> {analysisData.name}</Text>
           <Text size="sm"><strong>URL:</strong> <Anchor href={analysisData.url} target="_blank" size="sm">{analysisData.url}</Anchor></Text>
-          <Text size="sm"><strong>Dispositivo:</strong> <Badge color={analysisData.device === 'computer' ? 'blue' : 'green'} size="sm">{analysisData.device === 'computer' ? 'Ordenador' : 'Móvil'}</Badge></Text>
+          <Group spacing="xs" align="center">
+            <Text size="sm" component="span"><strong>Dispositivo:</strong></Text>
+            <Badge color={analysisData.device === 'computer' ? 'blue' : 'green'} size="sm">{analysisData.device === 'computer' ? 'Ordenador' : 'Móvil'}</Badge>
+          </Group>
           <Text size="sm"><strong>Fecha de Creación:</strong> {new Date(analysisData.created_at).toLocaleDateString('es-ES', { 
             year: 'numeric',
             month: '2-digit',

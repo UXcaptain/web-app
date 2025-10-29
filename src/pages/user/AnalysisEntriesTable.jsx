@@ -3,24 +3,18 @@ import { IconTableOff, IconUsers } from '@tabler/icons-react';
 import { CopyInviteLinkButton } from '../../components/partials/CopyInviteLinkButton';
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
+    const navigate = useNavigate();
     const [loadingEntries, setLoadingEntries] = useState({});
 
     const handleViewAnalysisEntry = async (analysisEntryId) => {
         // Set loading state for this specific entry
         setLoadingEntries(prev => ({ ...prev, [analysisEntryId]: true }));
 
-        try {
-            const analysisEntryUrl = await apiClient.get(`/api/v1/analysisEntry/${analysisEntryId}`);
-            const followableUrl = analysisEntryUrl.data.analysisEntryPresignedUrl;
-            window.open(followableUrl, '_blank');
-        } catch (error) {
-            console.error('Error fetching analysis entry:', error);
-        } finally {
-            // Reset loading state for this specific entry
-            setLoadingEntries(prev => ({ ...prev, [analysisEntryId]: false }));
-        }
+        // Navigate to the video player page
+        navigate(`/analysis/${analysisId}/${analysisEntryId}/player`);
     };
 
     // Handle empty state
