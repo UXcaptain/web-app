@@ -67,7 +67,7 @@ export const VideoPlayerPage = () => {
       try {
         // Fetch video URL
         const videoResponse = await apiClient.get(`/api/v1/analysisEntry/${entryId}`);
-        setVideoUrl(videoResponse.data.analysisEntryPresignedUrl);
+        setVideoUrl(videoResponse.data.analysisEntryGetRecordingPresignedUrl);
         
         // Fetch transcript data - pass presigned URL or null if missing
         const transcriptPresignedUrl = videoResponse.data.analysisEntryGetTranscriptPresignedUrl;
