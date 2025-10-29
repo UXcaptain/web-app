@@ -4,12 +4,14 @@ import apiClient from '../../config/API/axiosConfig.mjs';
 import { Container, Text, Loader, Alert, Stack, Button, Group, Box } from '@mantine/core';
 import VideoPlayer from '../../components/partials/VideoPlayer';
 import { VideoPlayerSidebar } from '../../components/partials/VideoPlayerSidebar';
+import { transformTranscriptData } from '../../utils/transcriptTransformer';
 
 export const VideoPlayerPage = () => {
   const { analysisId, entryId } = useParams();
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState(null);
   const [transcript, setTranscript] = useState([]);
+  const [transcriptError, setTranscriptError] = useState(null);
   const [participant, setParticipant] = useState({});
   const [tasks, setTasks] = useState([]);
   const [scenario, setScenario] = useState([]);
@@ -21,12 +23,55 @@ export const VideoPlayerPage = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [activeTranscriptId, setActiveTranscriptId] = useState(null);
   
+  // Function to fetch transcript data from presigned URL
+  const fetchTranscriptData = async (presignedUrl) => {
+    try {
+      // Check if presigned URL is missing
+      if (!presignedUrl) {
+        throw new Error('URL de transcripción no disponible');
+      }
+      
+      // Fetch transcript data from presigned URL
+      const response = await fetch(presignedUrl);
+      
+      // Handle HTTP errors
+      if (!response.ok) {
+        throw new Error(`Error al obtener la transcripción: ${response.status} ${response.statusText}`);
+      }
+      
+      // Parse JSON response
+      const rawTranscriptData = await response.json();
+      const transformedData = transformTranscriptData(rawTranscriptData);
+      setTranscript(transformedData);
+      setTranscriptError(null);
+    } catch (err) {
+      console.error('Error fetching transcript data:', err);
+      
+      // Set appropriate error messages based on error type
+      if (err.message.includes('URL de transcripción no disponible')) {
+        setTranscriptError('URL de transcripción no disponible');
+      } else if (err.message.includes('Error al obtener la transcripción')) {
+        setTranscriptError(err.message);
+      } else if (err instanceof SyntaxError) {
+        setTranscriptError('Error al procesar la transcripción: formato inválido');
+      } else {
+        setTranscriptError('Error al cargar la transcripción');
+      }
+      
+      setTranscript([]);
+    }
+  };
+
   useEffect(() => {
     const fetchVideoData = async () => {
       try {
         // Fetch video URL
         const videoResponse = await apiClient.get(`/api/v1/analysisEntry/${entryId}`);
         setVideoUrl(videoResponse.data.analysisEntryPresignedUrl);
+        
+        // Fetch transcript data - pass presigned URL or null if missing
+        const transcriptPresignedUrl = videoResponse.data.analysisEntryGetTranscriptPresignedUrl;
+        await fetchTranscriptData(transcriptPresignedUrl || null);
         
         // Fetch analysis data to get real tasks
         let transformedTasks = [];
@@ -42,45 +87,9 @@ export const VideoPlayerPage = () => {
           }));
         
         
-        // Fetch transcript data (this would be a real API call in implementation)
-        // For now, we'll use mock data
-        const mockTranscript = [
-          { id: 1, start: 0, end: 5, text: "Hello, welcome to this analysis recording." },
-          { id: 2, start: 5, end: 10, text: "Today we'll be reviewing the user experience of our new application." },
-          { id: 3, start: 10, end: 15, text: "As you can see on the screen, we have several key features that users interact with." },
-          { id: 4, start: 20, end: 28, text: "The navigation menu is located at the top of the page for easy access." },
-          { id: 5, start: 28, end: 35, text: "Users can quickly find what they're looking for with our search functionality." },
-          { id: 6, start: 35, end: 42, text: "Let's take a look at how the checkout process works in this application." },
-          { id: 7, start: 42, end: 50, text: "The payment form is designed to be simple and secure for all users." },
-          { id: 8, start: 50, end: 58, text: "We've implemented several security measures to protect user information." },
-          { id: 9, start: 58, end: 65, text: "That concludes our overview of the main features in this application." },
-          { id: 10, start: 65, end: 70, text: "Thank you for watching this analysis recording." }
-        ];
-        
-        // Mock participant data
-        const mockParticipant = {
-          name: "Juan Pérez",
-          age: 32,
-          gender: "Masculino",
-          info: "Usuario frecuente de aplicaciones móviles, 10+ años de experiencia"
-        };
-        
-        // Mock notes data
-        const mockNotes = [
-          {
-            content: "El usuario tuvo dificultades para encontrar el botón de búsqueda",
-            timestamp: 15
-          },
-          {
-            content: "El proceso de pago parece intuitivo y claro",
-            timestamp: 45
-          }
-        ];
-        
-        setTranscript(mockTranscript);
         // setParticipant(); // TODO - Add participant info
         setTasks(transformedTasks);
-        // setNotes(mockNotes); // TODO -- Add notes 
+        // setNotes(mockNotes); // TODO -- Add notes
         setLoading(false);
         setScenario(scenario);
       } catch (err) {
@@ -140,6 +149,7 @@ export const VideoPlayerPage = () => {
     );
   }
 
+
   return (
     <Box style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
@@ -167,6 +177,7 @@ export const VideoPlayerPage = () => {
         />
         <VideoPlayerSidebar
           transcript={transcript}
+          transcriptError={transcriptError}
           activeTranscriptId={activeTranscriptId}
           onTranscriptClick={handleTranscriptClick}
           formatTime={formatTime}

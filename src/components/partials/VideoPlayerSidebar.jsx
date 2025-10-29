@@ -20,6 +20,7 @@ export const VideoPlayerSidebar = ({
   tasks = [],
   notes = [],
   scenario = '',
+  transcriptError = null,
 }) => {
   return (
     <Box style={{
@@ -116,7 +117,12 @@ export const VideoPlayerSidebar = ({
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
               <Text size="sm" color="dimmed" >Haz click para navegar a un momento específico</Text>
-              {transcript && transcript.length > 0 ? (
+              {transcriptError ? (
+                <Card p="sm" shadow="xs" radius="sm" withBorder>
+                  <Title order={5} mb="xs" color="red">Error al cargar la transcripción</Title>
+                  <Text size="sm" color="red">{transcriptError}</Text>
+                </Card>
+              ) : transcript && transcript.length > 0 ? (
                 transcript.map((segment) => (
                   <Card
                     key={`${segment.id}-${segment.start}`}
