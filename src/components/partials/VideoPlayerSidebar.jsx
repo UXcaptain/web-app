@@ -58,12 +58,10 @@ export const VideoPlayerSidebar = ({
             <Stack spacing="xs">
               <Card p="sm" shadow="xs" radius="sm" withBorder>
                 <Title order={5} mb="xs">Escenario</Title>
-                {tasks && tasks.length > 0 ? (
+                
+                  {scenario ? (
                   <Stack spacing="xs">
-                        {scenario && (
-                          <Text size="sm">{scenario}</Text>
-                        )}
-
+                    <Text size="sm">{scenario}</Text>
                   </Stack>
                 ) : (
                   <Text size="sm">No se ha definido un escenario</Text>
