@@ -8,7 +8,6 @@ import {
   Text,
   Highlight,
   Tabs,
-  Divider
 } from '@mantine/core';
 
 export const VideoPlayerSidebar = ({

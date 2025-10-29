@@ -1,10 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { 
-  Button, 
-  Slider, 
-  Text, 
-  Box 
-} from '@mantine/core';
+import { useEffect, useRef } from 'react';
+import { Box } from '@mantine/core';
 
 const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, duration, playing, setPlaying, seekToTime }) => {
   const videoRef = useRef(null);
@@ -43,28 +38,6 @@ const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, du
       video.pause();
       setPlaying(false);
     }
-  };
-
-  const toggleMute = () => {
-    const video = videoRef.current;
-    video.muted = !video.muted;
-  };
-
-  const handleVolumeChange = (value) => {
-    const video = videoRef.current;
-    video.volume = value / 100;
-  };
-
-  const handleProgressChange = (value) => {
-    const video = videoRef.current;
-    const time = (value / 100) * duration;
-    video.currentTime = time;
-  };
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
   return (
