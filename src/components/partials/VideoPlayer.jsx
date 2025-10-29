@@ -1,9 +1,24 @@
 import { useEffect, useRef } from 'react';
 import { Box } from '@mantine/core';
 
-const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, duration, playing, setPlaying, seekToTime }) => {
+const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, duration, playing, setPlaying, seekToTime, onSeekComplete }) => {
   const videoRef = useRef(null);
 
+  // Handle seeking when seekToTime changes
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || seekToTime === null || seekToTime === undefined) return;
+
+    // Seek to the specified time
+    video.currentTime = seekToTime;
+    
+    // Notify that seeking is complete
+    if (onSeekComplete) {
+      onSeekComplete();
+    }
+  }, [seekToTime, onSeekComplete]);
+
+  // Handle time updates and duration changes
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -16,11 +31,6 @@ const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, du
       onDurationChange(video.duration);
     };
 
-    // If seekToTime is provided and different from current time, seek to that time
-    if (seekToTime !== undefined && seekToTime !== currentTime && videoRef.current) {
-      videoRef.current.currentTime = seekToTime;
-    }
-
     video.addEventListener('timeupdate', updateTime);
     video.addEventListener('loadedmetadata', updateDuration);
 
@@ -28,7 +38,7 @@ const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, du
       video.removeEventListener('timeupdate', updateTime);
       video.removeEventListener('loadedmetadata', updateDuration);
     };
-  }, [onTimeUpdate, onDurationChange, seekToTime, currentTime]);
+  }, [onTimeUpdate, onDurationChange]);
 
   return (
     <Box style={{ flex: 1, position: 'relative', backgroundColor: '#000', minWidth: 0 }}>

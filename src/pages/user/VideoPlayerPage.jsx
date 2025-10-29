@@ -21,6 +21,7 @@ export const VideoPlayerPage = () => {
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [seekToTime, setSeekToTime] = useState(null);
   const [activeTranscriptId, setActiveTranscriptId] = useState(null);
   
   // Function to fetch transcript data from presigned URL
@@ -102,8 +103,8 @@ export const VideoPlayerPage = () => {
     fetchVideoData();
   }, [entryId, analysisId]);
   const handleTranscriptClick = (startTime) => {
-    // Update currentTime to trigger seek in VideoPlayer component
-    setCurrentTime(startTime);
+    // Update seekToTime to trigger seek in VideoPlayer component
+    setSeekToTime(startTime);
   };
 
   const handleTimeUpdate = (time) => {
@@ -173,7 +174,8 @@ export const VideoPlayerPage = () => {
           duration={duration}
           playing={playing}
           setPlaying={setPlaying}
-          seekToTime={currentTime}
+          seekToTime={seekToTime}
+          onSeekComplete={() => setSeekToTime(null)}
         />
         <VideoPlayerSidebar
           transcript={transcript}
