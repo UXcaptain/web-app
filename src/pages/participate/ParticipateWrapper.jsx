@@ -93,9 +93,10 @@ const ParticipateContent = () => {
 
       if (err.status === 403) {
         setError('No ha sido posible participar en el análisis - Ya se ha cubierto el número máximo de participantes')
+      } else {
+        setError(err?.response?.data?.message || "Ocurrió un error al obtener los datos del análisis");
       }
 
-      setError(err?.response?.data?.message || "Ocurrió un error al obtener los datos del análisis");
       setCurrentStep('permissions');
     } finally {
       setDataFetchLoading(false);
