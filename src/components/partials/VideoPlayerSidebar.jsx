@@ -32,12 +32,12 @@ export const VideoPlayerSidebar = ({
       height: '100%'
     }}>
       
-      <Tabs defaultValue="transcript" orientation="horizontal">
+      <Tabs defaultValue="tasks" orientation="horizontal">
         <Tabs.List style={{ flexWrap: 'wrap', padding: '0 10px' }}>
           {/* <Tabs.Tab value="participant">Participante</Tabs.Tab> // TODO -- Add participants view */}
           <Tabs.Tab value="tasks">Tareas</Tabs.Tab>
           {/* <Tabs.Tab value="notes">Notas</Tabs.Tab> // TODO - Add notes view */}
-          <Tabs.Tab value="transcript">Transcripción</Tabs.Tab>
+          {/* <Tabs.Tab value="transcript">Transcripción</Tabs.Tab> // Commented out transcript tab */}
         </Tabs.List>
 
         <Tabs.Panel value="participant" p="md" style={{ flex: 1 }}>
