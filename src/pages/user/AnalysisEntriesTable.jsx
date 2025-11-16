@@ -59,16 +59,16 @@ export const AnalysisEntriesTable = ({ AnalysisEntries = [], analysisId }) => {
                 }) : 'N/A'}</Text>
             </Table.Td>
             {/* <Table.Td>
-                <Text fw={500}>{item.AnalysisEntriesProfile?.name || 'N/A'}</Text>
+                <Text fw={500}>{itemAnalysisEntryProfile?.name || 'N/A'}</Text>
             </Table.Td> */}
             {/* <Table.Td>
-            {item.AnalysisEntriesProfile?.last_name || 'N/A'}
+            {itemAnalysisEntryProfile?.last_name || 'N/A'}
             </Table.Td> */}
             {/* <Table.Td>
-            {item.AnalysisEntriesProfile?.gender || 'N/A'}
+            {itemAnalysisEntryProfile?.gender || 'N/A'}
             </Table.Td> */}
             {/* <Table.Td>
-            {item.AnalysisEntriesProfile?.country || 'N/A'}
+            {itemAnalysisEntryProfile?.country || 'N/A'}
             </Table.Td> */}
             <Table.Td>
                 <Button
