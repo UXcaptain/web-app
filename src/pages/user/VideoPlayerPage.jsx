@@ -4,14 +4,12 @@ import apiClient from '../../config/API/axiosConfig.mjs';
 import { Container, Text, Loader, Alert, Stack, Button, Group, Box } from '@mantine/core';
 import VideoPlayer from '../../components/partials/VideoPlayer';
 import { VideoPlayerSidebar } from '../../components/partials/VideoPlayerSidebar';
-import { transformTranscriptData } from '../../utils/transcriptTransformer';
 
 export const VideoPlayerPage = () => {
   const { analysisId, entryId } = useParams();
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState(null);
   const [transcript, setTranscript] = useState([]);
-  const [transcriptError, setTranscriptError] = useState(null);
   const [participant, setParticipant] = useState({});
   const [tasks, setTasks] = useState([]);
   const [scenario, setScenario] = useState('');
@@ -23,70 +21,35 @@ export const VideoPlayerPage = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [seekToTime, setSeekToTime] = useState(null);
   const [activeTranscriptId, setActiveTranscriptId] = useState(null);
-  
-  // Function to fetch transcript data from presigned URL
-  const fetchTranscriptData = async (presignedUrl) => {
-    try {
-      // Check if presigned URL is missing
-      if (!presignedUrl) {
-        throw new Error('URL de transcripción no disponible');
-      }
-      
-      // Fetch transcript data from presigned URL
-      const response = await fetch(presignedUrl);
-      
-      // Handle HTTP errors
-      if (!response.ok) {
-        throw new Error(`Error al obtener la transcripción: ${response.status} ${response.statusText}`);
-      }
-      
-      // Parse JSON response
-      const rawTranscriptData = await response.json();
-      const transformedData = transformTranscriptData(rawTranscriptData, 1.0);
-      setTranscript(transformedData);
-      setTranscriptError(null);
-    } catch (err) {
-      console.error('Error fetching transcript data:', err);
-      
-      // Set appropriate error messages based on error type
-      if (err.message.includes('URL de transcripción no disponible')) {
-        setTranscriptError('URL de transcripción no disponible');
-      } else if (err.message.includes('Error al obtener la transcripción')) {
-        setTranscriptError(err.message);
-      } else if (err instanceof SyntaxError) {
-        setTranscriptError('Error al procesar la transcripción: formato inválido');
-      } else {
-        setTranscriptError('Error al cargar la transcripción');
-      }
-      
-      setTranscript([]);
-    }
-  };
 
   useEffect(() => {
     const fetchVideoData = async () => {
       try {
-        // Fetch video URL
+        // Fetch video URL and transcript data
         const videoResponse = await apiClient.get(`/api/v1/analysisEntry/${entryId}`);
         setVideoUrl(videoResponse.data.analysisEntryGetRecordingPresignedUrl);
         
-        // Fetch transcript data - pass presigned URL or null if missing
-        const transcriptPresignedUrl = videoResponse.data.analysisEntryGetTranscriptPresignedUrl;
-        await fetchTranscriptData(transcriptPresignedUrl || null);
+        // Handle direct transcript data from server response
+        const transcriptData = videoResponse.data.transcription;
+        
+        if (transcriptData) {
+          setTranscript(transcriptData);
+        } else {
+          setTranscript(null);
+        }
         
         // Fetch analysis data to get real tasks
         let transformedTasks = [];
         
-          const analysisResponse = await apiClient.get(`/api/v1/analysis/${analysisId}`); // TODO - FIX - Adding the request call here is a patch - Should be done properly via context or something
-          const analysisTasks = analysisResponse?.data?.analysisData?.tasks || [];
-          const fetchedScenario = analysisResponse?.data?.analysisData?.scenario || '';
-          
-          // Transform analysis tasks to match the expected format
-          transformedTasks = analysisTasks.map((task, index) => ({
-            title: `Tarea ${index + 1}`,
-            description: task?.taskContent || 'Sin descripción',
-          }));
+        const analysisResponse = await apiClient.get(`/api/v1/analysis/${analysisId}`);
+        const analysisTasks = analysisResponse?.data?.analysisData?.tasks || [];
+        const fetchedScenario = analysisResponse?.data?.analysisData?.scenario || '';
         
+        // Transform analysis tasks to match the expected format
+        transformedTasks = analysisTasks.map((task, index) => ({
+          title: `Tarea ${index + 1}`,
+          description: task?.taskContent || 'Sin descripción',
+        }));
         
         // setParticipant(); // TODO - Add participant info
         setTasks(transformedTasks);
@@ -102,6 +65,7 @@ export const VideoPlayerPage = () => {
 
     fetchVideoData();
   }, [entryId, analysisId]);
+
   const handleTranscriptClick = (startTime) => {
     // Update seekToTime to trigger seek in VideoPlayer component
     setSeekToTime(startTime);
@@ -119,6 +83,7 @@ export const VideoPlayerPage = () => {
       setActiveTranscriptId(currentSegment.id);
     }
   };
+
   const handleDurationChange = (duration) => {
     setDuration(duration);
   };
@@ -179,7 +144,6 @@ export const VideoPlayerPage = () => {
         />
         <VideoPlayerSidebar
           transcript={transcript}
-          transcriptError={transcriptError}
           activeTranscriptId={activeTranscriptId}
           onTranscriptClick={handleTranscriptClick}
           formatTime={formatTime}

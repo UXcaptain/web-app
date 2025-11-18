@@ -45,7 +45,7 @@ export const ViewAnalysisPage = () => {
   )
 
   // Calculate statistics
-  const participantCount = analysisData.AnalysisEntries?.length || 0;
+  const participantCount = analysisData.AnalysisEntry?.length || 0;
   const maxParticipants = analysisData.max_number_of_participants || 0;
 
   return (
@@ -95,7 +95,7 @@ export const ViewAnalysisPage = () => {
       
       <Card shadow="sm" padding="sm" radius="md" withBorder>
         <Text size="md" fw={700} mb="xs">Participantes</Text>
-        <AnalysisEntriesTable AnalysisEntries={analysisData.AnalysisEntries} analysisId={id} />
+        <AnalysisEntriesTable AnalysisEntries={analysisData.AnalysisEntry} analysisId={id} />
       </Card>
     </Container>
   );

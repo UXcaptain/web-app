@@ -10,11 +10,11 @@ const SiteNavBar = () => {
 
     return (
         <header className={styles.header}>
-            <div className={styles.logoContainer}>
+            {/* <div className={styles.logoContainer}>
                 <NavLink to="/">
                     <Image src="/logo.svg" alt="logo" width={40} height={40} />
                 </NavLink>
-            </div>
+            </div> */}
 
             <nav className={styles.navLinks}>
                 <Anchor component={NavLink} to="/" className={styles.link}>

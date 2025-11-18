@@ -19,8 +19,13 @@ export const VideoPlayerSidebar = ({
   tasks = [],
   notes = [],
   scenario = '',
-  transcriptError = null,
 }) => {
+  // Check if transcript is not null
+  const hasTranscript = transcript !== null;
+  
+  // Set default tab based on transcript availability
+  const defaultTab = hasTranscript ? "transcript" : "tasks";
+
   return (
     <Box style={{
       width: '400px',
@@ -32,12 +37,12 @@ export const VideoPlayerSidebar = ({
       height: '100%'
     }}>
       
-      <Tabs defaultValue="transcript" orientation="horizontal">
+      <Tabs defaultValue={defaultTab} orientation="horizontal">
         <Tabs.List style={{ flexWrap: 'wrap', padding: '0 10px' }}>
           {/* <Tabs.Tab value="participant">Participante</Tabs.Tab> // TODO -- Add participants view */}
           <Tabs.Tab value="tasks">Tareas</Tabs.Tab>
           {/* <Tabs.Tab value="notes">Notas</Tabs.Tab> // TODO - Add notes view */}
-          <Tabs.Tab value="transcript">Transcripción</Tabs.Tab>
+          {hasTranscript && <Tabs.Tab value="transcript">Transcripción</Tabs.Tab>}
         </Tabs.List>
 
         <Tabs.Panel value="participant" p="md" style={{ flex: 1 }}>
@@ -57,18 +62,17 @@ export const VideoPlayerSidebar = ({
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
               <Card p="sm" shadow="xs" radius="sm" withBorder>
-                <Title order={5} mb="xs">Escenario</Title>
+                <Title order={5} mb="xs">Escenario de los participantes</Title>
                 
-                  {scenario ? (
+
                   <Stack spacing="xs">
                     <Text size="sm">{scenario}</Text>
                   </Stack>
-                ) : (
-                  <Text size="sm">No se ha definido un escenario</Text>
-                )}
+
+
               </Card>
               <Card p="sm" shadow="xs" radius="sm" withBorder>
-                <Title order={5} mb="xs">Tareas del Análisis</Title>
+                <Title order={5} mb="xs">Tareas del análisis</Title>
                 {tasks && tasks.length > 0 ? (
                   <Stack spacing="xs">
                     {tasks.map((task, index) => (
@@ -114,12 +118,8 @@ export const VideoPlayerSidebar = ({
           <ScrollArea style={{ height: 'calc(100vh - 180px)' }} type="auto">
             <Stack spacing="xs">
               <Text size="sm" color="dimmed" >Haz click para navegar a un momento específico</Text>
-              {transcriptError ? (
-                <Card p="sm" shadow="xs" radius="sm" withBorder>
-                  <Title order={5} mb="xs" color="red">Error al cargar la transcripción</Title>
-                  <Text size="sm" color="red">{transcriptError}</Text>
-                </Card>
-              ) : transcript && transcript.length > 0 ? (
+              
+              { transcript && transcript.length > 0 ? (
                 transcript.map((segment) => (
                   <Card
                     key={`${segment.id}-${segment.start}`}

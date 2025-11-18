@@ -69,7 +69,7 @@ export const AnalysisTable = () => {
             </Table.Td>
             <Table.Td>{item.device === 'computer' ? 'Ordenador': 'Móvil'}</Table.Td>
             <Table.Td>
-                {item._count.AnalysisEntries} / {item.max_number_of_participants}
+                {item._count.AnalysisEntry} / {item.max_number_of_participants}
             </Table.Td>
             <Table.Td>
                 <Text c={item.status === 'active' ? 'green' : 'dimmed'}>
