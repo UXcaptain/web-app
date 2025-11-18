@@ -10,7 +10,6 @@ export const VideoPlayerPage = () => {
   const navigate = useNavigate();
   const [videoUrl, setVideoUrl] = useState(null);
   const [transcript, setTranscript] = useState([]);
-  const [transcriptError, setTranscriptError] = useState(null);
   const [participant, setParticipant] = useState({});
   const [tasks, setTasks] = useState([]);
   const [scenario, setScenario] = useState('');
@@ -35,10 +34,8 @@ export const VideoPlayerPage = () => {
         
         if (transcriptData) {
           setTranscript(transcriptData);
-          setTranscriptError(null);
         } else {
-          setTranscript([]);
-          setTranscriptError('No hay transcripción disponible');
+          setTranscript(null);
         }
         
         // Fetch analysis data to get real tasks
@@ -147,7 +144,6 @@ export const VideoPlayerPage = () => {
         />
         <VideoPlayerSidebar
           transcript={transcript}
-          transcriptError={transcriptError}
           activeTranscriptId={activeTranscriptId}
           onTranscriptClick={handleTranscriptClick}
           formatTime={formatTime}
