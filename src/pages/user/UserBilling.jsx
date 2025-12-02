@@ -25,7 +25,7 @@ const UserBilling = () => {
       if (err.status === 400) {
               return setActionError('El usuario ya tiene una suscripción existente')
             }
-            return setActionError('Se ha producido un error con el procesador de pagos. Por favor, inténtalo más tarde');
+            return setActionError('Se ha producido un error generando el enlace de pago. Por favor, inténtalo más tarde');
           }
     }
 
@@ -37,7 +37,7 @@ const UserBilling = () => {
       const { customerPortalUrl } = response.data
       window.open(customerPortalUrl, '_blank')
     } catch (err) {
-      setActionError(err.message)
+      setActionError('Se ha producido un error obteniendo el área de usuario. Por favor, inténtalo más tarde')
     }
   }
 
