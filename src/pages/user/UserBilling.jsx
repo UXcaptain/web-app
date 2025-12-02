@@ -83,7 +83,7 @@ const UserBilling = () => {
               )}
               {subscription.expires_at && (
                 <Text fw={500}>
-                  <b>Expira el:</b> {new Date(subscription.expires_at).toLocaleDateString('es-ES', {
+                  <b>Finaliza el:</b> {new Date(subscription.expires_at).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
@@ -98,7 +98,7 @@ const UserBilling = () => {
 
         
         
-        { hasActiveSubscription && 
+        { !hasActiveSubscription && 
           <SimpleGrid cols={1} spacing="lg">
                             <Card
                               withBorder
@@ -118,7 +118,7 @@ const UserBilling = () => {
                                 mt="auto"
                                 fullWidth
                                 variant= 'outline'
-                                // disabled={hasActiveSubscription}
+                                disabled={hasActiveSubscription}
                                 onClick={() => handlePriceLink('basic', 'monthly')}
                               >
                                 { hasActiveSubscription ? 'Ya tienes una suscripción activa' : 'Elegir mensual' }
