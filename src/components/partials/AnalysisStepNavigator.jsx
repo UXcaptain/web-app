@@ -144,7 +144,7 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
         <Box>
           <Alert icon={<IconUpload size={16} />} color="blue" mb="xs">
             <Group justify="space-between">
-              <Text size="sm">Uploading recording to server...</Text>
+              <Text size="sm">Guardando grabación...</Text>
               <Text size="sm" fw={600}>{uploadProgress}%</Text>
             </Group>
           </Alert>

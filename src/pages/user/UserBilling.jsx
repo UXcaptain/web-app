@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import apiClient from '../../config/API/axiosConfig.mjs'
-import { Container, Stack, Card, Title, Text, Group, Button, Loader, Center, Badge, SimpleGrid, List } from '@mantine/core'
+import { Container, Stack, Card, Title, Text, Group, Button, Loader, Center, Badge, SimpleGrid, List, Alert } from '@mantine/core'
 import { useSubscription } from '../../contexts/SubscriptionContext.jsx'
 import NoActiveSubscriptionBanner from '../../components/partials/NoActiveSubscriptionBanner.jsx'
 
@@ -23,11 +23,12 @@ const UserBilling = () => {
       window.open(checkoutSessionUrl, '_blank')
     } catch (err) {
       if (err.status === 400) {
-              return setActionError('El usuario ya tiene una suscripción existente, gestiónela en el portal')
+              return setActionError('El usuario ya tiene una suscripción existente')
             }
-      return setActionError(err.message)
+            return setActionError('Se ha producido un error generando el enlace de pago. Por favor, inténtalo más tarde');
+          }
     }
-  }
+
 
   const handleBillingCustomerPortal = async () => {
     try {
@@ -36,7 +37,7 @@ const UserBilling = () => {
       const { customerPortalUrl } = response.data
       window.open(customerPortalUrl, '_blank')
     } catch (err) {
-      setActionError(err.message)
+      setActionError('Se ha producido un error obteniendo el área de usuario. Por favor, inténtalo más tarde')
     }
   }
 
@@ -82,7 +83,7 @@ const UserBilling = () => {
               )}
               {subscription.expires_at && (
                 <Text fw={500}>
-                  <b>Expira el:</b> {new Date(subscription.expires_at).toLocaleDateString('es-ES', {
+                  <b>Finaliza el:</b> {new Date(subscription.expires_at).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
