@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import apiClient from '../../config/API/axiosConfig.mjs'
-import { Container, Stack, Card, Title, Text, Group, Button, Loader, Center, Badge, SimpleGrid, List } from '@mantine/core'
+import { Container, Stack, Card, Title, Text, Group, Button, Loader, Center, Badge, SimpleGrid, List, Alert } from '@mantine/core'
 import { useSubscription } from '../../contexts/SubscriptionContext.jsx'
 import NoActiveSubscriptionBanner from '../../components/partials/NoActiveSubscriptionBanner.jsx'
 
@@ -23,11 +23,12 @@ const UserBilling = () => {
       window.open(checkoutSessionUrl, '_blank')
     } catch (err) {
       if (err.status === 400) {
-              return setActionError('El usuario ya tiene una suscripción existente, gestiónela en el portal')
+              return setActionError('El usuario ya tiene una suscripción existente')
             }
-      return setActionError(err.message)
+            return setActionError('Se ha producido un error con el procesador de pagos. Por favor, inténtalo más tarde');
+          }
     }
-  }
+
 
   const handleBillingCustomerPortal = async () => {
     try {
@@ -97,7 +98,7 @@ const UserBilling = () => {
 
         
         
-        { !hasActiveSubscription && 
+        { hasActiveSubscription && 
           <SimpleGrid cols={1} spacing="lg">
                             <Card
                               withBorder
@@ -117,7 +118,7 @@ const UserBilling = () => {
                                 mt="auto"
                                 fullWidth
                                 variant= 'outline'
-                                disabled={hasActiveSubscription}
+                                // disabled={hasActiveSubscription}
                                 onClick={() => handlePriceLink('basic', 'monthly')}
                               >
                                 { hasActiveSubscription ? 'Ya tienes una suscripción activa' : 'Elegir mensual' }
