@@ -42,7 +42,7 @@
     "postcss": "^8.5.3",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
-    "vite": "^7.0.5"
+    "vite": "^7.2.6"
   },
   "repository": {
     "type": "git",
