@@ -14,7 +14,7 @@ const LogOutButton = () => {
      await apiClient.post(`/api/v1/auth/logout`)
         navigate('/')
 
-        posthog.reset(); //! FIX
+        posthog.reset(); // Note: The actual logout is handled by UserNavBar.jsx
 
     } catch (error) {
         }

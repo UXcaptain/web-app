@@ -10,20 +10,27 @@ import classes from './NavbarSimple.module.css';
 import { useNavigate } from "react-router";
 import apiClient from "../../config/API/axiosConfig.mjs";
 import { CreateNewAnalysisButton } from '../../pages/user/CreateNewAnalysisButton';
+import { usePostHog } from 'posthog-js/react';
 
 
 const UserNavBar = () => {
 
   const navigate = useNavigate();
+  const posthog = usePostHog();
 
     const handleLogout = async () => {
     try {
         
      await apiClient.post(`/api/v1/auth/logout`)
+        
+        // Reset PostHog to clear user session and prevent tracking continuity
+        posthog.reset();
+        
         navigate('/')
 
     } catch (error) {
-        }
+        console.error('Logout failed:', error);
+    }
     
     }
 
