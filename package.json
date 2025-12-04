@@ -1,7 +1,7 @@
 {
   "name": "user-research-platform-frontend",
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "description": "Front-End using an Vite ReactJS app for User Research Platform",
   "private": true,
