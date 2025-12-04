@@ -7,33 +7,11 @@ import {
   IconCreditCardFilled
 } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
-import { useNavigate } from "react-router";
-import apiClient from "../../config/API/axiosConfig.mjs";
 import { CreateNewAnalysisButton } from '../../pages/user/CreateNewAnalysisButton';
-import { usePostHog } from 'posthog-js/react';
+import LogOutButton from '../navBarElements/LogOutButton';
 
 
 const UserNavBar = () => {
-
-  const navigate = useNavigate();
-  const posthog = usePostHog();
-
-    const handleLogout = async () => {
-    try {
-        
-     await apiClient.post(`/api/v1/auth/logout`)
-        
-        // Reset PostHog to clear user session and prevent tracking continuity
-        posthog.reset();
-        
-        navigate('/')
-
-    } catch (error) {
-        console.error('Logout failed:', error);
-    }
-    
-    }
-
 
   const [active, setActive] = useState('User Home');
 
@@ -60,11 +38,7 @@ const UserNavBar = () => {
       </div>
 
       <div className={classes.footer}>
-
-        <a className={classes.link} onClick={handleLogout}>
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Cerrar sesión</span>
-        </a>
+        <LogOutButton />
       </div>
     </nav>
   );  
