@@ -74,13 +74,15 @@ export const VideoPlayerPage = () => {
   const handleTimeUpdate = (time) => {
     setCurrentTime(time);
     
-    // Find active transcript segment
-    const currentSegment = transcript.find(segment =>
-      time >= segment.start && time <= segment.end
-    );
-    
-    if (currentSegment) {
-      setActiveTranscriptId(currentSegment.id);
+    // Find active transcript segment (with null safety check)
+    if (transcript && Array.isArray(transcript)) {
+      const currentSegment = transcript.find(segment =>
+        time >= segment.start && time <= segment.end
+      );
+      
+      if (currentSegment) {
+        setActiveTranscriptId(currentSegment.id);
+      }
     }
   };
 
