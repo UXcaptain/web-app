@@ -6,7 +6,7 @@ const Features = () => (
     <Title order={2} ta="center" mb="xl">
       Características
     </Title>
-    <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="lg">
+    <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 3 }} spacing="lg">
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
           <IconShare size={48} color="#238BE6" />
