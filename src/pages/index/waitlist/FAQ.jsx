@@ -1,7 +1,7 @@
 import { Container, Title, Accordion, Group, Anchor } from '@mantine/core';
 import { IconHelpHexagon } from '@tabler/icons-react';
 
-const WaitlistFAQ = () => (
+const FAQ = () => (
   <Container size="lg" py="xl">
     <Title order={2} ta="center" mb="xl">
       Preguntas frecuentes
@@ -95,4 +95,4 @@ const WaitlistFAQ = () => (
   </Container>
 );
 
-export default WaitlistFAQ;
+export default FAQ;

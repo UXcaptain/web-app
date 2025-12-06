@@ -2,8 +2,7 @@ import MainHero from './waitlist/Hero.jsx';
 import WaitlistSignupForm from './waitlist/SignupForm.jsx';
 import HowItWorks from './waitlist/HowItWorks.jsx';
 import Features from './waitlist/Features.jsx';
-import WaitlistFAQ from './waitlist/FAQ.jsx';
-import WaitlistNavBar from '../../components/partials/WaitlistNavBar.jsx';
+import FAQ from './waitlist/FAQ.jsx';
 import RecordingExample from '../../components/RecordingExample.jsx';
 import CompaniesLogoStrip from './waitlist/CompaniesLogoStrip.jsx';
 import DashboardExample from '../../components/DashboardExample.jsx';
@@ -18,7 +17,7 @@ const Homepage = () => {
       <HowItWorks />
       <DashboardExample />
       <Features />
-      <WaitlistFAQ />
+      <FAQ />
     </div>
     )
 }
