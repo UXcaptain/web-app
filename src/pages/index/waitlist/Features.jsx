@@ -1,4 +1,4 @@
-import { Container, Title, SimpleGrid, Card, Text } from '@mantine/core';
+import { Container, Title, SimpleGrid, Card, Text, Badge } from '@mantine/core';
 import { IconShare, IconVideo, IconDownload, IconZoom } from '@tabler/icons-react';
 
 const Features = () => (
@@ -53,6 +53,9 @@ const Features = () => (
         <Text size="sm" c="dimmed" mt="sm">
           Revisa las grabaciones con texto sincronizado y comparte hallazgos con tu equipo.
         </Text>
+        <Badge color="blue" variant="light" mt="md">
+          Beta privada
+        </Badge>
       </Card>
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -65,6 +68,9 @@ const Features = () => (
         <Text size="sm" c="dimmed" mt="sm">
           Detecta temas recurrentes, momentos críticos y oportunidades de mejora a partir de las sesiones grabadas.
         </Text>
+        <Badge color="blue" variant="light" mt="md">
+          Próximamente
+        </Badge>
       </Card>
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
