@@ -12,10 +12,10 @@ const Features = () => (
           <IconShare size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
-          Reclutamiento sin fricción
+          Invita a cualquier usuario con un enlace
         </Text>
         <Text size="sm" c="dimmed" mt="sm">
-          Comparte un enlace, sin descargas ni registros complejos
+          Comparte el estudio por email, Slack o redes y deja que clientes y equipos graben cuando mejor les encaje, sin instalar nada
         </Text>
       </Card>
 
@@ -24,10 +24,10 @@ const Features = () => (
           <IconVideo size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
-          Feedback directo, en video y voz
+          Feedback en vídeo, pantalla y voz
         </Text>
         <Text size="sm" c="dimmed" mt="sm">
-          Escucha el feedback directamente de los usuarios mientras observas cómo interactúan con tu producto
+          Observa cada clic, escucha sus dudas en tiempo real y entiende el por qué detrás del comportamiento
         </Text>
       </Card>
 
@@ -36,10 +36,10 @@ const Features = () => (
           <IconZoom size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
-          Análisis guiados
+          Tareas guiadas y escenarios realistas
         </Text>
         <Text size="sm" c="dimmed" mt="sm">
-          ¡Tu decides! - Guía a los participantes hacia las áreas más críticas o que más te preocupen 
+          Diseña recorridos con instrucciones claras para que los participantes reproduzcan situaciones reales de uso 
         </Text>
       </Card>
 
@@ -48,10 +48,34 @@ const Features = () => (
           <IconDownload size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
-          Descarga y comparte
+          Transcripción automática
         </Text>
         <Text size="sm" c="dimmed" mt="sm">
-          Descarga los análisis y compártelos con quien y cómo quieras
+          Revisa las grabaciones con texto sincronizado y comparte hallazgos con tu equipo.
+        </Text>
+      </Card>
+
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card.Section p="lg" bg="gray.0">
+          <IconDownload size={48} color="#238BE6" />
+        </Card.Section>
+        <Text fw={500} mt="md">
+          Insights clave
+        </Text>
+        <Text size="sm" c="dimmed" mt="sm">
+          Detecta temas recurrentes, momentos críticos y oportunidades de mejora a partir de las sesiones grabadas.
+        </Text>
+      </Card>
+
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card.Section p="lg" bg="gray.0">
+          <IconDownload size={48} color="#238BE6" />
+        </Card.Section>
+        <Text fw={500} mt="md">
+          Descarga, comparte y colabora
+        </Text>
+        <Text size="sm" c="dimmed" mt="sm">
+          Exporta vídeos y resúmenes, compártelos con stakeholders y alinea decisiones de diseño en un solo lugar.
         </Text>
       </Card>
     </SimpleGrid>
