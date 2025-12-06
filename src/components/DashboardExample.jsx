@@ -4,10 +4,10 @@ const DashboardExample = () => {
   return (
     <Stack align="center" gap="xl">
       <Title order={2} ta="center" w="100%" maw="1140px">
-        Observa a los usuarios interactuar con tus productos y escucha su feedback
+        Observa cómo usan tu producto, clic a clic
       </Title>
       <Text size="lg" ta="center" c="dimmed" w="100%" maw="1140px">
-        Escucha feedback directo y claro mientras descubres cómo usuarios reales interactúan con tus productos - con sus personalidades únicas y dispositivos distintos en sus entornos habituales
+        Mira la pantalla, escucha sus comentarios en voz alta y entiende qué les frena o les motiva en sus propios contextos
       </Text>
       
       <AspectRatio ratio={16 / 9} mt="md" w="100%" maw="1500px">

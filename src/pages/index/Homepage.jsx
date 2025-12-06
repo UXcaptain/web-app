@@ -12,8 +12,8 @@ const Homepage = () => {
 
         <div className="home-page">
       <MainHero />
-      {/* <CompaniesLogoStrip />
-      <RecordingExample /> */}
+      {/* <CompaniesLogoStrip /> */}
+      {/* <RecordingExample /> */}
       <HowItWorks />
       <DashboardExample />
       <Features />
