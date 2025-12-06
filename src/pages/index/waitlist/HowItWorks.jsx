@@ -1,5 +1,5 @@
 import { Container, Title, SimpleGrid, Card, Stack, Text } from '@mantine/core';
-import { IconClipboardList, IconShare, IconRecordMail, IconTrendingUp , IconUser } from '@tabler/icons-react';
+import { IconShare, IconVideo, IconSearch, IconRecordMail } from '@tabler/icons-react';
 
 const HowItWorks = () => (
   <Container size="lg" py="xl" id="how-it-works">
@@ -20,7 +20,7 @@ const HowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconClipboardList size={56} color="#238BE6" />
+          <IconShare size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
           <Text fw={700} fz="lg">1. Comparte un enlace con quien quieras</Text>
@@ -42,7 +42,7 @@ const HowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconUser size={56} color="#238BE6" />
+          <IconVideo size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
           <Text fw={700} fz="lg">2. Ellos graban su pantalla y su voz</Text>
@@ -64,7 +64,7 @@ const HowItWorks = () => (
             borderRadius: 12,
           }}
         >
-          <IconTrendingUp size={56} color="#238BE6" />
+          <IconSearch size={56} color="#238BE6" />
         </Card.Section>
         <Stack gap="xs" align="center" mt="md">
           <Text fw={700} fz="lg">3. Revisa los vídeos, detecta bloqueos y mejoras potenciales</Text>
