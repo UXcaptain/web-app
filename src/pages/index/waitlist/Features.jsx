@@ -1,5 +1,5 @@
 import { Container, Title, SimpleGrid, Card, Text, Badge } from '@mantine/core';
-import { IconShare, IconVideo, IconDownload, IconZoom } from '@tabler/icons-react';
+import { IconShare, IconVideo, IconRoute, IconFileText, IconBulb, IconCloudDownload } from '@tabler/icons-react';
 
 const Features = () => (
   <Container size="lg" py="xl">
@@ -33,7 +33,7 @@ const Features = () => (
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconZoom size={48} color="#238BE6" />
+          <IconRoute size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Tareas guiadas y escenarios realistas
@@ -45,7 +45,7 @@ const Features = () => (
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconDownload size={48} color="#238BE6" />
+          <IconFileText size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Transcripción automática
@@ -60,7 +60,7 @@ const Features = () => (
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconDownload size={48} color="#238BE6" />
+          <IconBulb size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Insights clave
@@ -75,7 +75,7 @@ const Features = () => (
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section p="lg" bg="gray.0">
-          <IconDownload size={48} color="#238BE6" />
+          <IconCloudDownload size={48} color="#238BE6" />
         </Card.Section>
         <Text fw={500} mt="md">
           Descarga, comparte y colabora
