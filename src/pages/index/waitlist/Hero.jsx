@@ -8,7 +8,7 @@ const MainHero = () => (
     <Stack align="center" gap="xl">
       <BetaBadge />
       <Title order={1} ta="center">
-        Descubre cómo tus clientes usan tu producto, en vídeo y audio
+        Descubre cómo personas reales usan tu producto, en vídeo y audio
       </Title>
       <Text size="lg" ta="center" c="dimmed">
         Graba la pantalla y la voz de clientes y equipos internos mientras completan tareas en tu web, app o prototipo, y detecta problemas de UX en minutos.
