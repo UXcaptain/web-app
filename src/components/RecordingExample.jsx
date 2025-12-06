@@ -4,9 +4,12 @@ const RecordingExample = () => {
   return (
     <Container size="lg" py="xl">
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Title order={2} mb="md" ta="center">
-          Recording Example
-        </Title>
+        <Title order={2} ta="center" w="100%" maw="1140px">
+        Observa cómo usan tu producto, clic a clic
+      </Title>
+      <Text size="lg" ta="center" c="dimmed" w="100%" maw="1140px">
+        Mira la pantalla, escucha sus comentarios en voz alta y entiende qué les frena o les motiva en sus propios contextos
+      </Text>
 
         
         <AspectRatio ratio={16 / 9} mt="md">
