@@ -13,10 +13,10 @@ const Homepage = () => {
 
         <div className="home-page">
       <MainHero />
-      {/* <CompaniesLogoStrip /> */}
+      {/* <CompaniesLogoStrip />
+      <RecordingExample /> */}
       <HowItWorks />
       <DashboardExample />
-      {/* <RecordingExample /> */}
       <Features />
       <WaitlistFAQ />
     </div>

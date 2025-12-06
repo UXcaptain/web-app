@@ -6,16 +6,16 @@ import BetaBadge from '../../../components/shared/BetaBadge';
 const MainHero = () => (
   <Container size="lg" py="xl">
     <Stack align="center" gap="xl">
+      <BetaBadge />
       <Title order={1} ta="center">
-        La forma más fácil y económica de probar tus sitios web, apps y prototipos con usuarios reales
+        Descubre cómo tus clientes usan tu producto, en vídeo y audio
       </Title>
       <Text size="lg" ta="center" c="dimmed">
-        UXcaptain te muestra qué funciona en tu producto… y qué no. Una herramienta sencilla con la que puedes crear un análisis con usuarios no moderados en minutos y recibir resultados en solo unas horas.
+        Graba la pantalla y la voz de clientes y equipos internos mientras completan tareas en tu web, app o prototipo, y detecta problemas de UX en minutos.
       </Text>
       <Group>
         <RegisterButton />
       </Group>
-      <BetaBadge />
     </Stack>
   </Container>
 );
