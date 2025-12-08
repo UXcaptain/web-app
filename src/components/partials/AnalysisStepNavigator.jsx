@@ -5,7 +5,7 @@ import { IconAlertCircle, IconCheck, IconUpload, IconCircleCheck } from '@tabler
 import { useMediaPermissions } from '../../contexts/MediaPermissionsContext';
 import apiClient from '../../config/API/axiosConfig.mjs';
 
-export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analysisEntryId, analysisId }) => {
+export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analysisEntryId, analysisId, analysisPresignedUploadUrl }) => {
   const {
     hasPermissions,
     permissionStatus,
@@ -68,7 +68,8 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
       const uploadSuccess = await uploadRecording(
         recordingData.blob,
         analysisId,
-        analysisEntryId
+        analysisEntryId,
+        analysisPresignedUploadUrl
       );
       
       if (!uploadSuccess) {
@@ -238,5 +239,6 @@ AnalysisStepNavigator.propTypes = {
   onExit: PropTypes.func,
   analysisData: PropTypes.object,
   analysisEntryId: PropTypes.string,
-  analysisId: PropTypes.string
+  analysisId: PropTypes.string,
+  analysisPresignedUploadUrl: PropTypes.string
 };
