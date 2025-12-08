@@ -13,6 +13,7 @@ export const ParticipateStepRouter = ({
   analysisData,
   analysisId,
   analysisEntryId,
+  analysisPresignedUploadUrl,
   error,
   setError,
   validationLoading,
@@ -84,6 +85,7 @@ export const ParticipateStepRouter = ({
           analysisData={analysisData}
           analysisEntryId={analysisEntryId}
           analysisId={analysisId}
+          analysisPresignedUploadUrl={analysisPresignedUploadUrl}
           onExit={handleExitAnalysis}
           buildAnalysisSteps={buildAnalysisSteps}
         />

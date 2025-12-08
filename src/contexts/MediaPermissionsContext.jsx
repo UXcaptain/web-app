@@ -198,14 +198,14 @@ export const MediaPermissionsProvider = ({ children }) => {
   }, []);
 
   // Upload recording
-  const uploadRecording = useCallback(async (blob, analysisId, analysisEntryId) => {
+  const uploadRecording = useCallback(async (blob, analysisId, analysisEntryId, presignedUrl) => {
     if (!blob) {
       setUploadError('Missing recording data');
       return false;
     }
 
-    if (!analysisId || !analysisEntryId) {
-      setUploadError('Missing analysis ID or entry ID for upload');
+    if (!presignedUrl) {
+      setUploadError('Missing presigned upload URL');
       return false;
     }
     
@@ -214,21 +214,10 @@ export const MediaPermissionsProvider = ({ children }) => {
       setUploadError('');
       setUploadProgress(0);
       
-      console.log('[Upload] Requesting presigned URL');
-      const uploadUrlResponse = await apiClient.post('/api/v1/analysisEntry/upload-url', {
-        analysisEntryId,
-        analysisId
-      });
-
-      if (!uploadUrlResponse.data?.analysisEntryPresignedUploadUrl) {
-        throw new Error('No presigned URL received from server');
-      }
-
-      const { analysisEntryPresignedUploadUrl } = uploadUrlResponse.data;
+      console.log('[Upload] Uploading to S3 with provided presigned URL');
       setUploadProgress(25);
 
-      console.log('[Upload] Uploading to S3');
-      const uploadResponse = await axios.put(analysisEntryPresignedUploadUrl, blob, {
+      const uploadResponse = await axios.put(presignedUrl, blob, {
         headers: {
           'Content-Type': blob.type || 'video/mp4',
         },
