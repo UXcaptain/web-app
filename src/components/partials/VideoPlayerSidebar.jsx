@@ -155,11 +155,7 @@ export const VideoPlayerSidebar = ({
                     shadow="xs"
                     radius="sm"
                     withBorder
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      onTranscriptClick && onTranscriptClick(segment.start);
-                    }}
+                    onClick={() => onTranscriptClick && onTranscriptClick(segment.start)}
                     style={{
                       cursor: 'pointer',
                       backgroundColor: activeTranscriptId === segment.id ? 'var(--mantine-color-blue-1)' : 'transparent',

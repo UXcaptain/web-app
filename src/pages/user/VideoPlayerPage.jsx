@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import apiClient from '../../config/API/axiosConfig.mjs';
 import { Container, Text, Loader, Alert, Stack, Button, Group, Box } from '@mantine/core';
@@ -66,65 +66,24 @@ export const VideoPlayerPage = () => {
     fetchVideoData();
   }, [entryId, analysisId]);
 
-  const lastClickTime = useRef(0);
-  const handleTranscriptClick = useCallback((startTime) => {
-    const currentTime = Date.now();
-    
-    // Debounce clicks to prevent rapid-fire clicks
-    if (currentTime - lastClickTime.current < 200) {
-      return;
-    }
-    lastClickTime.current = currentTime;
-    
-    // Use requestAnimationFrame to ensure smooth UI updates
-    requestAnimationFrame(() => {
-      setSeekToTime(startTime);
-    });
-  }, []);
+  const handleTranscriptClick = (startTime) => {
+    setSeekToTime(startTime);
+  };
 
-  // Cache for performance optimization
-  const lastProcessedTime = useRef(0);
-  const lastFoundSegmentId = useRef(null);
-  
-  // Highly throttled time update handler to eliminate performance warnings
-  const throttledHandleTimeUpdate = useCallback((time) => {
-    // Only process time updates if significant time has passed (500ms threshold)
-    const timeDiff = Math.abs(time - lastProcessedTime.current);
-    if (timeDiff < 0.5) return; // Skip if less than 500ms difference
-    
+  const handleTimeUpdate = (time) => {
     setCurrentTime(time);
-    lastProcessedTime.current = time;
     
-    // Optimized transcript search with aggressive caching
-    if (transcript && Array.isArray(transcript) && transcript.length > 0) {
-      // Use cached result if time is within the same segment
-      if (lastFoundSegmentId.current !== null) {
-        const lastSegment = transcript.find(seg => seg.id === lastFoundSegmentId.current);
-        if (lastSegment && time >= lastSegment.start && time <= lastSegment.end) {
-          return; // Still in the same segment, no need to search
-        }
-      }
+    // Find active transcript segment
+    if (transcript && Array.isArray(transcript)) {
+      const currentSegment = transcript.find(segment =>
+        time >= segment.start && time <= segment.end
+      );
       
-      // For performance, only search if transcript is small enough
-      if (transcript.length <= 50) {
-        const currentSegment = transcript.find(segment =>
-          time >= segment.start && time <= segment.end
-        );
-        
-        if (currentSegment) {
-          setActiveTranscriptId(currentSegment.id);
-          lastFoundSegmentId.current = currentSegment.id;
-        } else {
-          lastFoundSegmentId.current = null;
-        }
+      if (currentSegment) {
+        setActiveTranscriptId(currentSegment.id);
       }
-      // For larger transcripts, skip searching to avoid performance issues
     }
-  }, [transcript]);
-
-  const handleTimeUpdate = useCallback((time) => {
-    throttledHandleTimeUpdate(time);
-  }, [throttledHandleTimeUpdate]);
+  };
 
   const handleDurationChange = (duration) => {
     setDuration(duration);
