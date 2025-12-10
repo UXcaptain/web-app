@@ -9,6 +9,7 @@ import {
   Highlight,
   Tabs,
 } from '@mantine/core';
+import { useMemo } from 'react';
 
 export const VideoPlayerSidebar = ({
   transcript,
@@ -20,13 +21,13 @@ export const VideoPlayerSidebar = ({
   notes = [],
   scenario = '',
 }) => {
-  // Transform transcript data - handle both direct array and API response format
-  const transformTranscriptData = (data) => {
-    if (!data) return null;
+  // Memoized transcript transformation to avoid expensive recalculations
+  const transformedTranscript = useMemo(() => {
+    if (!transcript) return null;
     
     // Handle case where transcript is already the transcription array
-    if (Array.isArray(data)) {
-      return data.map((segment, index) => ({
+    if (Array.isArray(transcript)) {
+      return transcript.map((segment, index) => ({
         id: index,
         start: segment.start_time,
         text: segment.transcript,
@@ -35,8 +36,8 @@ export const VideoPlayerSidebar = ({
     }
     
     // Handle new API response format
-    if (data.transcription && Array.isArray(data.transcription)) {
-      return data.transcription.map((segment, index) => ({
+    if (transcript.transcription && Array.isArray(transcript.transcription)) {
+      return transcript.transcription.map((segment, index) => ({
         id: index,
         start: segment.start_time,
         text: segment.transcript,
@@ -45,10 +46,7 @@ export const VideoPlayerSidebar = ({
     }
     
     return null;
-  };
-
-  // Transform the transcript data
-  const transformedTranscript = transformTranscriptData(transcript);
+  }, [transcript]);
   
   // Simple check for transcript tab visibility
   const hasTranscript = transcript !== null;
@@ -157,7 +155,11 @@ export const VideoPlayerSidebar = ({
                     shadow="xs"
                     radius="sm"
                     withBorder
-                    onClick={() => onTranscriptClick && onTranscriptClick(segment.start)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onTranscriptClick && onTranscriptClick(segment.start);
+                    }}
                     style={{
                       cursor: 'pointer',
                       backgroundColor: activeTranscriptId === segment.id ? 'var(--mantine-color-blue-1)' : 'transparent',

@@ -9,22 +9,31 @@ const VideoPlayer = ({ videoUrl, onTimeUpdate, onDurationChange, currentTime, du
     const video = videoRef.current;
     if (!video || seekToTime === null || seekToTime === undefined) return;
 
-    // Seek to the specified time
-    video.currentTime = seekToTime;
-    
-    // Notify that seeking is complete
-    if (onSeekComplete) {
-      onSeekComplete();
-    }
+    // Use requestAnimationFrame for smooth seeking
+    requestAnimationFrame(() => {
+      video.currentTime = seekToTime;
+      
+      // Notify that seeking is complete
+      if (onSeekComplete) {
+        onSeekComplete();
+      }
+    });
   }, [seekToTime, onSeekComplete]);
 
-  // Handle time updates and duration changes
+  // Handle time updates and duration changes with throttling
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    let lastUpdateTime = 0;
+    const UPDATE_THROTTLE = 100; // Throttle to 10fps (100ms)
+
     const updateTime = () => {
-      onTimeUpdate(video.currentTime);
+      const currentTime = Date.now();
+      if (currentTime - lastUpdateTime >= UPDATE_THROTTLE) {
+        onTimeUpdate(video.currentTime);
+        lastUpdateTime = currentTime;
+      }
     };
 
     const updateDuration = () => {
