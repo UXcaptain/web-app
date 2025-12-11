@@ -22,6 +22,14 @@ export const VideoPlayerSidebar = ({
   notes = [],
   scenario = '',
 }) => {
+  // Standardized time formatting fallback function to ensure consistency
+  const formatTimeFallback = (seconds) => {
+    if (typeof seconds !== 'number' || isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
   // Memoized transcript transformation to avoid expensive recalculations
   const transformedTranscript = useMemo(() => {
     // If transcript is already in transformed format (has id, start, text properties), return as-is
@@ -114,7 +122,7 @@ export const VideoPlayerSidebar = ({
                       <Box key={index}>
                         <Text size="sm">{note.content || 'Sin contenido'}</Text>
                         {note.timestamp && (
-                          <Text size="xs" color="dimmed">Tiempo: {formatTime ? formatTime(note.timestamp) : note.timestamp}</Text>
+                          <Text size="xs" color="dimmed">Tiempo: {formatTime ? formatTime(note.timestamp) : formatTimeFallback(note.timestamp)}</Text>
                         )}
                       </Box>
                     ))}
@@ -149,7 +157,7 @@ export const VideoPlayerSidebar = ({
                   >
                     <Group position="apart" align="flex-start">
                       <Text size="xs" color="blue" fw={500} w={60} style={{ flexShrink: 0 }}>
-                        {formatTime && segment.start ? formatTime(segment.start) : segment.start?.toFixed(1) || '0.0'}
+                        {formatTime ? formatTime(segment.start) : formatTimeFallback(segment.start)}
                       </Text>
                       <Text size="sm" style={{ flex: 1 }} component="div">
                         <Highlight highlight={activeTranscriptId === segment.id ? [] : []}>
