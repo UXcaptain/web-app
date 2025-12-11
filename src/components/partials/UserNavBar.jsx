@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router'
 import { useState } from 'react';
 import {
-  IconLogout,
   IconHomeFilled,
   IconUserCircle,
   IconCreditCardFilled
