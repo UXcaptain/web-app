@@ -17,6 +17,7 @@ const ParticipateContent = () => {
   const [analysisData, setAnalysisData] = useState(null);
   const [analysisId, setAnalysisId] = useState(null);
   const [analysisEntryId, setAnalysisEntryId] = useState(null);
+  const [analysisPresignedUploadUrl, setAnalysisPresignedUploadUrl] = useState(null);
   const [error, setError] = useState(null);
 
   // Loading states for different steps
@@ -84,6 +85,7 @@ const ParticipateContent = () => {
       if (response?.data?.success) {
         setAnalysisData(response.data.analysisData);
         setAnalysisEntryId(response.data.analysisEntryId);
+        setAnalysisPresignedUploadUrl(response.data.analysisPresignedUploadUrl);
         setCurrentStep('analysis');
       } else {
         setError("Error al obtener los datos del análisis. Por favor, inténtalo de nuevo.");
@@ -116,6 +118,7 @@ const ParticipateContent = () => {
     setAnalysisData(null);
     setAnalysisId(null);
     setAnalysisEntryId(null);
+    setAnalysisPresignedUploadUrl(null);
     setError(null);
     setCurrentStep('input');
     setShowSecurityModal(false);
@@ -228,6 +231,7 @@ const ParticipateContent = () => {
         analysisData={analysisData}
         analysisId={analysisId}
         analysisEntryId={analysisEntryId}
+        analysisPresignedUploadUrl={analysisPresignedUploadUrl}
         error={error}
         setError={setError}
         validationLoading={validationLoading}

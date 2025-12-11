@@ -30,7 +30,7 @@ export const VideoPlayerPage = () => {
         setVideoUrl(videoResponse.data.analysisEntryGetRecordingPresignedUrl);
         
         // Handle direct transcript data from server response
-        const transcriptData = videoResponse.data.transcription;
+        const transcriptData = videoResponse.data.transcriptionSegments;
         
         if (transcriptData) {
           setTranscript(transcriptData);
@@ -67,21 +67,27 @@ export const VideoPlayerPage = () => {
   }, [entryId, analysisId]);
 
   const handleTranscriptClick = (startTime) => {
-    // Update seekToTime to trigger seek in VideoPlayer component
     setSeekToTime(startTime);
   };
 
   const handleTimeUpdate = (time) => {
     setCurrentTime(time);
     
-    // Find active transcript segment (with null safety check)
+    // Find active transcript segment - handle both transformed and raw transcript formats
     if (transcript && Array.isArray(transcript)) {
-      const currentSegment = transcript.find(segment =>
-        time >= segment.start && time <= segment.end
-      );
+      const currentSegment = transcript.find((segment, index) => {
+        // Handle transformed transcript format (from sidebar)
+        if (segment.id !== undefined && segment.start !== undefined && segment.end_time !== undefined) {
+          return time >= segment.start && time <= segment.end_time;
+        }
+        // Handle raw transcript format (from API)
+        return time >= segment.start_time && time <= segment.end_time;
+      });
       
       if (currentSegment) {
-        setActiveTranscriptId(currentSegment.id);
+        // Use the index as ID to match the sidebar transformation
+        const segmentIndex = transcript.indexOf(currentSegment);
+        setActiveTranscriptId(segmentIndex);
       }
     }
   };

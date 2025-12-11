@@ -106,5 +106,5 @@ createRoot(document.getElementById('root')).render(
     </PostHogProvider>
 
     </MantineProvider>
-  </StrictMode>,
+  </StrictMode>
 )
