@@ -30,7 +30,7 @@ export const VideoPlayerPage = () => {
         setVideoUrl(videoResponse.data.analysisEntryGetRecordingPresignedUrl);
         
         // Handle direct transcript data from server response
-        const transcriptData = videoResponse.data.transcription;
+        const transcriptData = videoResponse.data.transcriptionSegments;
         
         if (transcriptData) {
           setTranscript(transcriptData);

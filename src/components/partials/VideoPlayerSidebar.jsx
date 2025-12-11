@@ -36,8 +36,8 @@ export const VideoPlayerSidebar = ({
     }
     
     // Handle new API response format
-    if (transcript.transcription && Array.isArray(transcript.transcription)) {
-      return transcript.transcription.map((segment, index) => ({
+    if (transcript.transcriptionSegments && Array.isArray(transcript.transcriptionSegments)) {
+      return transcript.transcriptionSegments.map((segment, index) => ({
         id: index,
         start: segment.start_time,
         text: segment.transcript,
