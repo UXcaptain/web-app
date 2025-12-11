@@ -9,7 +9,7 @@ export const RecordingStep = ({
   analysisData,
   analysisEntryId,
   analysisId,
-  analysisPresignedUploadUrl,
+  analysisEntryPresignedUploadUrl,
   onExit,
   buildAnalysisSteps
 }) => {
@@ -43,7 +43,7 @@ export const RecordingStep = ({
           analysisData={analysisData}
           analysisEntryId={analysisEntryId}
           analysisId={analysisId}
-          analysisPresignedUploadUrl={analysisPresignedUploadUrl}
+          analysisEntryPresignedUploadUrl={analysisEntryPresignedUploadUrl}
         />
       </Card>
     </>
