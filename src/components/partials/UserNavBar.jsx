@@ -13,7 +13,7 @@ import LogOutButton from '../navBarElements/LogOutButton';
 
 const UserNavBar = () => {
 
-  const [active, setActive] = useState('User Home');
+  const [active, setActive] = useState('Dashboard');
 
   const data = [
   { link: '/dashboard', label: 'Dashboard', icon: IconHomeFilled },
