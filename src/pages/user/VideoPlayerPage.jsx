@@ -4,6 +4,7 @@ import apiClient from '../../config/API/axiosConfig.mjs';
 import { Container, Text, Loader, Alert, Stack, Button, Group, Box } from '@mantine/core';
 import VideoPlayer from '../../components/partials/VideoPlayer';
 import { VideoPlayerSidebar } from '../../components/partials/VideoPlayerSidebar';
+import { transformTranscript } from '../../utils/transcriptTransformer';
 
 export const VideoPlayerPage = () => {
   const { analysisId, entryId } = useParams();
@@ -29,11 +30,12 @@ export const VideoPlayerPage = () => {
         const videoResponse = await apiClient.get(`/api/v1/analysisEntry/${entryId}`);
         setVideoUrl(videoResponse.data.analysisEntryGetRecordingPresignedUrl);
         
-        // Handle direct transcript data from server response
-        const transcriptData = videoResponse.data.transcriptionSegments;
+        // Transform transcript data for consistent format across components
+        const rawTranscriptData = videoResponse.data.transcriptionSegments;
         
-        if (transcriptData) {
-          setTranscript(transcriptData);
+        if (rawTranscriptData) {
+          const transformedData = transformTranscript(rawTranscriptData);
+          setTranscript(transformedData || null);
         } else {
           setTranscript(null);
         }
@@ -73,21 +75,15 @@ export const VideoPlayerPage = () => {
   const handleTimeUpdate = (time) => {
     setCurrentTime(time);
     
-    // Find active transcript segment - handle both transformed and raw transcript formats
+    // Find active transcript segment
+    // Since transcript is always transformed, we can use simplified logic
     if (transcript && Array.isArray(transcript)) {
-      const currentSegment = transcript.find((segment, index) => {
-        // Handle transformed transcript format (from sidebar)
-        if (segment.id !== undefined && segment.start !== undefined && segment.end_time !== undefined) {
-          return time >= segment.start && time <= segment.end_time;
-        }
-        // Handle raw transcript format (from API)
-        return time >= segment.start_time && time <= segment.end_time;
-      });
+      const currentSegment = transcript.find(segment =>
+        time >= segment.start && time <= segment.end_time
+      );
       
       if (currentSegment) {
-        // Use the index as ID to match the sidebar transformation
-        const segmentIndex = transcript.indexOf(currentSegment);
-        setActiveTranscriptId(segmentIndex);
+        setActiveTranscriptId(currentSegment.id);
       }
     }
   };

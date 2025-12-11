@@ -10,6 +10,7 @@ import {
   Tabs,
 } from '@mantine/core';
 import { useMemo } from 'react';
+import { transformTranscript } from '../../utils/transcriptTransformer';
 
 export const VideoPlayerSidebar = ({
   transcript,
@@ -23,29 +24,13 @@ export const VideoPlayerSidebar = ({
 }) => {
   // Memoized transcript transformation to avoid expensive recalculations
   const transformedTranscript = useMemo(() => {
-    if (!transcript) return null;
-    
-    // Handle case where transcript is already the transcription array
-    if (Array.isArray(transcript)) {
-      return transcript.map((segment, index) => ({
-        id: index,
-        start: segment.start_time,
-        text: segment.transcript,
-        end_time: segment.end_time
-      }));
+    // If transcript is already in transformed format (has id, start, text properties), return as-is
+    if (transcript && Array.isArray(transcript) && transcript.length > 0 && transcript[0].id !== undefined) {
+      return transcript;
     }
     
-    // Handle new API response format
-    if (transcript.transcriptionSegments && Array.isArray(transcript.transcriptionSegments)) {
-      return transcript.transcriptionSegments.map((segment, index) => ({
-        id: index,
-        start: segment.start_time,
-        text: segment.transcript,
-        end_time: segment.end_time
-      }));
-    }
-    
-    return null;
+    // Otherwise, transform from raw API format
+    return transformTranscript(transcript);
   }, [transcript]);
   
   // Simple check for transcript tab visibility
