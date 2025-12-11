@@ -9,6 +9,7 @@ import {
   Highlight,
   Tabs,
 } from '@mantine/core';
+import { useMemo } from 'react';
 
 export const VideoPlayerSidebar = ({
   transcript,
@@ -20,7 +21,34 @@ export const VideoPlayerSidebar = ({
   notes = [],
   scenario = '',
 }) => {
-  // Check if transcript is not null
+  // Memoized transcript transformation to avoid expensive recalculations
+  const transformedTranscript = useMemo(() => {
+    if (!transcript) return null;
+    
+    // Handle case where transcript is already the transcription array
+    if (Array.isArray(transcript)) {
+      return transcript.map((segment, index) => ({
+        id: index,
+        start: segment.start_time,
+        text: segment.transcript,
+        end_time: segment.end_time
+      }));
+    }
+    
+    // Handle new API response format
+    if (transcript.transcription && Array.isArray(transcript.transcription)) {
+      return transcript.transcription.map((segment, index) => ({
+        id: index,
+        start: segment.start_time,
+        text: segment.transcript,
+        end_time: segment.end_time
+      }));
+    }
+    
+    return null;
+  }, [transcript]);
+  
+  // Simple check for transcript tab visibility
   const hasTranscript = transcript !== null;
   
   // Set default tab based on transcript availability
@@ -119,8 +147,8 @@ export const VideoPlayerSidebar = ({
             <Stack spacing="xs">
               <Text size="sm" color="dimmed" >Haz click para navegar a un momento específico</Text>
               
-              { transcript && transcript.length > 0 ? (
-                transcript.map((segment) => (
+              {transformedTranscript && transformedTranscript.length > 0 ? (
+                transformedTranscript.map((segment) => (
                   <Card
                     key={`${segment.id}-${segment.start}`}
                     p="xs"
@@ -136,7 +164,7 @@ export const VideoPlayerSidebar = ({
                   >
                     <Group position="apart" align="flex-start">
                       <Text size="xs" color="blue" fw={500} w={60} style={{ flexShrink: 0 }}>
-                        {formatTime ? formatTime(segment.start) : segment.start}
+                        {formatTime && segment.start ? formatTime(segment.start) : segment.start?.toFixed(1) || '0.0'}
                       </Text>
                       <Text size="sm" style={{ flex: 1 }} component="div">
                         <Highlight highlight={activeTranscriptId === segment.id ? [] : []}>
