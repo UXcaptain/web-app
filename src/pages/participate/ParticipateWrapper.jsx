@@ -229,6 +229,7 @@ const ParticipateContent = () => {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         analysisData={analysisData}
+        analysisId={analysisId}
         analysisEntryId={analysisEntryId}
         analysisEntryPresignedUploadUrl={analysisEntryPresignedUploadUrl}
         error={error}

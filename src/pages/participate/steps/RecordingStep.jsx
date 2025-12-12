@@ -8,6 +8,7 @@ import { useMediaPermissions } from "../../../contexts/MediaPermissionsContext";
 export const RecordingStep = ({
   analysisData,
   analysisEntryId,
+  analysisId,
   analysisEntryPresignedUploadUrl,
   onExit,
   buildAnalysisSteps
@@ -41,6 +42,7 @@ export const RecordingStep = ({
           onExit={onExit}
           analysisData={analysisData}
           analysisEntryId={analysisEntryId}
+          analysisId={analysisId}
           analysisEntryPresignedUploadUrl={analysisEntryPresignedUploadUrl}
         />
       </Card>
