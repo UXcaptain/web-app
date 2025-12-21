@@ -198,7 +198,7 @@ export const MediaPermissionsProvider = ({ children }) => {
   }, []);
 
   // Upload recording
-  const uploadRecording = useCallback(async (blob, analysisId, analysisEntryId, presignedUrl) => {
+  const uploadRecording = useCallback(async (blob, analysisEntryId, presignedUrl) => {
     if (!blob) {
       setUploadError('Missing recording data');
       return false;

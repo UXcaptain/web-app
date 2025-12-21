@@ -5,7 +5,7 @@ import { IconAlertCircle, IconCheck, IconUpload, IconCircleCheck } from '@tabler
 import { useMediaPermissions } from '../../contexts/MediaPermissionsContext';
 import apiClient from '../../config/API/axiosConfig.mjs';
 
-export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analysisEntryId, analysisId, analysisEntryPresignedUploadUrl }) => {
+export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analysisEntryId, analysisEntryPresignedUploadUrl }) => {
   const {
     hasPermissions,
     permissionStatus,
@@ -67,7 +67,6 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
       // Step 5: Upload recording using presigned URL
       const uploadSuccess = await uploadRecording(
         recordingData.blob,
-        analysisId,
         analysisEntryId,
         analysisEntryPresignedUploadUrl
       );
@@ -88,7 +87,6 @@ export const AnalysisStepNavigator = ({ steps = [], onExit, analysisData, analys
       try {
         await apiClient.patch('/api/v1/analysisEntry', {
           analysisEntryId,
-          analysisId
         });
       } catch (patchErr) {
         setFinishError('Failed to update analysis entry after upload.');
@@ -238,6 +236,5 @@ AnalysisStepNavigator.propTypes = {
   onExit: PropTypes.func,
   analysisData: PropTypes.object,
   analysisEntryId: PropTypes.string,
-  analysisId: PropTypes.string,
   analysisEntryPresignedUploadUrl: PropTypes.string
 };
