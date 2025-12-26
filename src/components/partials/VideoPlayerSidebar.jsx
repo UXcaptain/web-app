@@ -10,6 +10,7 @@ import {
   Tabs,
 } from '@mantine/core';
 import { useMemo } from 'react';
+import { transformTranscript } from '../../utils/transcriptTransformer';
 
 export const VideoPlayerSidebar = ({
   transcript,
@@ -21,31 +22,23 @@ export const VideoPlayerSidebar = ({
   notes = [],
   scenario = '',
 }) => {
+  // Standardized time formatting fallback function to ensure consistency
+  const formatTimeFallback = (seconds) => {
+    if (typeof seconds !== 'number' || isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
   // Memoized transcript transformation to avoid expensive recalculations
   const transformedTranscript = useMemo(() => {
-    if (!transcript) return null;
-    
-    // Handle case where transcript is already the transcription array
-    if (Array.isArray(transcript)) {
-      return transcript.map((segment, index) => ({
-        id: index,
-        start: segment.start_time,
-        text: segment.transcript,
-        end_time: segment.end_time
-      }));
+    // If transcript is already in transformed format (has id, start, text properties), return as-is
+    if (transcript && Array.isArray(transcript) && transcript.length > 0 && transcript[0].id !== undefined) {
+      return transcript;
     }
     
-    // Handle new API response format
-    if (transcript.transcriptionSegments && Array.isArray(transcript.transcriptionSegments)) {
-      return transcript.transcriptionSegments.map((segment, index) => ({
-        id: index,
-        start: segment.start_time,
-        text: segment.transcript,
-        end_time: segment.end_time
-      }));
-    }
-    
-    return null;
+    // Otherwise, transform from raw API format
+    return transformTranscript(transcript);
   }, [transcript]);
   
   // Simple check for transcript tab visibility
@@ -129,7 +122,7 @@ export const VideoPlayerSidebar = ({
                       <Box key={index}>
                         <Text size="sm">{note.content || 'Sin contenido'}</Text>
                         {note.timestamp && (
-                          <Text size="xs" color="dimmed">Tiempo: {formatTime ? formatTime(note.timestamp) : note.timestamp}</Text>
+                          <Text size="xs" color="dimmed">Tiempo: {formatTime ? formatTime(note.timestamp) : formatTimeFallback(note.timestamp)}</Text>
                         )}
                       </Box>
                     ))}
@@ -164,7 +157,7 @@ export const VideoPlayerSidebar = ({
                   >
                     <Group position="apart" align="flex-start">
                       <Text size="xs" color="blue" fw={500} w={60} style={{ flexShrink: 0 }}>
-                        {formatTime && segment.start ? formatTime(segment.start) : segment.start?.toFixed(1) || '0.0'}
+                        {formatTime ? formatTime(segment.start) : formatTimeFallback(segment.start)}
                       </Text>
                       <Text size="sm" style={{ flex: 1 }} component="div">
                         <Highlight highlight={activeTranscriptId === segment.id ? [] : []}>
