@@ -1,26 +1,27 @@
 export const PLAN_FEATURES_CATALOG = [
+  { key: 'quality_feedback', label: 'Feedback cualitativo de calidad en video y audio',},
   { key: 'own_participants_unlimited', label: 'Análisis ilimitados con tus propios participantes' },
   {
     key: 'included_participants_per_month',
     label: 'Participantes incluidos/mes',
     helpText:
-      'Participantes incluidos en tu suscripción cada mes. Puedes comprar participantes adicionales bajo demanda.',
+      'Los que no utilices, se acumulan. Puedes comprar participantes adicionales bajo demanda.',
   },
   {
     key: 'transcription',
-    label: 'Transcripción',
+    label: 'Transcripción automática con IA',
     helpText:
-      'Generación automática de transcripción para las grabaciones, según las capacidades del plan.',
+      'Generación automática de transcripción para las grabaciones - Incluye marcas de tiempo.',
   },
   {
     key: 'ai_insights',
     label: 'Extracción de insights con IA',
     helpText:
-      'Sugerencias automáticas para identificar patrones y aprendizajes clave en las sesiones.',
+      'Extracción de insights con IA automáticas para identificar patrones y aprendizajes clave en las sesiones.',
   },
   {
     key: 'demographic_segments',
-    label: 'Segmentos demográficos de participantes',
+    label: 'Segmentación demográfica de los participantes',
     helpText:
       'Permite filtrar/segmentar a los participantes (p. ej., edad, país, rol) para estudios más específicos.',
   },
@@ -50,14 +51,13 @@ export const PLANS = {
     subtitle: 'Para individuos que están comenzando.',
     features: buildPlanFeatures({
       includedKeys: [
+        'quality_feedback',
         'own_participants_unlimited',
-
         'support',
         'rgpd_eu_hosted',
       ],
       labelOverrides: {
         included_participants_per_month: 'Sin participantes incluidos',
-        transcription: 'Transcripción básica con marcas de tiempo con IA',
         support: 'Soporte básico - respuesta en menos de 48h',
       },
     }),
@@ -71,6 +71,7 @@ export const PLANS = {
     subtitle: 'Para equipos pequeños que necesitan transcripción de IA y soporte prioritario.',
     features: buildPlanFeatures({
       includedKeys: [
+        'quality_feedback',
         'own_participants_unlimited',
         'included_participants_per_month',
         'transcription',
@@ -79,7 +80,6 @@ export const PLANS = {
       ],
       labelOverrides: {
         included_participants_per_month: '5 participantes incluidos/mes',
-        transcription: 'Transcripción con marcas de tiempo con IA',
         support: 'Soporte prioritario - respuesta en menos de 24h',
       },
     }),
@@ -93,6 +93,7 @@ export const PLANS = {
     subtitle: 'Para equipos que necesitan segmentación y soporte más rápido.',
     features: buildPlanFeatures({
       includedKeys: [
+        'quality_feedback',
         'own_participants_unlimited',
         'included_participants_per_month',
         'transcription',
@@ -103,7 +104,6 @@ export const PLANS = {
       ],
       labelOverrides: {
         included_participants_per_month: '10 participantes incluidos/mes',
-        transcription: 'Transcripción por entrada de análisis con IA',
         support: 'Soporte prioritario - respuesta en menos de 8h',
       },
     }),
