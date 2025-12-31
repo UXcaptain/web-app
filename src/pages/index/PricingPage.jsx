@@ -1,7 +1,6 @@
 import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid, Group, Anchor, Box, Flex } from '@mantine/core';
 import { IconHelpCircle, IconShieldCheck, IconUsersPlus } from '@tabler/icons-react';
 import RegisterButton from '../../components/navBarElements/RegisterButton.jsx';
-import BetaBadge from '../../components/shared/BetaBadge.jsx';
 import { PLANS } from '../../config/plans.js';
 
 const PlanCard = ({ plan }) => (
@@ -10,13 +9,9 @@ const PlanCard = ({ plan }) => (
       <Box>
         <Title order={3} mb="md" ta="center">{plan.name}</Title>
 
-        <Title order={2} mb="xs" ta="center" style={{ textDecoration: 'line-through', color: '#999' }}>
+        <Title order={2} mb="xs" ta="center">
           {plan.price}{plan.currency} / {plan.period}
         </Title>
-
-        <Group justify="center" mb="md">
-          <BetaBadge />
-        </Group>
 
         <Text c="dimmed" size="sm" mb="md">
           {plan.subtitle}
@@ -83,7 +78,7 @@ export const PricingPage = () => {
         <div style={{ textAlign: 'center' }}>
           <Title order={2}>Planes y precios</Title>
           <Text c="dimmed" mt="xs" style={{ maxWidth: 640, marginInline: 'auto' }}>
-            Un único plan simple para empezar hoy mismo. Sin complicaciones, cancela cuando quieras.
+            Elige el plan que mejor se ajuste a tu equipo. Sin complicaciones, cancela cuando quieras.
           </Text>
         </div>
 
