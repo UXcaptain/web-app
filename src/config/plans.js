@@ -2,33 +2,33 @@ export const PLANS = {
   SINGLE: {
     id: 'single',
     name: 'Plan Único',
-    price: 29,
+    price: 0,
     currency: '€',
     period: 'mes',
     subtitle: 'Todo lo que necesitas para empezar a trabajar con nuestra plataforma.',
     features: [
+      'Realiza análisis con tus propios usuarios',
       'Feedback de calidad en video y audio',
       'Crea análisis en menos de 5 minutos',
-      'Invita a quien tu quieras',
-      'Exporta tus análisis fácilmente',
       'Soporte por email',
     ]
   },
-  // PREMIUM: {
-  //   id: 'premium',
-  //   name: 'Plan Premium',
-  //   price: 49,
-  //   currency: '€',
-  //   period: 'mes',
-  //   subtitle: 'Para equipos que necesitan más funcionalidades y soporte prioritario.',
-  //   features: [
-  //     'Proyectos ilimitados',
-  //     'Exportaciones ilimitadas',
-  //     'Colaboración con hasta 10 miembros',
-  //     'Soporte prioritario 24/7',
-  //     'Historial y auditoría de cambios',
-  //     'Funciones avanzadas',
-  //     'Integraciones personalizadas'
-  //   ]
-  // },
+  Pro: {
+    id: 'Pro',
+    name: 'Plan Pro',
+    price: 99,
+    currency: '€',
+    period: 'mes',
+    subtitle: 'Para equipos que necesitan más funcionalidades y soporte prioritario.',
+    features: [
+      'Realiza análisis con tus propios usuarios',
+      'Feedback de calidad en video y audio',
+      'Transcripciones de los análisis con IA',
+      'Crea análisis en menos de 5 minutos',
+      'Exportaciones ilimitadas',
+      'Soporte prioritario 24/7',
+      'Cancela cuando quieras'
+
+    ]
+  },
 };
