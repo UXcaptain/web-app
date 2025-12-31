@@ -1,34 +1,54 @@
 export const PLANS = {
-  SINGLE: {
-    id: 'single',
-    name: 'Plan Único',
+  FREE: {
+    id: 'free',
+    name: 'Básico',
     price: 0,
     currency: '€',
     period: 'mes',
-    subtitle: 'Todo lo que necesitas para empezar a trabajar con nuestra plataforma.',
+    subtitle: 'Para individuos que están comenzando.',
     features: [
-      'Realiza análisis con tus propios usuarios',
-      'Feedback de calidad en video y audio',
-      'Crea análisis en menos de 5 minutos',
-      'Soporte por email',
-    ]
+      'Estudios ilimitados',
+      'Participantes propios ilimitados',
+      'Transcripción básica con marcas de tiempo',
+      'Soporte básico - respuesta en menos de 48h',
+      'Sin funciones de IA',
+      'Sin segmentos demográficos',
+      'RGPD - Alojado en la UE',
+    ],
   },
-  Pro: {
-    id: 'Pro',
-    name: 'Plan Pro',
+  STARTER: {
+    id: 'starter',
+    name: 'Starter',
+    price: 49,
+    currency: '€',
+    period: 'mes',
+    subtitle: 'Para equipos pequeños que necesitan transcripción de IA y soporte prioritario.',
+    features: [
+      'Estudios ilimitados',
+      'Participantes propios ilimitados',
+      '5 participantes incluidos/mes',
+      'Transcripción con marcas de tiempo con IA',
+      'Soporte priortario - respuesta en menos de 24h',
+      'Sin segmentos demográficos',
+      'RGPD - Alojado en la UE',
+    ],
+  },
+  PRO: {
+    id: 'pro',
+    name: 'Pro',
     price: 99,
     currency: '€',
     period: 'mes',
-    subtitle: 'Para equipos que necesitan más funcionalidades y soporte prioritario.',
+    subtitle: 'Para equipos que necesitan segmentación y soporte más rápido.',
     features: [
-      'Realiza análisis con tus propios usuarios',
-      'Feedback de calidad en video y audio',
-      'Transcripciones de los análisis con IA',
-      'Crea análisis en menos de 5 minutos',
-      'Exportaciones ilimitadas',
-      'Soporte prioritario 24/7',
-      'Cancela cuando quieras'
-
-    ]
+      'Estudios ilimitados',
+      'Participantes propios ilimitados',
+      'Extracción de insights con IA',
+      '10 participantes incluidos/mes',
+      'Transcripción por entrada de análisis con IA',
+      'Segmentos demográficos para orientación de participantes',
+      'Soporte prioritario - respuesta en menos de 8h',
+      'RGPD - Alojado en la UE',
+    ],
   },
 };
