@@ -1,4 +1,5 @@
-import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid } from '@mantine/core';
+import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid, Group, Anchor } from '@mantine/core';
+import { IconHelpCircle, IconShieldCheck, IconUsersPlus } from '@tabler/icons-react';
 import RegisterButton from '../../components/navBarElements/RegisterButton.jsx';
 import BetaBadge from '../../components/shared/BetaBadge.jsx';
 import { PLANS } from '../../config/plans.js';
@@ -40,6 +41,33 @@ const PlanCard = ({ plan }) => (
   </Card>
 );
 
+const CONTACT_EMAIL_HREF = 'mailto:hello@company.com';
+const DEMO_URL_HREF = 'https://cal.com/your-org/your-event';
+const InfoCard = ({ icon: Icon, title, children }) => (
+  <Card
+    radius="lg"
+    p="xl"
+    shadow="sm"
+    style={{ height: '100%' }}
+  >
+    <Group align="flex-start" wrap="nowrap" gap="lg">
+      <Card withBorder radius="md" p="md" shadow="sm" style={{ flexShrink: 0 }}>
+        <Icon size={28} stroke={1.5} />
+      </Card>
+
+      <div>
+        <Title order={4} mb={6}>
+          {title}
+        </Title>
+
+        <Text c="dimmed">
+          {children}
+        </Text>
+      </div>
+    </Group>
+  </Card>
+);
+
 export const PricingPage = () => {
   const plansArray = Object.values(PLANS);
   
@@ -60,6 +88,34 @@ export const PricingPage = () => {
             ))}
           </SimpleGrid>
         </div>
+
+        <Card
+          radius="md"
+          p="xl"
+          style={{ width: '100%' }}
+        >
+          <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
+            <InfoCard icon={IconShieldCheck} title="Garantía de satisfacción 100%">
+              Si no estás contento con uno de nuestros participantes, te asignaremos otro sin coste adicional.
+            </InfoCard>
+
+            <InfoCard icon={IconUsersPlus} title="¿Necesitas más participantes?">
+              Puedes mejorar tu plan en cualquier momento o comprar más participantes bajo demanda.
+            </InfoCard>
+
+            <InfoCard icon={IconHelpCircle} title="¿Aún tienes preguntas?">
+              Puedes{' '}
+              <Anchor href={CONTACT_EMAIL_HREF} underline="always">
+                contactarnos
+              </Anchor>{' '}
+              o{' '}
+              <Anchor href={DEMO_URL_HREF} target="_blank" rel="noreferrer" underline="always">
+                reservar una demo
+              </Anchor>
+              .
+            </InfoCard>
+          </SimpleGrid>
+        </Card>
       </Stack>
     </Container>
   );
