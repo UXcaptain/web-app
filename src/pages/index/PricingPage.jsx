@@ -1,5 +1,5 @@
-import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid, Group, Anchor, Box, Flex } from '@mantine/core';
-import { IconHelpCircle, IconShieldCheck, IconUsersPlus } from '@tabler/icons-react';
+import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid, Group, Anchor, Box, Flex, Tooltip, ActionIcon } from '@mantine/core';
+import { IconCheck, IconHelpCircle, IconShieldCheck, IconUsersPlus, IconX } from '@tabler/icons-react';
 import RegisterButton from '../../components/navBarElements/RegisterButton.jsx';
 import { PLANS } from '../../config/plans.js';
 
@@ -18,18 +18,50 @@ const PlanCard = ({ plan }) => (
         </Text>
 
         <List spacing="sm" size="sm" mb="xl" style={{ textAlign: 'left' }}>
-          {plan.features.map((feature, index) => (
-            <List.Item
-              key={index}
-              icon={
-                <ThemeIcon size={20} radius="xl" color="green">
-                  ✓
-                </ThemeIcon>
-              }
-            >
-              {feature}
-            </List.Item>
-          ))}
+          {plan.features
+            .map((feature, index) => {
+              const normalized =
+                typeof feature === 'string'
+                  ? { key: `${feature}-${index}`, label: feature, included: true, helpText: undefined }
+                  : feature;
+              return normalized;
+            })
+            .sort((a, b) => (b.included === a.included ? 0 : b.included ? 1 : -1))
+            .map((feature, index) => (
+              <List.Item
+                key={feature.key ?? index}
+                icon={
+                  <ThemeIcon
+                    size={20}
+                    radius="xl"
+                    color={feature.included ? 'green' : 'gray'}
+                    variant={feature.included ? 'filled' : 'light'}
+                  >
+                    {feature.included ? <IconCheck size={14} /> : <IconX size={14} />}
+                  </ThemeIcon>
+                }
+              >
+                <Group gap={6} wrap="nowrap" align="center">
+                  <Text span c={feature.included ? undefined : 'dimmed'}>
+                    {feature.label}
+                  </Text>
+
+                  {feature.helpText && (
+                    <Tooltip label={feature.helpText} withArrow position="top" maw={320}>
+                      <ActionIcon
+                        variant="subtle"
+                        color="gray"
+                        size="sm"
+                        aria-label="Más información"
+                        style={{ cursor: 'help' }}
+                      >
+                        <IconHelpCircle size={16} stroke={1.75} />
+                      </ActionIcon>
+                    </Tooltip>
+                  )}
+                </Group>
+              </List.Item>
+            ))}
         </List>
       </Box>
 
