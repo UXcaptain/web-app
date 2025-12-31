@@ -1,43 +1,49 @@
-import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid, Group, Anchor } from '@mantine/core';
+import { Container, Title, Text, Card, List, ThemeIcon, Stack, SimpleGrid, Group, Anchor, Box, Flex } from '@mantine/core';
 import { IconHelpCircle, IconShieldCheck, IconUsersPlus } from '@tabler/icons-react';
 import RegisterButton from '../../components/navBarElements/RegisterButton.jsx';
 import BetaBadge from '../../components/shared/BetaBadge.jsx';
 import { PLANS } from '../../config/plans.js';
 
 const PlanCard = ({ plan }) => (
-  <Card withBorder shadow="sm" radius="md" p="lg" style={{ width: '100%', height: '100%', textAlign: 'center' }}>
-    <Title order={3} mb="md">{plan.name}</Title>
-    
-    <Title order={2} mb="xs" style={{ textDecoration: 'line-through', color: '#999' }}>
-      {plan.price}{plan.currency} / {plan.period}
-    </Title>
-    
-    <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '1rem' }}>
-      <BetaBadge />
-    </div>
+  <Card withBorder shadow="sm" radius="md" p="lg" style={{ width: '100%', height: '100%' }}>
+    <Flex direction="column" h="100%">
+      <Box>
+        <Title order={3} mb="md" ta="center">{plan.name}</Title>
 
-    <Text c="dimmed" size="sm" mb="md">
-      {plan.subtitle}
-    </Text>
+        <Title order={2} mb="xs" ta="center" style={{ textDecoration: 'line-through', color: '#999' }}>
+          {plan.price}{plan.currency} / {plan.period}
+        </Title>
 
-    <List spacing="sm" size="sm" mb="xl" style={{ textAlign: 'left', display: 'inline-block' }}>
-      {plan.features.map((feature, index) => (
-        <List.Item
-          key={index}
-          icon={
-            <ThemeIcon size={20} radius="xl" color="green">
-              ✓
-            </ThemeIcon>
-          }
-        >
-          {feature}
-        </List.Item>
-      ))}
-    </List>
+        <Group justify="center" mb="md">
+          <BetaBadge />
+        </Group>
 
-    <div>
-      <RegisterButton />
-    </div>
+        <Text c="dimmed" size="sm" mb="md">
+          {plan.subtitle}
+        </Text>
+
+        <List spacing="sm" size="sm" mb="xl" style={{ textAlign: 'left' }}>
+          {plan.features.map((feature, index) => (
+            <List.Item
+              key={index}
+              icon={
+                <ThemeIcon size={20} radius="xl" color="green">
+                  ✓
+                </ThemeIcon>
+              }
+            >
+              {feature}
+            </List.Item>
+          ))}
+        </List>
+      </Box>
+
+      <Box mt="auto">
+        <Group justify="center">
+          <RegisterButton />
+        </Group>
+      </Box>
+    </Flex>
   </Card>
 );
 
