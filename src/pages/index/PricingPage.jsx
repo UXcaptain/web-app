@@ -6,11 +6,7 @@ import { PLANS } from '../../config/plans.js';
 const PlanCard = ({ plan }) => (
   <Card withBorder shadow="sm" radius="md" p="lg" style={{ width: '100%', height: '100%', textAlign: 'center' }}>
     <Title order={3} mb="md">{plan.name}</Title>
-    
-    <Title order={2} mb="xs" style={{ textDecoration: 'line-through', color: '#999' }}>
-      {plan.price}{plan.currency} / {plan.period}
-    </Title>
-    
+        
     <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '1rem' }}>
       <BetaBadge />
     </div>

@@ -213,7 +213,7 @@ export const CreateAnalysisPage = () => {
                     />
 
                     <Textarea
-                        label="(Opcional) Escenario - Indica el escenario que debe tener simular el participante"
+                        label="(Opcional) Escenario - Indica el escenario que debe simular el participante"
                         placeholder="Imagina que es el cumpleaños de tu hermano y tienes 250€ para comprar un reloj"
                         value={scenario}
                         onChange={(e) => setScenario(e.target.value)}
