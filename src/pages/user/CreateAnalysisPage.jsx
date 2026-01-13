@@ -12,18 +12,25 @@ import {
   Card,
   Text,
   Alert,
-  Modal
+  Modal,
+  Pill
 } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useSubscription } from '../../contexts/SubscriptionContext.jsx';
+import { getTemplateOptions, getTemplateById } from '../../templates/analysisTemplates.js';
+import { usePostHog } from 'posthog-js/react';
  
 export const CreateAnalysisPage = () => {
 
+    const posthog = usePostHog();
     const [name, setName] = useState('');
     const [url, setUrl] = useState('');
     const [successMessage, setSuccessMessage] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [pendingTemplate, setPendingTemplate] = useState(null);
     const [countdown, setCountdown] = useState(5);
+    const [selectedTemplate, setSelectedTemplate] = useState(null);
     const navigate = useNavigate();
 
     const { hasActiveSubscription, loading } = useSubscription();
@@ -88,6 +95,63 @@ export const CreateAnalysisPage = () => {
         if (errors.tasks) {
             setErrors(prev => ({ ...prev, tasks: '' }));
         }
+    };
+
+    const hasExistingContent = () => {
+        return tasks.some(task => task.value.trim() !== '');
+    };
+
+    const handleTemplateSelect = (templateId) => {
+        if (!templateId) {
+            setSelectedTemplate(null);
+            return;
+        }
+
+        // Check if there's existing content
+        if (hasExistingContent()) {
+            setPendingTemplate(templateId);
+            setShowConfirmModal(true);
+        } else {
+            applyTemplate(templateId);
+        }
+    };
+
+    const applyTemplate = (templateId) => {
+        const template = getTemplateById(templateId);
+        if (!template) return;
+
+        setSelectedTemplate(templateId);
+        
+        // Convert template tasks to the format used by the component
+        const newTasks = template.tasks.map(taskContent => ({
+            value: taskContent
+        }));
+        
+        setTasks(newTasks);
+        
+        // Clear any task errors
+        if (errors.tasks) {
+            setErrors(prev => ({ ...prev, tasks: '' }));
+        }
+
+        // Track template application in PostHog
+        posthog?.capture('analysisTemplateApplied', {
+            templateId: templateId,
+        });
+    };
+
+    const handleConfirmTemplateApplication = () => {
+        if (pendingTemplate) {
+            applyTemplate(pendingTemplate);
+            setPendingTemplate(null);
+        }
+        setShowConfirmModal(false);
+    };
+
+    const handleCancelTemplateApplication = () => {
+        setPendingTemplate(null);
+        setShowConfirmModal(false);
+        setSelectedTemplate(null);
     };
 
     const validateForm = () => {
@@ -180,7 +244,7 @@ export const CreateAnalysisPage = () => {
     return (
         <Box sx={{ maxWidth: 600 }} mx="auto" mt="xl">
             <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Title order={2} mb="lg">Crear Análisis</Title>
+                <Title order={2} mb="lg">Datos del Análisis</Title>
                 <form onSubmit={handleSubmit}>
                     <TextInput
                         label="Nombre del Análisis"
@@ -243,7 +307,7 @@ export const CreateAnalysisPage = () => {
 
                     <Box mb="md">
                         <Group position="apart" mb="xs">
-                            <Text weight={500}>Tareas</Text>
+                            <Title order={2} mb="lg">Tareas del Análisis</Title>
                             <Button onClick={addTask} variant="outline" size="sm">
                                 Añadir Tarea
                             </Button>
@@ -251,6 +315,35 @@ export const CreateAnalysisPage = () => {
                         <Text size="sm" color="dimmed" mb="sm">
                             Recuerda que para obtener mejores resultados, la duración debe ser de 15-20 minutos - Aproximadamente 3 minutos por tarea
                         </Text>
+                        
+                        <Box mb="md">
+                            <Text size="sm" weight={500} mb="xs">
+                                Plantillas (Opcional)
+                            </Text>
+                            <Text size="xs" color="dimmed" mb="sm">
+                                Selecciona una plantilla para autocompletar las tareas
+                            </Text>
+                            <Group spacing="xs">
+                                {getTemplateOptions().map((template) => (
+                                    <Pill
+                                        key={template.value}
+                                        size="lg"
+                                        onClick={() => handleTemplateSelect(template.value)}
+                                        style={{
+                                            cursor: 'pointer',
+                                            backgroundColor: selectedTemplate === template.value
+                                                ? 'var(--mantine-color-blue-filled)'
+                                                : 'var(--mantine-color-gray-1)',
+                                            color: selectedTemplate === template.value
+                                                ? 'white'
+                                                : 'var(--mantine-color-gray-7)',
+                                        }}
+                                    >
+                                        {template.label}
+                                    </Pill>
+                                ))}
+                            </Group>
+                        </Box>
                         
                         {errors.tasks && (
                             <Alert icon={<IconAlertCircle size="1rem" />} title="Error de Tarea" color="red" mb="sm">
@@ -314,6 +407,29 @@ export const CreateAnalysisPage = () => {
                 >
                     <Text size="md" style={{ color: 'light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1))' }}>{successMessage}</Text>
                     <Text size="sm" mt="sm" style={{ color: 'light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-2))' }}>Redirigiendo en {countdown} segundos...</Text>
+                </Modal>
+
+                <Modal
+                    opened={showConfirmModal}
+                    onClose={handleCancelTemplateApplication}
+                    title="Confirmar aplicación de plantilla"
+                    centered
+                    size="md"
+                >
+                    <Text size="md" mb="md">
+                        Ya tienes contenido en las tareas. Si aplicas esta plantilla, se eliminará el contenido existente.
+                    </Text>
+                    <Text size="md" mb="lg" weight={500}>
+                        ¿Deseas continuar?
+                    </Text>
+                    <Group position="right">
+                        <Button variant="outline" onClick={handleCancelTemplateApplication}>
+                            Cancelar
+                        </Button>
+                        <Button color="red" onClick={handleConfirmTemplateApplication}>
+                            Sí, aplicar plantilla
+                        </Button>
+                    </Group>
                 </Modal>
             </Card>
         </Box>
