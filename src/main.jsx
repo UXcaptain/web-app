@@ -30,12 +30,16 @@ import { PricingPage } from './pages/index/PricingPage.jsx'
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react'
 import { ParticipateWrapper } from './pages/participate/ParticipateWrapper.jsx'
+import { initUTMTracking } from './utils/utmTracker.js'
 
 posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_KEY, {
   api_host: 'https://eu.i.posthog.com', //* Will always be europe
   defaults: '2025-05-24',
   debug: false,
 });
+
+// Initialize UTM tracking on app load
+initUTMTracking();
 
 
 createRoot(document.getElementById('root')).render(
