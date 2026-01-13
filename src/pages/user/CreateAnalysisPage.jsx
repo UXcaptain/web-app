@@ -18,9 +18,11 @@ import {
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useSubscription } from '../../contexts/SubscriptionContext.jsx';
 import { getTemplateOptions, getTemplateById } from '../../templates/analysisTemplates.js';
+import { usePostHog } from 'posthog-js/react';
  
 export const CreateAnalysisPage = () => {
 
+    const posthog = usePostHog();
     const [name, setName] = useState('');
     const [url, setUrl] = useState('');
     const [successMessage, setSuccessMessage] = useState(null);
@@ -131,6 +133,11 @@ export const CreateAnalysisPage = () => {
         if (errors.tasks) {
             setErrors(prev => ({ ...prev, tasks: '' }));
         }
+
+        // Track template application in PostHog
+        posthog?.capture('analysisTemplateApplied', {
+            templateId: templateId,
+        });
     };
 
     const handleConfirmTemplateApplication = () => {
