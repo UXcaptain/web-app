@@ -1,6 +1,7 @@
 import apiClient from "../../config/API/axiosConfig.mjs"
 import { useState } from "react"
 import { Link } from "react-router";
+import { getUTMParameters } from "../../utils/utmTracker.js"
 import {
     Anchor,
     Button,
@@ -25,6 +26,7 @@ const handleRegister = async (e) => {
         username: e.target.username.value,
         password: e.target.password.value,
         role: 'participant',
+        ...getUTMParameters(),
     }
     
     try {
