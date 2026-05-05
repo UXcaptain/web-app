@@ -57,3 +57,4 @@ Direct access to services in Koyeb:
 * [Dev](https://app.koyeb.com/services/5f63a032-90e3-4aff-8b4a-b0a02ecf769b/settings)
 
 An example list of env variables can be found in `.env.example` in the root directory
+
